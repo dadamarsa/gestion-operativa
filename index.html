@@ -1,0 +1,2987 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0f3460">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Gestión Operativa">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="icon.svg">
+    <title>Gestión Operativa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            overflow-x: hidden;
+        }
+
+        /* LOGIN PAGE */
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+        }
+
+        .login-box {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+        }
+
+        .login-box h1 {
+            color: #0f3460;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 2em;
+        }
+
+        .login-box p {
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 0.9em;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #0f3460;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+        }
+
+        .login-error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .demo-users {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #1565c0;
+        }
+
+        .auth-link {
+            display: block;
+            margin-top: 24px;
+            color: #13294b;
+            text-align: center;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 1.05em;
+        }
+
+        .password-field {
+            position: relative;
+        }
+
+        .password-field input {
+            padding-right: 82px;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 8px;
+            bottom: 8px;
+            padding: 4px 6px;
+            border: 0;
+            background: transparent;
+            color: #1f5f8b;
+            cursor: pointer;
+            font: inherit;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .password-toggle:hover,
+        .password-toggle:focus-visible {
+            text-decoration: underline;
+            outline: 2px solid rgba(31, 95, 139, 0.25);
+            outline-offset: 2px;
+        }
+
+        .auth-view {
+            display: none;
+        }
+
+        .auth-view.active {
+            display: block;
+        }
+
+        .auth-message {
+            display: none;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .auth-message.show {
+            display: block;
+        }
+
+        .auth-message.success {
+            background: #dff3e5;
+            color: #176b35;
+        }
+
+        .auth-message.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* MAIN APP */
+        .app-container {
+            display: none;
+            min-height: 100vh;
+            background: #f5f7fa;
+        }
+
+        .app-container.active {
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+            color: white;
+            padding: 20px;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-logo {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar-logo p {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .menu-title {
+            font-size: 0.85em;
+            opacity: 0.6;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .menu-item {
+            padding: 12px 15px;
+            border-radius: 5px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-item.active {
+            background: #ffa500;
+            color: white;
+        }
+
+        .menu-item.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .sidebar-user {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: auto;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 20px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: #ffa500;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .user-details p {
+            font-size: 0.9em;
+        }
+
+        .user-role {
+            font-size: 0.8em;
+            opacity: 0.7;
+        }
+
+        .btn-logout {
+            width: 100%;
+            padding: 10px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .btn-logout:hover {
+            background: #c0392b;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            flex: 1;
+            padding: 20px;
+        }
+
+        .top-bar {
+            background: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .top-bar h2 {
+            color: #0f3460;
+        }
+
+        .breadcrumb {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .breadcrumb a {
+            color: #0f3460;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .page-section {
+            display: none;
+            animation: fadeIn 0.3s;
+        }
+
+        .page-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .form-title {
+            color: #0f3460;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ffa500;
+            padding-bottom: 10px;
+        }
+
+        .welcome-image {
+            display: block;
+            width: 100%;
+            max-width: 760px;
+            height: 300px;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .form-container h4 {
+            color: #0f3460;
+            font-size: 1.1em;
+            margin-top: 20px;
+            margin-bottom: 15px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-grid.full {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #0f3460;
+        }
+
+        .form-hint {
+            font-size: 0.8em;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .check-list {
+            display: grid;
+            gap: 12px;
+            padding: 18px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+        }
+
+        .check-list label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 400;
+        }
+
+        .form-group .check-list label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 0;
+            line-height: 1.35;
+        }
+
+        .form-group .check-list input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            flex: 0 0 18px;
+            margin: 0;
+            accent-color: #0f3460;
+        }
+
+        .drop-zone {
+            border: 2px dashed #ccd5e0;
+            border-radius: 5px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            background: #fafbfd;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(15, 52, 96, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table thead {
+            background: #f5f7fa;
+            border-bottom: 2px solid #0f3460;
+        }
+
+        .data-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #0f3460;
+        }
+
+        .data-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .data-table tbody tr:hover {
+            background: #f9f9f9;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+            font-style: italic;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .badge-admin {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-conductor {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+
+        /* Identidad visual de Gestión Operativa */
+        :root {
+            --go-navy: #102a43;
+            --go-deep: #0b1f33;
+            --go-blue: #1f5f8b;
+            --go-orange: #e59b27;
+            --go-canvas: #f1f5f8;
+            --go-line: #d9e2ec;
+            --go-shadow: 0 10px 28px rgba(16, 42, 67, 0.08);
+        }
+
+        body {
+            font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+            background: var(--go-canvas);
+        }
+
+        .login-container {
+            background: radial-gradient(circle at 15% 10%, #315f86 0, transparent 34%), linear-gradient(135deg, var(--go-navy) 0%, var(--go-deep) 100%);
+        }
+
+        .login-box {
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 16px;
+            box-shadow: 0 22px 60px rgba(4, 18, 32, 0.28);
+        }
+
+        .login-box h1,
+        .top-bar h2,
+        .form-title {
+            color: var(--go-navy);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            border: 1px solid var(--go-line);
+            border-radius: 8px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--go-blue);
+            box-shadow: 0 0 0 3px rgba(31, 95, 139, 0.12);
+        }
+
+        .btn-login,
+        .btn-primary {
+            background: var(--go-navy);
+            border-radius: 8px;
+        }
+
+        .sidebar {
+            background: linear-gradient(180deg, var(--go-navy) 0%, var(--go-deep) 100%);
+        }
+
+        .sidebar-logo,
+        .top-bar,
+        .form-container,
+        .table-container {
+            border-radius: 12px;
+        }
+
+        .sidebar-logo,
+        .form-container,
+        .top-bar {
+            box-shadow: var(--go-shadow);
+        }
+
+        .menu-item.active {
+            background: var(--go-orange);
+        }
+
+        .form-title {
+            border-bottom-color: var(--go-orange);
+        }
+
+        .table-container {
+            border: 1px solid var(--go-line);
+            box-shadow: 0 8px 22px rgba(16, 42, 67, 0.06);
+        }
+
+        .data-table thead {
+            background: #f6f9fb;
+            border-bottom-color: var(--go-navy);
+        }
+
+        .data-table th {
+            color: var(--go-navy);
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .quick-action {
+            display: grid;
+            grid-template-columns: 34px 1fr;
+            grid-template-rows: auto auto;
+            column-gap: 10px;
+            text-align: left;
+            padding: 16px;
+            border: 1px solid var(--go-line);
+            border-radius: 10px;
+            background: #fff;
+            color: var(--go-navy);
+            cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .quick-action:hover,
+        .quick-action:focus-visible {
+            transform: translateY(-2px);
+            border-color: var(--go-blue);
+            box-shadow: 0 8px 18px rgba(16, 42, 67, 0.1);
+            outline: none;
+        }
+
+        .quick-action span {
+            grid-row: 1 / span 2;
+            font-size: 1.5em;
+        }
+
+        .quick-action small {
+            color: #63758a;
+            margin-top: 4px;
+        }
+
+        .mobile-header,
+        .sidebar-overlay {
+            display: none;
+        }
+
+        .welcome-image {
+            opacity: 0.86;
+            filter: saturate(0.82);
+        }
+
+        .page-section > .form-container {
+            margin-bottom: 14px;
+        }
+
+        .form-container > h3:first-child,
+        .form-container > h2:first-child {
+            margin-bottom: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-actions {
+            margin-top: 14px;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 11px 13px;
+        }
+
+        .vehicle-search-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--go-line);
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: inherit;
+        }
+
+        .vehicle-search-input:focus {
+            outline: none;
+            border-color: var(--go-blue);
+            box-shadow: 0 0 0 3px rgba(31, 95, 139, 0.12);
+        }
+
+        .mobile-header,
+        .sidebar-overlay {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .login-container {
+                min-height: 100dvh;
+                padding: 16px;
+                align-items: flex-start;
+                padding-top: 8vh;
+            }
+
+            .login-box {
+                width: 100%;
+                max-width: 100%;
+                padding: 24px 18px;
+                border-radius: 8px;
+            }
+
+            .login-box h1 {
+                font-size: 1.7em;
+            }
+
+            .sidebar {
+                width: min(80vw, 290px);
+                height: 100dvh;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 20;
+                padding: 16px;
+                transform: translateX(-105%);
+                transition: transform 0.25s ease;
+                box-shadow: 12px 0 30px rgba(4, 18, 32, 0.2);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .app-container.mobile-menu-mode .sidebar {
+                position: static;
+                width: 100%;
+                height: 100dvh;
+                transform: none;
+                box-shadow: none;
+            }
+
+            .app-container.mobile-menu-mode .main-content,
+            .app-container.mobile-menu-mode .mobile-header,
+            .app-container.mobile-menu-mode .sidebar-overlay {
+                display: none;
+            }
+
+            .sidebar-logo {
+                margin-bottom: 12px;
+            }
+
+            .sidebar-overlay {
+                position: fixed;
+                inset: 0;
+                z-index: 15;
+                background: rgba(4, 18, 32, 0.42);
+            }
+
+            .sidebar-overlay.open {
+                display: block;
+            }
+
+            .menu-title {
+                margin-top: 10px;
+            }
+
+            .menu-item {
+                min-height: 46px;
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+                padding: 0 10px 18px;
+            }
+
+            .mobile-header {
+                display: flex;
+                position: sticky;
+                top: 0;
+                z-index: 10;
+                min-height: 60px;
+                margin: 0 -10px 10px;
+                padding: 8px 12px;
+                align-items: center;
+                gap: 8px;
+                background: #fff;
+                border-bottom: 1px solid var(--go-line);
+                box-shadow: 0 3px 12px rgba(16, 42, 67, 0.06);
+            }
+
+            .mobile-menu-button,
+            .mobile-logout-button {
+                border: 0;
+                background: transparent;
+                color: var(--go-navy);
+                cursor: pointer;
+                line-height: 1;
+                padding: 6px;
+            }
+
+            .mobile-menu-button {
+                font-size: 1.5em;
+            }
+
+            .mobile-logout-button {
+                font-size: 1.1em;
+            }
+
+            .mobile-user {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .mobile-user strong,
+            .mobile-user small {
+                display: block;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .mobile-user strong {
+                color: var(--go-navy);
+                font-size: 0.96em;
+            }
+
+            .mobile-user small {
+                color: #63758a;
+                margin-top: 2px;
+            }
+
+            .top-bar {
+                padding: 14px;
+                margin-bottom: 12px;
+            }
+
+            .top-bar h2 {
+                font-size: 1.3em;
+            }
+
+            .form-container {
+                width: 100%;
+                padding: 18px 14px;
+                overflow: hidden;
+            }
+
+            .form-container > h3,
+            .form-container > h2 {
+                font-size: 1.25em;
+            }
+
+            .form-group {
+                margin-bottom: 10px;
+            }
+
+            .form-group label {
+                margin-bottom: 5px;
+                font-size: 0.95em;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 10px;
+            }
+
+            .form-hint {
+                margin-top: 3px;
+                font-size: 0.75em;
+            }
+
+            .form-title {
+                margin-bottom: 12px;
+                padding-bottom: 7px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .form-actions .btn,
+            .form-container .btn {
+                max-width: 100%;
+            }
+
+            .drop-zone {
+                padding: 22px 12px;
+            }
+
+            .check-list {
+                gap: 8px;
+                padding: 12px;
+            }
+
+            .form-group textarea {
+                min-height: 78px;
+            }
+
+            .welcome-image {
+                height: 112px;
+                margin-bottom: 14px;
+                border-radius: 8px;
+                opacity: 0.72;
+                filter: saturate(0.65);
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-action {
+                min-height: 60px;
+                padding: 12px 13px;
+                grid-template-columns: 30px 1fr;
+            }
+
+            .quick-action span { font-size: 1.25em; }
+            .quick-action small { font-size: 0.82em; }
+
+            .data-table {
+                min-width: 650px;
+            }
+
+            .app-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- LOGIN PAGE -->
+    <div class="login-container" id="loginPage">
+        <div class="login-box">
+            <div id="loginView" class="auth-view active">
+                <h1>Gestión Operativa</h1>
+                <p>Inicie sesión para acceder a la aplicación</p>
+                <div class="login-error" id="loginError"></div>
+                <form id="loginForm" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="username">DNI / NIE *</label>
+                        <input type="text" id="username" required placeholder="12345678A" autocomplete="username">
+                    </div>
+                    <div class="form-group password-field">
+                        <label for="password">Contraseña *</label>
+                        <input type="password" id="password" required autocomplete="current-password">
+                        <button type="button" class="password-toggle" onclick="alternarPassword('password', this)" aria-controls="password" aria-label="Mostrar contraseña">Mostrar</button>
+                    </div>
+                    <button type="submit" class="btn-login">Iniciar sesión</button>
+                </form>
+                <span class="auth-link" onclick="mostrarRegistro()">¿No tiene una cuenta? Regístrese</span>
+            </div>
+
+            <div id="registerView" class="auth-view">
+                <h1>Gestión Operativa</h1>
+                <p>Cree su cuenta de trabajador</p>
+                <div class="auth-message" id="registerMessage"></div>
+                <form id="registerForm" onsubmit="registrarTrabajador(event)">
+                    <div class="form-group">
+                        <label for="registroNombre">Nombre completo *</label>
+                        <input type="text" id="registroNombre" required autocomplete="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="registroPuesto">Puesto *</label>
+                        <select id="registroPuesto" required onchange="gestionarOtroPuesto(); this.form.classList.toggle('puesto-otro-activo', this.value === 'Otros');">
+                            <option value="">Selecciona un puesto</option>
+                            <option value="Conductor">Conductor</option>
+                            <option value="Maquinista">Maquinista</option>
+                            <option value="Peón">Peón</option>
+                            <option value="Oficial">Oficial</option>
+                            <option value="Administrativo">Administrativo</option>
+                            <option value="Dirección">Dirección</option>
+                            <option value="Otros">Otros</option>
+                        </select>
+                        <input type="text" id="registroOtroPuesto" placeholder="Escribe el puesto" style="display:none; margin-top:8px;" autocomplete="organization-title">
+                    </div>
+                    <div class="form-group">
+                        <label for="registroDni">DNI / NIE *</label>
+                        <input type="text" id="registroDni" required placeholder="12345678A">
+                    </div>
+                    <div class="form-group password-field">
+                        <label for="registroPassword">Contraseña *</label>
+                        <input type="password" id="registroPassword" required minlength="6" autocomplete="new-password">
+                        <button type="button" class="password-toggle" onclick="alternarPassword('registroPassword', this)" aria-controls="registroPassword" aria-label="Mostrar contraseña">Mostrar</button>
+                    </div>
+                    <button type="submit" class="btn-login">Registrarse</button>
+                </form>
+                <span class="auth-link" onclick="mostrarLogin()">¿Ya tiene cuenta? Inicie sesión</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div class="app-container" id="appPage">
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-logo">
+                <h3>GESTIÓN OPERATIVA</h3>
+                <p>Control operativo y procesos</p>
+            </div>
+
+            <div class="menu-title">MENÚ PRINCIPAL</div>
+            
+            <div class="menu-item active" onclick="goToPage('inicio', event)">
+                <span>🏠</span> Inicio
+            </div>
+
+            <div class="menu-item" onclick="goToPage('repostajes', event)">
+                <span>⛽</span> Repostajes
+            </div>
+
+            <div class="menu-item" onclick="goToPage('mantenimientos', event)">
+                <span>🔧</span> Mantenimiento diario
+            </div>
+
+            <div class="menu-item" onclick="goToPage('partes', event)">
+                <span>📋</span> Partes de trabajo
+            </div>
+
+            <div class="menu-item" onclick="goToPage('danos-esteticos', event)">
+                <span>🛠️</span> Daños estéticos
+            </div>
+
+            <div class="menu-item" onclick="goToPage('incidencias', event)">
+                <span>⚠️</span> Incidencias
+            </div>
+
+            <div class="menu-item admin-only" onclick="goToPage('informe', event)">
+                <span>📈</span> Informe
+            </div>
+
+            <div class="menu-item admin-only" onclick="goToPage('vehiculos', event)">
+                <span>🚙</span> Vehículos y máquinas
+            </div>
+
+            <div class="menu-item admin-only" onclick="goToPage('usuarios', event)">
+                <span>👥</span> Usuarios
+            </div>
+
+            <div class="menu-item admin-only" onclick="goToPage('configuracion', event)">
+                <span>⚙️</span> Configuración
+            </div>
+
+            <div class="sidebar-user">
+                <div class="user-info">
+                    <div class="user-avatar" id="userAvatar">A</div>
+                    <div class="user-details">
+                        <p id="userName"><strong>Admin</strong></p>
+                        <p class="user-role" id="userRole">Administrativo</p>
+                    </div>
+                </div>
+                <button class="btn-logout" onclick="logout()">CERRAR SESIÓN</button>
+                <button class="btn btn-secondary" style="width:100%; margin-top:8px; padding:8px 10px;" onclick="cambiarMiPassword()">Cambiar mi contraseña</button>
+            </div>
+        </aside>
+
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="cerrarMenuMovil()"></div>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <header class="mobile-header">
+                <button type="button" class="mobile-menu-button" onclick="alternarMenuMovil()" aria-label="Abrir menú">☰</button>
+                <div class="mobile-user">
+                    <strong id="mobileUserName">Gestión Operativa</strong>
+                    <small id="mobileUserRole">Seleccione una opción para comenzar</small>
+                </div>
+                <button type="button" class="mobile-logout-button" onclick="logout()" aria-label="Cerrar sesión">↪</button>
+            </header>
+            <!-- TOP BAR -->
+            <div class="top-bar">
+                <div>
+                    <h2 id="pageTitle">Inicio</h2>
+                    <div class="breadcrumb" id="breadcrumb">Inicio</div>
+                </div>
+                <div id="notificationIcon" style="font-size: 1.5em; cursor: pointer; position:relative;" onclick="abrirPendientes()">🔔<span id="notificationCount" style="display:none; position:absolute; top:-8px; right:-10px; background:#e74c3c; color:white; border-radius:50%; min-width:20px; height:20px; padding:2px 5px; font-size:0.55em; text-align:center;">0</span></div>
+            </div>
+
+            <!-- MESSAGE ALERT -->
+            <div class="message" id="message"></div>
+
+            <!-- PÁGINA INICIO -->
+            <div class="page-section active" id="page-inicio">
+                <div class="form-container">
+                    <h2>Bienvenido</h2>
+                    <img class="welcome-image" src="imagenes/equipos-flota.jpg" alt="Equipos y maquinaria de obra gestionados en una flota" loading="eager">
+                    <p style="color: #63758a; margin-bottom: 20px;">Selecciona una tarea para comenzar.</p>
+                    <div class="quick-actions">
+                        <button type="button" class="quick-action" onclick="goToPage('repostajes', event)"><span>⛽</span><strong>Registrar repostaje</strong><small>Combustible, litros y ticket</small></button>
+                        <button type="button" class="quick-action" onclick="goToPage('mantenimientos', event)"><span>🔧</span><strong>Registrar mantenimiento</strong><small>Tareas y horómetro</small></button>
+                        <button type="button" class="quick-action" onclick="goToPage('partes', event)"><span>📋</span><strong>Crear parte de trabajo</strong><small>Cliente, obra y conceptos</small></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PÁGINA REPOSTAJES -->
+            <div class="page-section" id="page-repostajes">
+                <div class="form-container">
+                    <h3 class="form-title">🔖 Nuevo repostaje</h3>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Fecha <span class="required">*</span> (automática)</label>
+                            <input type="text" id="fechaField" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Hora <span class="required">*</span> (automática)</label>
+                            <input type="text" id="horaField" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Día <span class="required">*</span> (automático)</label>
+                            <input type="text" id="diaField" readonly>
+                        </div>
+                    </div>
+
+                    <form id="repostajForm" onsubmit="guardarRepostaje(event)">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Matrícula / Máquina <span class="required">*</span></label>
+                                <select id="matricula" required>
+                                    <option value="">Selecciona matrícula / máquina</option>
+                                    <option value="1234-ABC">1234-ABC - Excavadora CAT 320</option>
+                                    <option value="5678-DEF">5678-DEF - Volquete Mercedes</option>
+                                    <option value="9012-GHI">9012-GHI - Cargadora Komatsu</option>
+                                    <option value="3456-JKL">3456-JKL - Camión Scania</option>
+                                    <option value="7890-MNO">7890-MNO - Motoniveladora Caterpillar</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Código de obra</label>
+                                <input type="text" id="codigoObra" placeholder="Ej: OB-2026-001">
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Odómetro / KM <span class="required">*</span></label>
+                                <input type="number" id="odometro" required min="0" placeholder="Ej: 152430">
+                                <div class="form-hint">Solo números. No se permiten decimales.</div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Litros repostados <span class="required">*</span></label>
+                                <input type="number" id="litros" required step="0.01" min="0" placeholder="Ej: 285.50">
+                                <div class="form-hint">Use punto para decimales (ej: 285.50)</div>
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Comercializadora <span class="required">*</span></label>
+                                <select id="comercializadora" required>
+                                    <option value="">Seleccione una opción</option>
+                                    <option value="Repsol">Repsol</option>
+                                    <option value="Cepsa">Cepsa</option>
+                                    <option value="Bp">BP</option>
+                                    <option value="Shell">Shell</option>
+                                    <option value="Otra">Otra</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Importe (€) <span class="required">*</span></label>
+                                <input type="number" id="importe" required step="0.01" min="0" placeholder="Ej: 420.35">
+                                <div class="form-hint">Use punto para decimales (ej: 280.35)</div>
+                            </div>
+                        </div>
+
+                        <div class="form-grid full">
+                            <div class="form-group">
+                                <label>Foto del ticket <span class="required">*</span></label>
+                                <div style="border: 2px dashed #ccc; border-radius: 5px; padding: 40px; text-align: center; cursor: pointer; background: #f9f9f9; transition: background 0.3s;" id="dropZone" onclick="document.getElementById('fotoTicket').click()">
+                                    <div style="font-size: 2em; margin-bottom: 10px;">⬆️</div>
+                                    <p style="margin: 0; color: #666;">Pulsa para añadir la foto</p>
+                                    <p style="margin: 10px 0 0 0; font-size: 0.9em; color: #999;">Formatos permitidos: JPG, PNG</p>
+                                </div>
+                                <input type="file" id="fotoTicket" required accept="image/*" style="display: none;">
+                                <div id="fotoPreview" style="margin-top: 10px;"></div>
+                            </div>
+                        </div>
+
+                        <div class="form-grid full">
+                            <div class="form-group">
+                                <label>Observaciones (opcional)</label>
+                                <textarea id="observaciones" placeholder="Añade cualquier observación relevante (opcional)..." style="min-height: 100px; max-height: 150px;"></textarea>
+                                <div class="form-hint">Máx. 250 caracteres</div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">💾 Guardar repostaje</button>
+                            <button type="reset" class="btn btn-secondary">❌ Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- HISTÓRICO -->
+                <div style="margin-top: 30px;">
+                    <h3 class="form-title">📊 Histórico de repostajes</h3>
+                    
+                    <div style="margin-bottom: 20px; display: flex; gap: 10px;">
+                        <button class="btn btn-primary" onclick="descargarImagenes()" style="flex: 1;">📁 Descargar Imágenes (ZIP)</button>
+                        <button class="btn btn-secondary" onclick="limpiarRepostajes()" style="flex: 1;">🗑️ Limpiar todo</button>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table" id="tablaRepostajes">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Hora</th>
+                                    <th>Día</th>
+                                    <th>Matrícula</th>
+                                    <th>KM</th>
+                                    <th>Litros</th>
+                                    <th>Comercializadora</th>
+                                    <th>Importe</th>
+                                    <th>Foto</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyRepostajes">
+                                <tr><td colspan="10" class="empty-message">Consulta los repostajes registrados anteriormente.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PÁGINA MANTENIMIENTOS -->
+            <div class="page-section" id="page-mantenimientos">
+                <div class="form-container">
+                        <h3>Registro de Mantenimientos</h3>
+                        <p>Controle los mantenimientos diarios de vehículos y maquinaria.</p>
+                        <form id="mantenimientoForm" onsubmit="guardarMantenimiento(event)">
+                            <h3 class="form-title">Nuevo mantenimiento</h3>
+                            <div class="form-group">
+                                <label>Matrícula / Máquina <span class="required">*</span></label>
+                                <select id="mantenimientoMatricula" required></select>
+                            </div>
+                            <div class="form-group">
+                                <label>Km / Horómetro</label>
+                                <input type="number" id="mantenimientoKm" min="0" placeholder="">
+                            </div>
+                            <div class="form-group">
+                                <label>Listado de tareas</label>
+                                <div id="listaTareasMantenimiento" class="check-list"></div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Guardar mantenimiento</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="form-container" style="margin-top: 30px;">
+                        <h3 class="form-title">Historial de mantenimientos</h3>
+                        <div class="table-container"><table class="data-table"><thead><tr><th>Fecha</th><th>Matrícula</th><th>Km</th><th>Tareas</th></tr></thead><tbody id="tbodyMantenimientos"><tr><td colspan="4" class="empty-message">No hay mantenimientos registrados.</td></tr></tbody></table></div>
+                </div>
+            </div>
+
+            <!-- PÁGINA PARTES (Todos) -->
+            <div class="page-section" id="page-partes">
+                <div class="form-container">
+                        <h3>Generar Parte de Trabajo</h3>
+                        <p>Gestione y registre los partes de trabajo de su equipo.</p>
+                        <form id="parteForm" onsubmit="guardarParte(event)">
+                            <h3 class="form-title">Nuevo parte de trabajo</h3>
+                            <div class="form-group"><label>Cliente <span class="required">*</span></label><input type="text" id="parteCliente" required></div>
+                            <div class="form-group"><label>Obra</label><input type="text" id="parteObra"></div>
+                            <div class="form-group"><label>Código</label><input type="text" id="parteCodigo"></div>
+                            <div class="form-group"><label>Matrícula / Máquina <span class="required">*</span></label><select id="parteMatricula" required></select></div>
+                            <div class="form-group"><label>Fecha <span class="required">*</span></label><input type="date" id="parteFecha" required></div>
+                            <div class="form-group"><label>Conceptos / Trabajos realizados</label><div id="listaConceptosParte"></div><button type="button" class="btn btn-secondary" onclick="agregarConceptoParte()">+ Añadir otro concepto</button></div>
+                            <div class="form-actions"><button type="submit" class="btn btn-primary">Guardar parte de trabajo</button></div>
+                        </form>
+                    </div>
+                    <div class="form-container" style="margin-top: 30px;"><h3 class="form-title">Historial de partes de trabajo</h3><div class="table-container"><table class="data-table"><thead><tr><th>Fecha</th><th>Cliente</th><th>Obra</th><th>Matrícula</th><th>Conceptos</th></tr></thead><tbody id="tbodyPartes"><tr><td colspan="5" class="empty-message">No hay partes registrados.</td></tr></tbody></table></div></div>
+            </div>
+
+            <!-- PÁGINA INCIDENCIAS -->
+            <div class="page-section" id="page-incidencias">
+                <div class="form-container">
+                    <h3>Registro de incidencias</h3>
+                    <p>Esta sección queda reservada para incidencias operativas generales.</p>
+                </div>
+            </div>
+
+            <!-- PÁGINA DAÑOS ESTÉTICOS -->
+            <div class="page-section" id="page-danos-esteticos">
+                <div class="form-container">
+                    <h3>Registro de daños estéticos</h3>
+                    <form id="danoForm" onsubmit="guardarDano(event)">
+                        <h3 class="form-title">Nuevo daño estético</h3>
+                        <div class="form-group"><label>Matrícula / Máquina <span class="required">*</span></label><select id="danoMatricula" required></select></div>
+                        <div class="form-group"><label>Zonas afectadas</label><div class="check-list"><label><input type="checkbox" name="zonaDano" value="Parte Delantera"> Parte Delantera</label><label><input type="checkbox" name="zonaDano" value="Parte Trasera"> Parte Trasera</label><label><input type="checkbox" name="zonaDano" value="Lateral Copiloto"> Lateral Copiloto</label><label><input type="checkbox" name="zonaDano" value="Lateral Piloto"> Lateral Piloto</label><label><input type="checkbox" name="zonaDano" value="Techo / Otros"> Techo / Otros</label></div></div>
+                        <div class="form-group"><label>Descripción del daño</label><textarea id="danoDescripcion" placeholder="Describe brevemente el desperfecto..."></textarea></div>
+                        <div class="form-group"><label>Foto del daño <span class="required">*</span></label><div id="danoDropZone" class="drop-zone" onclick="document.getElementById('danoFoto').click()"><div style="font-size: 2em;">⬆️</div><p>Pulsa para añadir la foto</p><p class="form-hint">Formatos permitidos: JPG, PNG</p></div><input type="file" id="danoFoto" accept="image/jpeg,image/png" required style="display:none"><div id="danoFotoPreview"></div></div>
+                        <div class="form-actions"><button type="submit" class="btn btn-primary">Guardar daño estético</button></div>
+                    </form>
+                </div>
+                <div class="form-container" style="margin-top: 30px;"><h3 class="form-title">Historial de daños estéticos</h3><div class="table-container"><table class="data-table"><thead><tr><th>Fecha</th><th>Matrícula</th><th>Zonas</th><th>Descripción</th><th>Foto</th></tr></thead><tbody id="tbodyDanos"><tr><td colspan="5" class="empty-message">No hay daños registrados.</td></tr></tbody></table></div></div>
+            </div>
+
+            <!-- PÁGINA INFORME (Solo Admin) -->
+            <div class="page-section" id="page-informe">
+                <div class="form-container">
+                    <h3>📈 Informe operativo</h3>
+                    <p>Analiza combustible, daños estéticos y diferencias de odómetro.</p>
+                    <div class="form-grid">
+                        <div class="form-group"><label>Mes de análisis</label><select id="informeMes" onchange="renderInforme()"></select></div>
+                        <div class="form-group"><label>Código de obra</label><select id="informeCodigoObra" onchange="renderInforme()"><option value="">Todos</option></select></div>
+                        <div class="form-group"><label>Matrícula / Máquina</label><select id="informeMatricula" onchange="renderInforme()"><option value="">Todas</option></select></div>
+                        <div class="form-group"><label>Usuario</label><select id="informeUsuario" onchange="renderInforme()"><option value="">Todos</option></select></div>
+                    </div>
+                    <div id="informeMetricas" class="form-grid"></div>
+                </div>
+                <div class="form-container">
+                    <h3 class="form-title">Combustible por código de obra</h3>
+                    <div class="table-container"><table class="data-table"><thead><tr><th>Código de obra</th><th>Litros mes actual</th><th>Litros mes anterior</th><th>Diferencia</th></tr></thead><tbody id="tbodyCombustibleObra"></tbody></table></div>
+                </div>
+                <div class="form-container">
+                    <h3 class="form-title">Daños estéticos de los últimos 7 días</h3>
+                    <div class="table-container"><table class="data-table"><thead><tr><th>Matrícula</th><th>Número de daños</th></tr></thead><tbody id="tbodyDanosInforme"></tbody></table></div>
+                </div>
+                <div class="form-container">
+                    <h3 class="form-title">Diferencia de odómetros entre repostajes</h3>
+                    <div class="table-container"><table class="data-table"><thead><tr><th>Usuario</th><th>Matrícula</th><th>Repostaje anterior</th><th>Repostaje actual</th><th>Diferencia</th></tr></thead><tbody id="tbodyOdometrosInforme"></tbody></table></div>
+                </div>
+                <div class="form-container">
+                    <h3 class="form-title">Resumen estadístico de actividad</h3>
+                    <div id="estadisticasMetricas" class="form-grid"></div>
+                </div>
+                <div class="form-container">
+                    <h3 class="form-title">Evolución mensual de combustible</h3>
+                    <div id="graficoCombustible" style="display:grid; gap:12px;"></div>
+                </div>
+                <div class="form-container">
+                    <h3 class="form-title">Actividad por matrícula</h3>
+                    <div class="table-container"><table class="data-table"><thead><tr><th>Matrícula</th><th>Repostajes</th><th>Litros</th><th>Mantenimientos</th><th>Daños</th></tr></thead><tbody id="tbodyEstadisticasVehiculos"></tbody></table></div>
+                </div>
+            </div>
+
+            <!-- PÁGINA VEHÍCULOS -->
+            <div class="page-section" id="page-vehiculos">
+                <div class="form-container">
+                    <h3>🚙 Vehículos y máquinas</h3>
+                    <p>Alta y baja del catálogo de vehículos y máquinas de la flota.</p>
+                    <form id="vehiculoForm" onsubmit="agregarVehiculo(event)">
+                        <h3 class="form-title">Añadir vehículo / máquina</h3>
+                        <div class="form-group"><label>Matrícula <span class="required">*</span></label><input type="text" id="vehiculoMatricula" required placeholder="Ej: 1234-ABC"></div>
+                        <div class="form-group"><label>Alias</label><input type="text" id="vehiculoAlias" placeholder="Ej: Camión 1"></div>
+                        <div class="form-group"><label>Tipo</label><input type="text" id="vehiculoTipo" placeholder="camión, excavadora..."></div>
+                        <div class="form-actions"><button type="submit" class="btn btn-primary">Añadir</button></div>
+                    </form>
+                </div>
+                <div class="form-container">
+                    <h3 class="form-title">Listado</h3>
+                    <div class="table-container"><table class="data-table"><thead><tr><th>Matrícula</th><th>Alias</th><th>Tipo</th><th>Estado</th><th>Acciones</th></tr></thead><tbody id="tbodyVehiculos"></tbody></table></div>
+                </div>
+            </div>
+
+            <!-- PÁGINA USUARIOS (Solo Admin) -->
+            <div class="page-section" id="page-usuarios">
+                <div class="form-container">
+                    <h3>👥 Gestión de Usuarios</h3>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <button class="btn btn-primary" onclick="agregarUsuario()">➕ Agregar nuevo usuario</button>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>DNI / NIE</th>
+                                    <th>Nombre completo</th>
+                                    <th>Puesto</th>
+                                    <th>Rol</th>
+                                    <th>Contraseña</th>
+                                    <th>Estatus</th>
+                                    <th>Fecha de alta</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaUsuarios"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PÁGINA CONFIGURACIÓN (Solo Admin) -->
+            <div class="page-section" id="page-configuracion">
+                <div class="form-container">
+                    <h3>⚙️ Configuración General</h3>
+                    
+                    <form id="configForm" onsubmit="guardarConfiguracion(event)">
+                        <h4 style="margin-top: 20px; margin-bottom: 15px; color: #0f3460;">Información de la empresa</h4>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Nombre de empresa <span class="required">*</span></label>
+                                <input type="text" id="nombreEmpresa" required placeholder="Ej: TRANSPORTE ABC S.L." value="Gestión Operativa">
+                            </div>
+                            <div class="form-group">
+                                <label>CIF/NIF <span class="required">*</span></label>
+                                <input type="text" id="cifNif" required placeholder="Ej: A12345678" value="">
+                            </div>
+                        </div>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Teléfono</label>
+                                <input type="tel" id="telefono" placeholder="Ej: 912345678" value="">
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="email" placeholder="Ej: info@empresa.com" value="">
+                            </div>
+                        </div>
+
+                        <h4 style="margin-top: 20px; margin-bottom: 15px; color: #0f3460;">Configuración de combustible</h4>
+                        
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Precio medio por litro (€)</label>
+                                <input type="number" id="precioCombustible" step="0.01" min="0" placeholder="Ej: 1.50" value="1.50">
+                            </div>
+                            <div class="form-group">
+                                <label>Consumo promedio (L/100km)</label>
+                                <input type="number" id="consumoPromedio" step="0.01" min="0" placeholder="Ej: 25.5" value="25.5">
+                            </div>
+                        </div>
+
+                        <h4 style="margin-top: 20px; margin-bottom: 15px; color: #0f3460;">Comercializadoras activas</h4>
+                        
+                        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                            <input type="text" id="nuevaComercializadora" placeholder="Nombre de la comercializadora" style="flex: 1; padding: 10px; border: 2px solid #e0e0e0; border-radius: 5px;">
+                            <button type="button" class="btn btn-primary" onclick="agregarComercializadora()" style="padding: 10px 20px;">➕ Agregar</button>
+                        </div>
+                        
+                        <div id="listaComercializadoras" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px;">
+                            <!-- Se llena dinámicamente -->
+                        </div>
+
+                        <h4 style="margin-top: 20px; margin-bottom: 15px; color: #0f3460;">Notificaciones</h4>
+                        
+                        <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <input type="checkbox" id="notifRepostaje" checked>
+                            <span>Notificar nuevo repostaje</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                            <input type="checkbox" id="notifMantenimiento" checked>
+                            <span>Notificar vencimiento de mantenimiento</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" id="notifIncidencia" checked>
+                            <span>Notificar nuevas incidencias</span>
+                        </label>
+
+                        <div class="form-actions" style="margin-top: 30px;">
+                            <button type="submit" class="btn btn-primary">💾 Guardar configuración</button>
+                            <button type="reset" class="btn btn-secondary">↻ Restablecer</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        // Base de datos de usuarios
+        const users = {
+            'admin': { password: 'admin123', role: 'Administrativo', avatar: 'A' },
+            'conductor': { password: 'cond123', role: 'Conductor', avatar: 'C' }
+        };
+
+        let currentUser = null;
+        let db = null;
+        let informeDatos = { repostajes: [], mantenimientos: [], partes: [], danos: [] };
+
+        // Inicializar IndexedDB
+        function initDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open('FleetManagementDB', 3);
+
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => {
+                    db = request.result;
+                    resolve(db);
+                };
+
+                request.onupgradeneeded = (event) => {
+                    const database = event.target.result;
+                    if (!database.objectStoreNames.contains('repostajes')) {
+                        const store = database.createObjectStore('repostajes', { keyPath: 'id', autoIncrement: true });
+                        store.createIndex('fecha', 'fecha', { unique: false });
+                    }
+                    ['mantenimientos', 'partes', 'danos', 'vehiculos'].forEach(nombre => {
+                        if (!database.objectStoreNames.contains(nombre)) {
+                            const store = database.createObjectStore(nombre, { keyPath: 'id', autoIncrement: true });
+                            store.createIndex('fecha', 'fecha', { unique: false });
+                        }
+                    });
+                };
+            });
+        }
+
+        // Manejar login
+        function mostrarRegistro() {
+            document.getElementById('loginView').classList.remove('active');
+            document.getElementById('registerView').classList.add('active');
+            document.getElementById('loginError').style.display = 'none';
+        }
+
+        function mostrarLogin() {
+            document.getElementById('registerView').classList.remove('active');
+            document.getElementById('loginView').classList.add('active');
+            document.getElementById('registerMessage').className = 'auth-message';
+        }
+
+        function alternarPassword(inputId, button) {
+            const input = document.getElementById(inputId);
+            const visible = input.type === 'text';
+            input.type = visible ? 'password' : 'text';
+            button.textContent = visible ? 'Mostrar' : 'Ocultar';
+            button.setAttribute('aria-label', visible ? 'Mostrar contraseña' : 'Ocultar contraseña');
+        }
+
+        function buscarUsuario(identificador) {
+            const clave = identificador.trim().toLowerCase();
+            const claveEncontrada = Object.keys(users).find(usuario => usuario.toLowerCase() === clave);
+            return claveEncontrada ? { clave: claveEncontrada, datos: users[claveEncontrada] } : null;
+        }
+
+        function gestionarOtroPuesto() {
+            const selector = document.getElementById('registroPuesto');
+            const otro = document.getElementById('registroOtroPuesto');
+            const esOtro = selector.value === 'Otros';
+            otro.style.display = esOtro ? 'block' : 'none';
+            otro.hidden = !esOtro;
+            otro.required = esOtro;
+            if (esOtro) otro.focus();
+            if (!esOtro) otro.value = '';
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ identifier: username, password })
+                });
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.error || 'No se pudo iniciar sesión');
+                currentUser = { username: result.identifier, nombre: result.name, role: result.role, avatar: result.name.charAt(0).toUpperCase() };
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('appPage').classList.add('active');
+                mostrarMenuMovilInicial();
+                updateUIForUser();
+                await sincronizarRegistrosDesdeServidor();
+                loadRepostajes();
+                sincronizarExcelAutomaticamente();
+                updateDateTime();
+                setInterval(updateDateTime, 1000);
+                setMenuPermissions();
+                renderUsuarios();
+                return;
+            } catch (apiError) {
+                if (apiError.message === 'Cuenta pendiente de autorización') {
+                    document.getElementById('loginError').textContent = apiError.message;
+                    document.getElementById('loginError').style.display = 'block';
+                    return;
+                }
+            }
+
+            const encontrado = buscarUsuario(username);
+            const user = encontrado?.datos;
+            if (user && user.password === password && user.activo !== false) {
+                currentUser = { username: encontrado.clave, nombre: user.nombre || encontrado.clave, role: user.role, avatar: user.avatar };
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('appPage').classList.add('active');
+                mostrarMenuMovilInicial();
+                updateUIForUser();
+                await sincronizarRegistrosDesdeServidor();
+                loadRepostajes();
+                sincronizarExcelAutomaticamente();
+                updateDateTime();
+                setInterval(updateDateTime, 1000);
+                setMenuPermissions();
+                renderUsuarios();
+            } else {
+                const errorDiv = document.getElementById('loginError');
+                errorDiv.textContent = user && user.activo === false ? 'Su cuenta está pendiente de autorización' : 'DNI/NIE o contraseña incorrectos';
+                errorDiv.style.display = 'block';
+            }
+        }
+
+        async function registrarTrabajador(event) {
+            event.preventDefault();
+            const dni = document.getElementById('registroDni').value.trim().toUpperCase();
+            const nombre = document.getElementById('registroNombre').value.trim();
+            const puestoSeleccionado = document.getElementById('registroPuesto').value;
+            const puestoPersonalizado = document.getElementById('registroOtroPuesto').value.trim();
+            const puesto = puestoSeleccionado === 'Otros' ? puestoPersonalizado : puestoSeleccionado;
+            const password = document.getElementById('registroPassword').value;
+            const mensaje = document.getElementById('registerMessage');
+
+            if (!/^(?:[0-9]{8}[A-Z]|[XYZ][0-9]{7}[A-Z])$/.test(dni)) {
+                mensaje.textContent = 'Introduce un DNI o NIE válido.';
+                mensaje.className = 'auth-message show error';
+                return;
+            }
+            if (buscarUsuario(dni)) {
+                mensaje.textContent = 'Ya existe una cuenta con ese DNI/NIE.';
+                mensaje.className = 'auth-message show error';
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ identifier: dni, name: nombre, position: puesto, password })
+                });
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.error || 'No se pudo registrar la cuenta');
+                document.getElementById('registerForm').reset();
+                mensaje.textContent = 'Solicitud enviada. Un administrador debe autorizar la cuenta antes de iniciar sesión.';
+                mensaje.className = 'auth-message show success';
+            } catch (apiError) {
+                users[dni] = { password, nombre, puesto, role: 'Conductor', avatar: nombre.charAt(0).toUpperCase(), activo: false };
+                localStorage.setItem('users', JSON.stringify(users));
+                document.getElementById('registerForm').reset();
+                mensaje.textContent = 'Solicitud guardada como pendiente. Un administrador debe autorizar la cuenta.';
+                mensaje.className = 'auth-message show success';
+            }
+        }
+
+        // Logout
+        function logout() {
+            if (confirm('¿Deseas cerrar sesión?')) {
+                currentUser = null;
+                localStorage.removeItem('currentUser');
+                const notificationCount = document.getElementById('notificationCount');
+                if (notificationCount) {
+                    notificationCount.textContent = '0';
+                    notificationCount.style.display = 'none';
+                }
+                document.getElementById('appPage').classList.remove('active');
+                document.getElementById('loginPage').style.display = 'flex';
+                document.getElementById('loginForm').reset();
+                mostrarLogin();
+            }
+        }
+
+        // Actualizar UI según usuario
+        function updateUIForUser() {
+            document.getElementById('userName').innerHTML = `<strong>${currentUser.username}</strong>`;
+            document.getElementById('userRole').textContent = currentUser.role;
+            document.getElementById('userAvatar').textContent = currentUser.avatar;
+            document.getElementById('mobileUserName').textContent = currentUser.nombre || currentUser.username;
+            document.getElementById('mobileUserRole').textContent = `Puesto: ${currentUser.role}`;
+        }
+
+        function alternarMenuMovil() {
+            document.getElementById('appPage').classList.remove('mobile-menu-mode');
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('sidebarOverlay').classList.toggle('open');
+        }
+
+        function mostrarMenuMovilInicial() {
+            if (window.matchMedia('(max-width: 768px)').matches) {
+                document.getElementById('appPage').classList.add('mobile-menu-mode');
+            }
+        }
+
+        function cerrarMenuMovil() {
+            document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('open');
+        }
+
+        async function renderUsuarios() {
+            const tbody = document.getElementById('tablaUsuarios');
+            if (!tbody) return;
+            let lista = Object.entries(users).map(([identifier, user]) => ({ identifier, name: user.nombre || identifier, position: user.puesto || user.role, role: user.role, active: user.activo !== false }));
+            try {
+                const response = await fetch('/api/users');
+                if (response.ok) {
+                    const central = await response.json();
+                    const identifiers = new Set(central.map(user => user.identifier.toLowerCase()));
+                    const pendientesLocales = Object.entries(users)
+                        .filter(([identifier, user]) => !identifiers.has(identifier.toLowerCase()) && user.activo === false)
+                        .map(([identifier, user]) => ({
+                            identifier,
+                            name: user.nombre || identifier,
+                            position: user.puesto || user.role || 'Conductor',
+                            role: user.role || 'Conductor',
+                            active: false,
+                            localOnly: true
+                        }));
+                    lista = central.concat(pendientesLocales);
+                }
+            } catch (error) {
+                console.warn('No se pudo cargar la lista central de usuarios:', error);
+            }
+            tbody.innerHTML = lista.map(user => {
+                const estado = user.active ? 'Activo' : 'Pendiente';
+                const estadoColor = user.active ? 'green' : '#b26a00';
+                const accion = user.identifier === 'admin' ? '<button class="btn" disabled>Cuenta principal</button>' : user.active
+                    ? `<button class="btn" style="background:#e74c3c; color:white; padding:5px 10px;" onclick="desactivarUsuario('${user.identifier}')">Desactivar</button>`
+                    : `<button class="btn" style="background:#0f3460; color:white; padding:5px 10px;" onclick="autorizarUsuario('${user.identifier}')">Autorizar</button>`;
+                const rol = `<select ${user.identifier === 'admin' ? 'disabled' : ''} onchange="cambiarRolUsuario('${user.identifier}', this.value)" style="min-width:150px; padding:8px; border:2px solid #e0e0e0; border-radius:5px;"><option value="Conductor" ${user.role === 'Conductor' ? 'selected' : ''}>Conductor</option><option value="Administrativo" ${user.role === 'Administrativo' ? 'selected' : ''}>Administrativo</option></select>`;
+                const fechaAlta = user.created_at ? new Date(user.created_at.replace(' ', 'T') + 'Z').toLocaleDateString('es-ES') : '-';
+                return `<tr><td>${user.identifier}</td><td>${user.name}</td><td>${user.position || '-'}</td><td>${rol}</td><td><span style="color:#63758a; font-weight:bold;">No visible</span></td><td><span style="color:${estadoColor}; font-weight:bold;">${estado}</span></td><td>${fechaAlta}</td><td>${accion} <button class="btn" style="background:#6c757d; color:white; padding:5px 10px;" onclick="eliminarUsuario('${user.identifier}')">Eliminar</button></td></tr>`;
+            }).join('');
+            actualizarNotificaciones(lista);
+        }
+
+        async function actualizarNotificaciones(listaUsuarios) {
+            const contador = document.getElementById('notificationCount');
+            if (currentUser?.role !== 'Administrativo') {
+                if (contador) {
+                    contador.textContent = '0';
+                    contador.style.display = 'none';
+                }
+                return;
+            }
+            let lista = listaUsuarios;
+            if (!lista) {
+                try {
+                    const response = await fetch('/api/users');
+                    if (response.ok) lista = await response.json();
+                } catch (error) {
+                    return;
+                }
+            }
+            const pendientes = lista.filter(usuario => !usuario.active).length;
+            if (contador) {
+                contador.textContent = pendientes;
+                contador.style.display = pendientes ? 'block' : 'none';
+            }
+        }
+
+        function abrirPendientes() {
+            if (currentUser?.role !== 'Administrativo') return;
+            goToPage('usuarios');
+        }
+
+        async function cambiarRolUsuario(identificador, rol) {
+            if (currentUser?.role !== 'Administrativo' || identificador === 'admin') return;
+            try {
+                const response = await fetch('/api/users/role', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ identifier: identificador, role: rol })
+                });
+                if (!response.ok) throw new Error('No se pudo actualizar el rol');
+                if (users[identificador]) users[identificador].role = rol;
+                localStorage.setItem('users', JSON.stringify(users));
+                renderUsuarios();
+                showMessage('Rol actualizado correctamente', 'success');
+            } catch (error) {
+                showMessage('No se pudo actualizar el rol', 'error');
+                renderUsuarios();
+            }
+        }
+
+        async function actualizarEstadoUsuario(identificador, active) {
+            if (currentUser?.role !== 'Administrativo') return;
+            const localKey = Object.keys(users).find(key => key.toLowerCase() === identificador.toLowerCase());
+            const localUser = localKey ? users[localKey] : null;
+            const response = await fetch('/api/users/status', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    identifier: identificador,
+                    active,
+                    name: localUser?.nombre || identificador,
+                    position: localUser?.puesto || localUser?.role || 'Conductor',
+                    password: localUser?.password || '',
+                    role: localUser?.role || 'Conductor'
+                })
+            });
+            if (!response.ok) {
+                showMessage('No se pudo actualizar el usuario en el servidor', 'error');
+                return;
+            }
+            if (localUser) localUser.activo = active;
+            localStorage.setItem('users', JSON.stringify(users));
+            await renderUsuarios();
+            actualizarNotificaciones();
+            showMessage(active ? 'Usuario autorizado correctamente' : 'Usuario desactivado', 'success');
+        }
+
+        async function eliminarUsuario(identificador) {
+            if (identificador === 'admin' || currentUser?.role !== 'Administrativo') return;
+            if (!confirm(`¿Eliminar definitivamente la cuenta ${identificador}?`)) return;
+            try {
+                const response = await fetch('/api/users/delete', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ identifier: identificador }) });
+                if (!response.ok) throw new Error('No se pudo eliminar');
+                delete users[identificador];
+                localStorage.setItem('users', JSON.stringify(users));
+                renderUsuarios();
+                showMessage('Usuario eliminado correctamente', 'success');
+            } catch (error) {
+                showMessage('No se pudo eliminar el usuario', 'error');
+            }
+        }
+
+        async function cambiarMiPassword() {
+            if (!currentUser) return;
+            const currentPassword = prompt('Contraseña actual:');
+            if (!currentPassword) return;
+            const password = prompt('Nueva contraseña (mínimo 6 caracteres):');
+            if (!password || password.length < 6) {
+                showMessage('La nueva contraseña debe tener al menos 6 caracteres', 'error');
+                return;
+            }
+            const confirmation = prompt('Repite la nueva contraseña:');
+            if (password !== confirmation) {
+                showMessage('Las contraseñas nuevas no coinciden', 'error');
+                return;
+            }
+            try {
+                const response = await fetch('/api/users/password', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ identifier: currentUser.username, currentPassword, password })
+                });
+                if (!response.ok) throw new Error('La contraseña actual no es correcta');
+                showMessage('Contraseña actualizada correctamente', 'success');
+            } catch (error) {
+                showMessage(error.message, 'error');
+            }
+        }
+
+        function autorizarUsuario(identificador) {
+            actualizarEstadoUsuario(identificador, true);
+        }
+
+        // Establecer permisos de menú
+        function setMenuPermissions() {
+            const adminItems = document.querySelectorAll('.admin-only');
+            adminItems.forEach(item => {
+                if (currentUser.role !== 'Administrativo') {
+                    item.classList.add('disabled');
+                    item.style.pointerEvents = 'none';
+                    item.style.opacity = '0.5';
+                } else {
+                    item.classList.remove('disabled');
+                    item.style.pointerEvents = '';
+                    item.style.opacity = '';
+                }
+            });
+        }
+
+        // Navegar a página
+        function goToPage(page, navigationEvent) {
+            const adminOnlyPages = ['informe', 'usuarios', 'configuracion', 'vehiculos'];
+            
+            if (currentUser.role !== 'Administrativo' && adminOnlyPages.includes(page)) {
+                showMessage('No tienes permisos para acceder a esta sección', 'error');
+                return;
+            }
+
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            const pageEl = document.getElementById(`page-${page}`);
+            if (!pageEl) {
+                showMessage('Página no encontrada', 'error');
+                return;
+            }
+
+            pageEl.classList.add('active');
+            document.getElementById('appPage').classList.remove('mobile-menu-mode');
+            cerrarMenuMovil();
+            
+            const menuItem = navigationEvent?.currentTarget?.closest('.menu-item') || navigationEvent?.target?.closest('.menu-item');
+            if (menuItem) {
+                menuItem.classList.add('active');
+                document.getElementById('pageTitle').textContent = menuItem.textContent.trim();
+                document.getElementById('breadcrumb').textContent = 'Inicio > ' + menuItem.textContent.trim();
+            }
+            
+            // Actualizar comercializadoras si estamos en repostajes
+            // Cargar datos según la página
+            if (page === 'repostajes') {
+                actualizarComercializadoras();
+            }
+            if (page === 'configuracion') {
+                cargarComercializadoras();
+            }
+            if (page === 'mantenimientos') {
+                prepararMantenimiento();
+            }
+            if (page === 'partes') {
+                prepararParte();
+            }
+            if (page === 'danos-esteticos') {
+                prepararDano();
+            }
+            if (page === 'informe') {
+                prepararInforme();
+                prepararEstadisticas();
+            }
+            if (page === 'vehiculos') {
+                prepararVehiculos();
+            }
+        }
+
+        // Actualizar fecha y hora automática
+        function updateDateTime() {
+            const now = new Date();
+            const fecha = now.toLocaleDateString('es-ES');
+            const hora = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            const dia = now.toLocaleDateString('es-ES', { weekday: 'long' });
+
+            document.getElementById('fechaField').value = fecha;
+            document.getElementById('horaField').value = hora;
+            document.getElementById('diaField').value = dia.charAt(0).toUpperCase() + dia.slice(1);
+        }
+
+        // Guardar repostaje
+        async function guardarRepostaje(event) {
+            event.preventDefault();
+
+            const repostaje = {
+                fecha: document.getElementById('fechaField').value,
+                hora: document.getElementById('horaField').value,
+                dia: document.getElementById('diaField').value,
+                matricula: document.getElementById('matricula').value,
+                codigoObra: document.getElementById('codigoObra').value.trim(),
+                odometro: document.getElementById('odometro').value,
+                litros: document.getElementById('litros').value,
+                comercializadora: document.getElementById('comercializadora').value,
+                importe: document.getElementById('importe').value,
+                observaciones: document.getElementById('observaciones').value,
+                usuario: currentUser.username,
+                timestamp: new Date().toISOString()
+            };
+
+            // Guardar foto como base64
+            const fileInput = document.getElementById('fotoTicket');
+            if (fileInput.files.length > 0) {
+                const reader = new FileReader();
+                reader.onload = async (e) => {
+                    repostaje.foto = e.target.result;
+                    await saveTooDB(repostaje);
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                await saveTooDB(repostaje);
+            }
+        }
+
+        // Guardar en BD
+        async function saveTooDB(data) {
+            return new Promise((resolve) => {
+                const transaction = db.transaction(['repostajes'], 'readwrite');
+                const store = transaction.objectStore('repostajes');
+                store.add(data);
+                
+                transaction.oncomplete = () => {
+                    showMessage('✅ Repostaje guardado correctamente', 'success');
+                    document.getElementById('repostajForm').reset();
+                    loadRepostajes();
+                    guardarRegistroServidor('repostajes', data);
+                    sincronizarExcelAutomaticamente();
+                    resolve();
+                };
+                
+                transaction.onerror = () => {
+                    showMessage('❌ Error al guardar el repostaje', 'error');
+                    resolve();
+                };
+            });
+        }
+
+        // Guardar configuración
+        function guardarConfiguracion(event) {
+            event.preventDefault();
+            
+            const configExistente = JSON.parse(localStorage.getItem('appConfig') || '{}');
+            
+            const config = {
+                nombreEmpresa: document.getElementById('nombreEmpresa').value,
+                cifNif: document.getElementById('cifNif').value,
+                telefono: document.getElementById('telefono').value,
+                email: document.getElementById('email').value,
+                precioCombustible: document.getElementById('precioCombustible').value,
+                consumoPromedio: document.getElementById('consumoPromedio').value,
+                comercializadoras: configExistente.comercializadoras || ['Repsol', 'Cepsa', 'BP', 'Shell'],
+                notifRepostaje: document.getElementById('notifRepostaje').checked,
+                notifMantenimiento: document.getElementById('notifMantenimiento').checked,
+                notifIncidencia: document.getElementById('notifIncidencia').checked,
+                timestamp: new Date().toISOString()
+            };
+            
+            localStorage.setItem('appConfig', JSON.stringify(config));
+            showMessage('✅ Configuración guardada correctamente', 'success');
+        }
+
+        // Agregar usuario
+        function agregarUsuario() {
+            const newUser = prompt('Ingresa el nombre del nuevo usuario:');
+            if (!newUser) return;
+            
+            const newPassword = prompt('Ingresa la contraseña:');
+            if (!newPassword) return;
+            
+            const newRole = confirm('¿Es un usuario administrador? (OK=Admin, Cancelar=Conductor)');
+            
+            users[newUser] = { 
+                password: newPassword, 
+                role: newRole ? 'Administrativo' : 'Conductor',
+                avatar: newUser[0].toUpperCase(),
+                activo: true
+            };
+            
+            localStorage.setItem('users', JSON.stringify(users));
+            location.reload();
+            showMessage('✅ Usuario agregado correctamente', 'success');
+        }
+
+        // Desactivar usuario
+        function desactivarUsuario(username) {
+            if (confirm('¿Desactivar usuario ' + username + '?')) {
+                actualizarEstadoUsuario(username, false);
+            }
+        }
+
+        // Vista previa de imagen
+        document.addEventListener('DOMContentLoaded', () => {
+            // Inicializar comercializadoras si no existen
+            const config = JSON.parse(localStorage.getItem('appConfig') || '{}');
+            if (!config.comercializadoras) {
+                config.comercializadoras = ['Repsol', 'Cepsa', 'BP', 'Shell'];
+                localStorage.setItem('appConfig', JSON.stringify(config));
+            }
+
+            activarBuscadorVehiculos();
+
+            const fotoInput = document.getElementById('fotoTicket');
+            if (fotoInput) {
+                fotoInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                            const preview = document.getElementById('fotoPreview');
+                            preview.innerHTML = `
+                                <div style="position: relative; display: inline-block;">
+                                    <img src="${event.target.result}" style="max-width: 100%; max-height: 200px; border-radius: 5px; border: 2px solid #0f3460;">
+                                    <button type="button" style="position: absolute; top: 5px; right: 5px; background: #e74c3c; color: white; border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; font-weight: bold;" onclick="document.getElementById('fotoTicket').value = ''; document.getElementById('fotoPreview').innerHTML = '';">✕</button>
+                                </div>
+                            `;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+
+            const danoFoto = document.getElementById('danoFoto');
+            const danoDropZone = document.getElementById('danoDropZone');
+            const mostrarFotoDano = file => {
+                if (!file || !['image/jpeg', 'image/png'].includes(file.type)) return;
+                danoFoto.files = (() => {
+                    const transferencia = new DataTransfer();
+                    transferencia.items.add(file);
+                    return transferencia.files;
+                })();
+                const reader = new FileReader();
+                reader.onload = event => {
+                    document.getElementById('danoFotoPreview').innerHTML = `<img src="${event.target.result}" style="max-width: 100%; max-height: 200px; margin-top: 10px; border-radius: 5px;">`;
+                };
+                reader.readAsDataURL(file);
+            };
+            if (danoFoto && danoDropZone) {
+                danoFoto.addEventListener('change', event => mostrarFotoDano(event.target.files[0]));
+                danoDropZone.addEventListener('dragover', event => { event.preventDefault(); danoDropZone.style.background = '#eef4fb'; });
+                danoDropZone.addEventListener('dragleave', () => { danoDropZone.style.background = '#fafbfd'; });
+                danoDropZone.addEventListener('drop', event => { event.preventDefault(); danoDropZone.style.background = '#fafbfd'; mostrarFotoDano(event.dataTransfer.files[0]); });
+            }
+        });
+
+        // Exportar todos los datos a un libro de Excel con varias hojas
+        function obtenerRegistrosParaExcel(storeName) {
+            return new Promise((resolve, reject) => {
+                const request = db.transaction([storeName], 'readonly').objectStore(storeName).getAll();
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        function agregarHojaExcel(libro, nombre, datos, anchos) {
+            const hoja = XLSX.utils.json_to_sheet(datos.length ? datos : [{ 'Sin datos': '' }]);
+            hoja['!cols'] = anchos.map(ancho => ({ wch: ancho }));
+            XLSX.utils.book_append_sheet(libro, hoja, nombre);
+        }
+
+        async function crearLibroExcel() {
+            try {
+                const [repostajes, mantenimientos, partes, danos] = await Promise.all([
+                    obtenerRegistrosParaExcel('repostajes'),
+                    obtenerRegistrosParaExcel('mantenimientos'),
+                    obtenerRegistrosParaExcel('partes'),
+                    obtenerRegistrosParaExcel('danos')
+                ]);
+
+                const libro = XLSX.utils.book_new();
+                agregarHojaExcel(libro, 'Resumen', [{
+                    'Fecha de exportación': new Date().toLocaleString('es-ES'),
+                    'Repostajes': repostajes.length,
+                    'Mantenimientos': mantenimientos.length,
+                    'Partes de trabajo': partes.length,
+                    'Daños estéticos': danos.length
+                }], [24, 15, 18, 18, 16]);
+
+                agregarHojaExcel(libro, 'Repostajes', repostajes.map(r => ({
+                    'Fecha': r.fecha, 'Hora': r.hora, 'Día': r.dia, 'Código de obra': r.codigoObra || '', 'Matrícula': r.matricula,
+                    'KM': r.odometro, 'Litros': r.litros, 'Comercializadora': r.comercializadora,
+                    'Importe (€)': r.importe, 'Observaciones': r.observaciones || '',
+                    'Usuario': r.usuario, 'Tiene foto': r.foto ? 'Sí' : 'No', 'Timestamp': r.timestamp
+                })), [12, 10, 12, 18, 14, 10, 10, 18, 12, 28, 18, 14, 24]);
+
+                agregarHojaExcel(libro, 'Mantenimientos', mantenimientos.map(r => ({
+                    'Fecha': r.fecha, 'Matrícula': r.matricula, 'Km / Horómetro': r.km || '',
+                    'Tareas': (r.tareas || []).join(' | '), 'Usuario': r.usuario, 'Timestamp': r.timestamp
+                })), [12, 14, 18, 70, 18, 24]);
+
+                agregarHojaExcel(libro, 'Partes de trabajo', partes.map(r => ({
+                    'Nº': r.numero ?? '', 'Fecha': r.fecha, 'Cliente': r.cliente, 'Obra': r.obra || '', 'Código': r.codigo || '',
+                    'Matrícula': r.matricula,
+                    'Conceptos': (r.conceptos || []).map(c => `${c.nombre}: ${c.detalle}`).join(' | '),
+                    'Usuario': r.usuario, 'Timestamp': r.timestamp
+                })), [12, 24, 24, 14, 14, 70, 18, 24]);
+
+                agregarHojaExcel(libro, 'Daños estéticos', danos.map(r => ({
+                    'Fecha': r.fecha, 'Matrícula': r.matricula, 'Zonas afectadas': (r.zonas || []).join(' | '),
+                    'Descripción': r.descripcion || '', 'Tiene foto': r.foto ? 'Sí' : 'No',
+                    'Usuario': r.usuario, 'Timestamp': r.timestamp
+                })), [12, 14, 34, 50, 14, 18, 24]);
+
+                return libro;
+            } catch (error) {
+                console.error('No se pudo preparar el Excel:', error);
+                return null;
+            }
+        }
+
+        async function sincronizarExcelAutomaticamente() {
+            const libro = await crearLibroExcel();
+            if (!libro) return;
+
+            try {
+                const contenido = XLSX.write(libro, { bookType: 'xlsx', type: 'array' });
+                const respuesta = await fetch('/api/gestion-operativa.xlsx', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' },
+                    body: contenido
+                });
+                if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
+            } catch (error) {
+                console.warn('El Excel no se pudo sincronizar con el servidor:', error);
+            }
+        }
+
+        function fechaRegistro(registro) {
+            if (registro.timestamp) return new Date(registro.timestamp);
+            const partes = String(registro.fecha || '').split('/');
+            return partes.length === 3 ? new Date(`${partes[2]}-${partes[1]}-${partes[0]}`) : new Date(0);
+        }
+
+        function claveMes(fecha) {
+            return `${fecha.getFullYear()}-${String(fecha.getMonth() + 1).padStart(2, '0')}`;
+        }
+
+        function nombreMes(clave) {
+            const [ano, mes] = clave.split('-');
+            return new Date(Number(ano), Number(mes) - 1, 1).toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
+        }
+
+        function mesAnterior(clave) {
+            const [ano, mes] = clave.split('-').map(Number);
+            return claveMes(new Date(ano, mes - 2, 1));
+        }
+
+        function valorSeleccionado(id) {
+            return document.getElementById(id)?.value || '';
+        }
+
+        function rellenarFiltroInforme(id, valores, etiqueta) {
+            const select = document.getElementById(id);
+            const actual = select.value;
+            select.innerHTML = `<option value="">${etiqueta}</option>` + valores.sort((a, b) => a.localeCompare(b, 'es')).map(valor => `<option value="${valor}">${valor}</option>`).join('');
+            if (valores.includes(actual)) select.value = actual;
+        }
+
+        async function prepararInforme() {
+            const [repostajes, mantenimientos, partes, danos] = await Promise.all([
+                obtenerRegistrosParaExcel('repostajes'), obtenerRegistrosParaExcel('mantenimientos'),
+                obtenerRegistrosParaExcel('partes'), obtenerRegistrosParaExcel('danos')
+            ]);
+            informeDatos = { repostajes, mantenimientos, partes, danos };
+            const meses = [...new Set(repostajes.map(registro => claveMes(fechaRegistro(registro))))].filter(Boolean);
+            const mesActual = claveMes(new Date());
+            if (!meses.includes(mesActual)) meses.push(mesActual);
+            const selectorMes = document.getElementById('informeMes');
+            const mesSeleccionado = selectorMes.value || mesActual;
+            selectorMes.innerHTML = meses.sort().reverse().map(mes => `<option value="${mes}">${nombreMes(mes)}</option>`).join('');
+            selectorMes.value = meses.includes(mesSeleccionado) ? mesSeleccionado : mesActual;
+            rellenarFiltroInforme('informeCodigoObra', [...new Set(repostajes.map(r => r.codigoObra).filter(Boolean))], 'Todos');
+            rellenarFiltroInforme('informeMatricula', [...new Set(repostajes.concat(danos).map(r => r.matricula).filter(Boolean))], 'Todas');
+            rellenarFiltroInforme('informeUsuario', [...new Set(repostajes.concat(danos).map(r => r.usuario).filter(Boolean))], 'Todos');
+            actualizarListasBuscadorVehiculos();
+            renderInforme();
+        }
+
+        function renderInforme() {
+            const mes = valorSeleccionado('informeMes') || claveMes(new Date());
+            const anterior = mesAnterior(mes);
+            const codigo = valorSeleccionado('informeCodigoObra');
+            const matricula = valorSeleccionado('informeMatricula');
+            const usuario = valorSeleccionado('informeUsuario');
+            const coincide = registro => (!matricula || registro.matricula === matricula) && (!usuario || registro.usuario === usuario) && (!codigo || registro.codigoObra === codigo);
+            const repostajes = informeDatos.repostajes.filter(coincide);
+            const delMes = repostajes.filter(r => claveMes(fechaRegistro(r)) === mes);
+            const delMesAnterior = repostajes.filter(r => claveMes(fechaRegistro(r)) === anterior);
+            const litros = registros => registros.reduce((total, r) => total + Number(r.litros || 0), 0);
+            const totalActual = litros(delMes);
+            const totalAnterior = litros(delMesAnterior);
+            const diferencia = totalActual - totalAnterior;
+
+            document.getElementById('informeMetricas').innerHTML = `
+                <div class="form-container"><strong>Combustible seleccionado</strong><h2>${totalActual.toFixed(2)} L</h2><span>${nombreMes(mes)}</span></div>
+                <div class="form-container"><strong>Mes anterior</strong><h2>${totalAnterior.toFixed(2)} L</h2><span>${nombreMes(anterior)}</span></div>
+                <div class="form-container"><strong>Diferencia</strong><h2>${diferencia >= 0 ? '+' : ''}${diferencia.toFixed(2)} L</h2><span>Respecto al mes anterior</span></div>`;
+
+            const codigos = [...new Set(repostajes.map(r => r.codigoObra || 'Sin código'))].sort();
+            document.getElementById('tbodyCombustibleObra').innerHTML = codigos.length ? codigos.map(codigoFila => {
+                const actual = litros(delMes.filter(r => (r.codigoObra || 'Sin código') === codigoFila));
+                const previo = litros(delMesAnterior.filter(r => (r.codigoObra || 'Sin código') === codigoFila));
+                return `<tr><td>${codigoFila}</td><td>${actual.toFixed(2)} L</td><td>${previo.toFixed(2)} L</td><td>${(actual - previo).toFixed(2)} L</td></tr>`;
+            }).join('') : '<tr><td colspan="4" class="empty-message">No hay repostajes para estos filtros.</td></tr>';
+
+            const limite = Date.now() - (7 * 24 * 60 * 60 * 1000);
+            const danos = informeDatos.danos.filter(dano => fechaRegistro(dano).getTime() >= limite && (!matricula || dano.matricula === matricula) && (!usuario || dano.usuario === usuario));
+            const danosPorVehiculo = [...new Set(danos.map(dano => dano.matricula))];
+            document.getElementById('tbodyDanosInforme').innerHTML = danosPorVehiculo.length ? danosPorVehiculo.map(vehiculo => `<tr><td>${vehiculo}</td><td>${danos.filter(dano => dano.matricula === vehiculo).length}</td></tr>`).join('') : '<tr><td colspan="2" class="empty-message">No hay daños en los últimos 7 días.</td></tr>';
+            const grupos = {};
+            repostajes.filter(r => r.odometro !== '').forEach(registro => {
+                const clave = `${registro.usuario || 'Sin usuario'}|${registro.matricula}`;
+                (grupos[clave] ||= []).push(registro);
+            });
+            const filasOdometro = Object.values(grupos).flatMap(registros => {
+                registros.sort((a, b) => fechaRegistro(a) - fechaRegistro(b));
+                return registros.slice(1).map((actual, index) => {
+                    const anteriorRegistro = registros[index];
+                    const diferenciaKm = Number(actual.odometro) - Number(anteriorRegistro.odometro);
+                    return `<tr><td>${actual.usuario || '-'}</td><td>${actual.matricula}</td><td>${anteriorRegistro.odometro}</td><td>${actual.odometro}</td><td style="color:${diferenciaKm < 0 ? '#c0392b' : 'inherit'};">${diferenciaKm.toFixed(0)} km</td></tr>`;
+                });
+            });
+            document.getElementById('tbodyOdometrosInforme').innerHTML = filasOdometro.length ? filasOdometro.join('') : '<tr><td colspan="5" class="empty-message">No hay suficientes repostajes para comparar.</td></tr>';
+        }
+
+        async function prepararEstadisticas() {
+            const [repostajes, mantenimientos, partes, danos] = await Promise.all([
+                obtenerRegistrosParaExcel('repostajes'), obtenerRegistrosParaExcel('mantenimientos'),
+                obtenerRegistrosParaExcel('partes'), obtenerRegistrosParaExcel('danos')
+            ]);
+            const litros = repostajes.reduce((total, registro) => total + Number(registro.litros || 0), 0);
+            const importe = repostajes.reduce((total, registro) => total + Number(registro.importe || 0), 0);
+            document.getElementById('estadisticasMetricas').innerHTML = [
+                ['Repostajes', repostajes.length, 'registros'],
+                ['Combustible', `${litros.toFixed(2)} L`, 'total acumulado'],
+                ['Importe', `${importe.toFixed(2)} €`, 'total acumulado'],
+                ['Mantenimientos', mantenimientos.length, 'registros'],
+                ['Partes de trabajo', partes.length, 'registros'],
+                ['Daños estéticos', danos.length, 'registros']
+            ].map(([titulo, valor, detalle]) => `<div class="form-container"><strong>${titulo}</strong><h2 style="color:#0f3460; margin:10px 0;">${valor}</h2><span style="color:#666;">${detalle}</span></div>`).join('');
+
+            const meses = {};
+            repostajes.forEach(registro => {
+                const mes = claveMes(fechaRegistro(registro));
+                meses[mes] = (meses[mes] || 0) + Number(registro.litros || 0);
+            });
+            const valores = Object.entries(meses).sort(([a], [b]) => a.localeCompare(b)).slice(-6);
+            const maximo = Math.max(...valores.map(([, valor]) => valor), 1);
+            document.getElementById('graficoCombustible').innerHTML = valores.length ? valores.map(([mes, valor]) => `<div><div style="display:flex; justify-content:space-between; margin-bottom:4px;"><strong>${nombreMes(mes)}</strong><span>${valor.toFixed(2)} L</span></div><div style="height:22px; background:#e8edf3; border-radius:4px; overflow:hidden;"><div style="height:100%; width:${(valor / maximo) * 100}%; background:#0f3460; border-radius:4px;"></div></div></div>`).join('') : '<p class="empty-message">Aún no hay repostajes para mostrar.</p>';
+
+            const matriculas = [...new Set(repostajes.concat(mantenimientos, danos).map(registro => registro.matricula).filter(Boolean))];
+            document.getElementById('tbodyEstadisticasVehiculos').innerHTML = matriculas.length ? matriculas.map(matricula => `<tr><td>${matricula}</td><td>${repostajes.filter(registro => registro.matricula === matricula).length}</td><td>${repostajes.filter(registro => registro.matricula === matricula).reduce((total, registro) => total + Number(registro.litros || 0), 0).toFixed(2)} L</td><td>${mantenimientos.filter(registro => registro.matricula === matricula).length}</td><td>${danos.filter(registro => registro.matricula === matricula).length}</td></tr>`).join('') : '<tr><td colspan="5" class="empty-message">No hay actividad registrada.</td></tr>';
+        }
+
+        // Descargar imágenes en ZIP
+        async function descargarImagenes() {
+            const transaction = db.transaction(['repostajes'], 'readonly');
+            const store = transaction.objectStore('repostajes');
+            const request = store.getAll();
+
+            request.onsuccess = async () => {
+                const repostajes = request.result;
+                const conFotos = repostajes.filter(r => r.foto);
+
+                if (conFotos.length === 0) {
+                    showMessage('No hay imágenes para descargar', 'error');
+                    return;
+                }
+
+                const zip = new JSZip();
+                conFotos.forEach((r, index) => {
+                    if (r.foto) {
+                        const nombreArchivo = `${r.fecha}_${r.matricula}_${index + 1}.jpg`;
+                        const base64 = r.foto.split(',')[1];
+                        zip.file(nombreArchivo, base64, { base64: true });
+                    }
+                });
+
+                const fecha = new Date();
+                const nombreZip = `Imagenes_Repostajes_${fecha.getFullYear()}${String(fecha.getMonth() + 1).padStart(2, '0')}${String(fecha.getDate()).padStart(2, '0')}.zip`;
+
+                const blob = await zip.generateAsync({ type: 'blob' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = nombreZip;
+                a.click();
+
+                showMessage(`✅ ZIP descargado: ${nombreZip} (${conFotos.length} imágenes)`, 'success');
+            };
+        }
+
+        // Limpiar todos los repostajes
+        function limpiarRepostajes() {
+            if (!confirm('⚠️ ¿Deseas ELIMINAR TODOS los repostajes? Esta acción no se puede deshacer.')) {
+                return;
+            }
+
+            const transaction = db.transaction(['repostajes'], 'readwrite');
+            const store = transaction.objectStore('repostajes');
+            store.clear();
+
+            transaction.oncomplete = () => {
+                loadRepostajes();
+                showMessage('✅ Todos los repostajes han sido eliminados', 'success');
+            };
+
+            transaction.onerror = () => {
+                showMessage('❌ Error al limpiar datos', 'error');
+            };
+        }
+        async function loadRepostajes() {
+            const transaction = db.transaction(['repostajes'], 'readonly');
+            const store = transaction.objectStore('repostajes');
+            const request = store.getAll();
+
+            request.onsuccess = () => {
+                const repostajes = request.result;
+                const tbody = document.getElementById('tbodyRepostajes');
+                
+                if (repostajes.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="9" class="empty-message">Consulta los repostajes registrados anteriormente.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = repostajes.map(r => `
+                    <tr>
+                        <td>${r.fecha}</td>
+                        <td>${r.hora}</td>
+                        <td>${r.dia}</td>
+                        <td>${r.matricula}</td>
+                        <td>${r.odometro}</td>
+                        <td>${r.litros}</td>
+                        <td>${r.comercializadora}</td>
+                        <td>${r.importe}€</td>
+                        <td>${r.foto ? '<a href="#" onclick="verFoto(event)">Ver PDF</a>' : '-'}</td>
+                    </tr>
+                `).join('');
+            };
+        }
+
+        function opcionesMatriculas() {
+            return Array.from(document.querySelectorAll('#matricula option')).map(option => ({ value: option.value, text: option.textContent })).filter(option => option.value);
+        }
+
+        function activarBuscadorVehiculos() {
+            ['matricula', 'mantenimientoMatricula', 'parteMatricula', 'danoMatricula', 'informeMatricula'].forEach(id => {
+                const select = document.getElementById(id);
+                if (!select || select.dataset.searchable === 'true') return;
+                select.dataset.searchable = 'true';
+                select.style.display = 'none';
+                const input = document.createElement('input');
+                input.type = 'search';
+                input.id = `${id}Search`;
+                input.className = 'vehicle-search-input';
+                input.placeholder = 'Escribe matrícula o máquina para buscar...';
+                input.setAttribute('list', `${id}Options`);
+                input.autocomplete = 'off';
+                const datalist = document.createElement('datalist');
+                datalist.id = `${id}Options`;
+                select.parentNode.insertBefore(input, select);
+                select.parentNode.insertBefore(datalist, select);
+                input.addEventListener('input', () => {
+                    const text = input.value.trim().toLowerCase();
+                    const option = Array.from(select.options).find(item => item.value && (item.value.toLowerCase() === text || item.textContent.toLowerCase() === text));
+                    select.value = option ? option.value : '';
+                });
+            });
+            actualizarListasBuscadorVehiculos();
+        }
+
+        function actualizarListasBuscadorVehiculos() {
+            ['matricula', 'mantenimientoMatricula', 'parteMatricula', 'danoMatricula', 'informeMatricula'].forEach(id => {
+                const select = document.getElementById(id);
+                const datalist = document.getElementById(`${id}Options`);
+                const input = document.getElementById(`${id}Search`);
+                if (!select || !datalist || !input) return;
+                datalist.innerHTML = Array.from(select.options).filter(option => option.value).map(option => `<option value="${option.textContent}"></option>`).join('');
+                const selected = select.options[select.selectedIndex];
+                if (selected?.value && document.activeElement !== input) input.value = selected.textContent;
+            });
+        }
+
+        function prepararVehiculos() {
+            const request = db.transaction(['vehiculos'], 'readonly').objectStore('vehiculos').getAll();
+            request.onsuccess = () => {
+                const vehiculosIniciales = [
+                    { matricula: '1234-ABC', alias: 'Excavadora CAT 320', tipo: 'Excavadora', activo: true },
+                    { matricula: '5678-DEF', alias: 'Volquete Mercedes', tipo: 'Volquete', activo: true },
+                    { matricula: '9012-GHI', alias: 'Cargadora Komatsu', tipo: 'Cargadora', activo: true },
+                    { matricula: '3456-JKL', alias: 'Camión Scania', tipo: 'Camión', activo: true },
+                    { matricula: '7890-MNO', alias: 'Motoniveladora Caterpillar', tipo: 'Motoniveladora', activo: true }
+                ];
+                if (!request.result.length) {
+                    const transaction = db.transaction(['vehiculos'], 'readwrite');
+                    vehiculosIniciales.forEach(vehiculo => transaction.objectStore('vehiculos').add(vehiculo));
+                    transaction.oncomplete = () => renderVehiculos(vehiculosIniciales);
+                    return;
+                }
+                renderVehiculos(request.result);
+            };
+        }
+
+        function renderVehiculos(vehiculos) {
+            document.getElementById('tbodyVehiculos').innerHTML = vehiculos.map(vehiculo => `<tr><td>${vehiculo.matricula}</td><td>${vehiculo.alias || '-'}</td><td>${vehiculo.tipo || '-'}</td><td><span class="badge badge-admin">${vehiculo.activo === false ? 'Inactivo' : 'Activo'}</span></td><td>${vehiculo.activo === false ? '-' : `<button type="button" class="btn" style="background:#e74c3c; color:white; padding:5px 10px;" onclick="eliminarVehiculo('${vehiculo.matricula}')">Eliminar</button>`}</td></tr>`).join('');
+            actualizarSelectorVehiculos(vehiculos);
+        }
+
+        async function eliminarVehiculo(matricula) {
+            if (currentUser?.role !== 'Administrativo') return;
+            if (!confirm(`¿Eliminar el vehículo ${matricula}?`)) return;
+            const request = db.transaction(['vehiculos'], 'readwrite').objectStore('vehiculos').getAll();
+            request.onsuccess = async () => {
+                const vehiculo = request.result.find(item => item.matricula === matricula);
+                if (vehiculo?.id) {
+                    db.transaction(['vehiculos'], 'readwrite').objectStore('vehiculos').delete(vehiculo.id);
+                }
+                try {
+                    await fetch('/api/vehicles/delete', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ matricula }) });
+                } catch (error) {
+                    console.warn('No se pudo eliminar el vehículo del servidor:', error);
+                }
+                prepararVehiculos();
+                showMessage('Vehículo eliminado correctamente', 'success');
+            };
+        }
+
+        function actualizarSelectorVehiculos(vehiculos) {
+            const select = document.getElementById('matricula');
+            if (!select) return;
+            const actual = select.value;
+            select.innerHTML = '<option value="">Selecciona matrícula / máquina</option>' + vehiculos.filter(vehiculo => vehiculo.activo !== false).map(vehiculo => `<option value="${vehiculo.matricula}">${vehiculo.matricula} - ${vehiculo.alias || vehiculo.tipo || 'Vehículo'}</option>`).join('');
+            if (vehiculos.some(vehiculo => vehiculo.matricula === actual)) select.value = actual;
+            actualizarListasBuscadorVehiculos();
+        }
+
+        function agregarVehiculo(event) {
+            event.preventDefault();
+            const vehiculo = {
+                matricula: document.getElementById('vehiculoMatricula').value.trim().toUpperCase(),
+                alias: document.getElementById('vehiculoAlias').value.trim(),
+                tipo: document.getElementById('vehiculoTipo').value.trim(),
+                activo: true,
+                usuario: currentUser.username,
+                timestamp: new Date().toISOString()
+            };
+            if (!/^\d{4}-[A-Z]{3}$/.test(vehiculo.matricula)) {
+                showMessage('La matrícula debe tener el formato 1234-ABC', 'error');
+                return;
+            }
+            const transaction = db.transaction(['vehiculos'], 'readwrite');
+            const store = transaction.objectStore('vehiculos');
+            const existentes = store.getAll();
+            existentes.onsuccess = () => {
+                if (existentes.result.some(item => item.matricula === vehiculo.matricula)) {
+                    showMessage('Esa matrícula ya existe', 'error');
+                    return;
+                }
+                store.add(vehiculo);
+                transaction.oncomplete = () => {
+                    document.getElementById('vehiculoForm').reset();
+                    prepararVehiculos();
+                    guardarRegistroServidor('vehiculos', vehiculo);
+                    sincronizarExcelAutomaticamente();
+                    showMessage('Vehículo añadido correctamente', 'success');
+                };
+            };
+        }
+
+        function rellenarMatriculas() {
+            const opciones = opcionesMatriculas();
+            ['mantenimientoMatricula', 'parteMatricula', 'danoMatricula'].forEach(id => {
+                const select = document.getElementById(id);
+                if (select) select.innerHTML = '<option value="">Selecciona matrícula / máquina</option>' + opciones.map(option => `<option value="${option.value}">${option.text}</option>`).join('');
+            });
+            actualizarListasBuscadorVehiculos();
+        }
+
+        function hoyISO() {
+            const ahora = new Date();
+            return `${ahora.getFullYear()}-${String(ahora.getMonth() + 1).padStart(2, '0')}-${String(ahora.getDate()).padStart(2, '0')}`;
+        }
+
+        function prepararMantenimiento() {
+            rellenarMatriculas();
+            const config = JSON.parse(localStorage.getItem('appConfig') || '{}');
+            const tareas = config.tareasMantenimiento || ['Engrase del camión', 'Soplar o cambiar filtro', 'Cambio filtro gasoil', 'Cambio filtro aceite', 'Cambio aceite 250 horas', 'Revisión anual cambio hidráulico', 'Limpiar y lavar camión'];
+            document.getElementById('listaTareasMantenimiento').innerHTML = tareas.map(tarea => `<label><input type="checkbox" name="tareaMantenimiento" value="${tarea}"> ${tarea}</label>`).join('');
+            cargarHistorial('mantenimientos', 'tbodyMantenimientos', registro => `<tr><td>${registro.fecha}</td><td>${registro.matricula}</td><td>${registro.km || '-'}</td><td>${registro.tareas.join(', ')}</td></tr>`, 4);
+        }
+
+        function prepararParte() {
+            rellenarMatriculas();
+            document.getElementById('parteFecha').value = hoyISO();
+            document.getElementById('listaConceptosParte').innerHTML = '';
+            agregarConceptoParte();
+            cargarHistorial('partes', 'tbodyPartes', registro => `<tr><td>${registro.fecha}</td><td>${registro.cliente}</td><td>${registro.obra || '-'}</td><td>${registro.matricula}</td><td>${registro.conceptos.map(concepto => `${concepto.nombre}: ${concepto.detalle}`).join('<br>')}</td></tr>`, 5);
+        }
+
+        function agregarConceptoParte() {
+            const config = JSON.parse(localStorage.getItem('appConfig') || '{}');
+            const conceptos = config.conceptosPartes || ['Movimiento de tierras', 'Transporte', 'Carga y descarga', 'Mantenimiento', 'Otros'];
+            const fila = document.createElement('div');
+            fila.className = 'form-grid';
+            fila.style.marginBottom = '10px';
+            fila.innerHTML = `<select class="parte-concepto"><option value="">Selecciona concepto...</option>${conceptos.map(concepto => `<option value="${concepto}">${concepto}</option>`).join('')}</select><input class="parte-detalle" type="text" placeholder="Cantidad / Horas / Descripción (ej: 5h)">`;
+            document.getElementById('listaConceptosParte').appendChild(fila);
+        }
+
+        function prepararDano() {
+            rellenarMatriculas();
+            cargarHistorial('danos', 'tbodyDanos', registro => `<tr><td>${registro.fecha}</td><td>${registro.matricula}</td><td>${registro.zonas.join(', ') || '-'}</td><td>${registro.descripcion || '-'}</td><td>${registro.foto ? '<span style="color:green;">Sí</span>' : 'No'}</td></tr>`, 5);
+        }
+
+        function leerArchivoComoBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = event => resolve(event.target.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function guardarRegistro(storeName, data, formId, loadFunction) {
+            const transaction = db.transaction([storeName], 'readwrite');
+            transaction.objectStore(storeName).add(data);
+            transaction.oncomplete = () => {
+                document.getElementById(formId).reset();
+                showMessage('Registro guardado correctamente', 'success');
+                loadFunction();
+                guardarRegistroServidor(storeName, data);
+                sincronizarExcelAutomaticamente();
+            };
+            transaction.onerror = () => showMessage('Error al guardar el registro', 'error');
+        }
+
+        async function guardarRegistroServidor(recordType, data) {
+            try {
+                await fetch('/api/records', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ record_type: recordType, data })
+                });
+            } catch (error) {
+                console.warn('Registro pendiente de sincronización:', error);
+            }
+        }
+
+        async function sincronizarRegistrosDesdeServidor() {
+            try {
+                const response = await fetch('/api/records');
+                if (!response.ok) return false;
+                const registros = await response.json();
+                const stores = ['repostajes', 'mantenimientos', 'partes', 'danos', 'vehiculos'];
+                const transaction = db.transaction(stores, 'readwrite');
+                stores.forEach(store => transaction.objectStore(store).clear());
+                registros.forEach(registro => {
+                    if (stores.includes(registro.record_type)) {
+                        transaction.objectStore(registro.record_type).add(registro.data);
+                    }
+                });
+                return new Promise(resolve => {
+                    transaction.oncomplete = () => resolve(true);
+                    transaction.onerror = () => resolve(false);
+                });
+            } catch (error) {
+                console.warn('No se pudieron cargar los registros centrales:', error);
+                return false;
+            }
+        }
+
+        function cargarHistorial(storeName, tbodyId, render, colspan) {
+            const request = db.transaction([storeName], 'readonly').objectStore(storeName).getAll();
+            request.onsuccess = () => {
+                const registros = request.result;
+                document.getElementById(tbodyId).innerHTML = registros.length ? registros.map(render).join('') : `<tr><td colspan="${colspan}" class="empty-message">No hay registros.</td></tr>`;
+            };
+        }
+
+        function guardarMantenimiento(event) {
+            event.preventDefault();
+            const tareas = Array.from(document.querySelectorAll('input[name="tareaMantenimiento"]:checked')).map(input => input.value);
+            if (!tareas.length) return showMessage('Selecciona al menos una tarea', 'error');
+            const data = { fecha: new Date().toLocaleDateString('es-ES'), matricula: document.getElementById('mantenimientoMatricula').value, km: document.getElementById('mantenimientoKm').value, tareas, usuario: currentUser.username, timestamp: new Date().toISOString() };
+            guardarRegistro('mantenimientos', data, 'mantenimientoForm', prepararMantenimiento);
+        }
+
+        async function reservarNumeroParte() {
+            const response = await fetch('/api/partes/numero', { method: 'POST' });
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.error || 'No se pudo reservar el número del parte');
+            return result.numero;
+        }
+
+        function crearPdfParte(data) {
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF({ unit: 'mm', format: 'a4' });
+            const margen = 18;
+            const ancho = 210 - (margen * 2);
+            const numero = String(data.numero).padStart(4, '0');
+            const conceptos = data.conceptos.map(concepto => `${concepto.nombre || ''} ${concepto.detalle || ''}`.trim()).filter(Boolean);
+
+            pdf.setDrawColor(55, 65, 70);
+            pdf.setTextColor(35, 45, 48);
+            pdf.setLineWidth(0.35);
+            pdf.setFont('helvetica', 'bold');
+            pdf.setFontSize(25);
+            pdf.setTextColor(20, 105, 108);
+            pdf.text('valdi', margen, 27);
+            pdf.setFontSize(8);
+            pdf.text('obras y servicios s.l.', margen + 1, 34);
+            pdf.setTextColor(35, 45, 48);
+            pdf.setFontSize(9);
+            pdf.text('C/ Conde de Orgaz, 1 local 2 ext. byc', 76, 17);
+            pdf.text('45210 Yuncos. Toledo', 76, 22);
+            pdf.text('Tel.: 925 536 144  •  Fax: 925 536 145', 76, 27);
+            pdf.text('Móvil: 630 508 858', 76, 32);
+            pdf.text('administracion@obras yserviciosvaldi.com', 76, 37);
+            pdf.setFontSize(13);
+            pdf.text('Nº', 158, 22);
+            pdf.setTextColor(180, 35, 35);
+            pdf.setFontSize(22);
+            pdf.text(numero, 175, 23);
+            pdf.setTextColor(35, 45, 48);
+
+            const campo = (etiqueta, valor, x, y, longitud) => {
+                pdf.setFont('helvetica', 'bold');
+                pdf.setFontSize(10);
+                pdf.text(etiqueta, x, y);
+                const inicio = x + pdf.getTextWidth(etiqueta) + 3;
+                pdf.setFont('helvetica', 'normal');
+                pdf.text(String(valor || ''), inicio, y);
+                pdf.line(inicio, y + 1.5, x + longitud, y + 1.5);
+            };
+
+            campo('Cliente:', data.cliente, margen, 55, 102);
+            campo('Matrícula:', data.matricula, 122, 55, 192);
+            campo('CÓDIGO:', data.codigo, margen, 68, 102);
+            campo('Obra:', data.obra, 107, 68, 192);
+
+            pdf.roundedRect(margen, 77, ancho, 57, 5, 5);
+            pdf.setFont('helvetica', 'bold');
+            pdf.setFontSize(13);
+            pdf.text('Vale por:', margen + 4, 87);
+            pdf.setFont('helvetica', 'normal');
+            pdf.setFontSize(11);
+            pdf.line(margen + 34, 88, margen + ancho - 1, 88);
+            conceptos.slice(0, 5).forEach((concepto, index) => {
+                const y = 87 + (index * 10);
+                if (index > 0) pdf.line(margen + 1, y - 4, margen + ancho - 1, y - 4);
+                pdf.text(concepto, margen + 36, y);
+            });
+            pdf.setFont('helvetica', 'bold');
+            pdf.setFontSize(10);
+            pdf.text('Conforme:', 92, 141);
+            pdf.line(105, 142, 192, 142);
+
+            campo('Nombre:', data.nombre || data.usuario, margen, 170, 75);
+            pdf.setFont('helvetica', 'bold');
+            pdf.text('Fecha:', 91, 170);
+            const partesFecha = String(data.fecha || '').split('-');
+            const fecha = partesFecha.length === 3 ? `${partesFecha[2]}    de    ${partesFecha[1]}    de    ${partesFecha[0]}` : data.fecha;
+            pdf.setFont('helvetica', 'normal');
+            pdf.text(fecha, 110, 170);
+            pdf.line(110, 172, 192, 172);
+            pdf.setFontSize(8);
+            pdf.text('C.I.F.: B-45661784', margen, 116, { angle: 90 });
+            return pdf.output('datauristring');
+        }
+
+        async function guardarPdfParte(data, pdfData) {
+            const nombre = `parte_${String(data.numero).padStart(4, '0')}.pdf`;
+            const response = await fetch('/api/partes/pdf', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ filename: nombre, pdf: pdfData })
+            });
+            const result = await response.json();
+            if (!response.ok) throw new Error(result.error || 'No se pudo guardar el PDF');
+            const enlace = document.createElement('a');
+            enlace.href = pdfData;
+            enlace.download = nombre;
+            enlace.click();
+            return result;
+        }
+
+        async function guardarParte(event) {
+            event.preventDefault();
+            const conceptos = Array.from(document.querySelectorAll('#listaConceptosParte .form-grid')).map(fila => ({ nombre: fila.querySelector('.parte-concepto').value, detalle: fila.querySelector('.parte-detalle').value })).filter(concepto => concepto.nombre || concepto.detalle);
+            if (!conceptos.length) return showMessage('Añade al menos un concepto', 'error');
+            try {
+                const numero = await reservarNumeroParte();
+                const data = { numero, fecha: document.getElementById('parteFecha').value, cliente: document.getElementById('parteCliente').value, obra: document.getElementById('parteObra').value, codigo: document.getElementById('parteCodigo').value, matricula: document.getElementById('parteMatricula').value, conceptos, usuario: currentUser.username, nombre: currentUser.nombre || currentUser.username, timestamp: new Date().toISOString() };
+                await new Promise((resolve, reject) => {
+                    const transaction = db.transaction(['partes'], 'readwrite');
+                    transaction.objectStore('partes').add(data);
+                    transaction.oncomplete = resolve;
+                    transaction.onerror = () => reject(transaction.error);
+                });
+                guardarRegistroServidor('partes', data);
+                sincronizarExcelAutomaticamente();
+                const pdfData = crearPdfParte(data);
+                await guardarPdfParte(data, pdfData);
+                document.getElementById('parteForm').reset();
+                prepararParte();
+                showMessage(`Parte ${String(numero).padStart(4, '0')} guardado y PDF generado`, 'success');
+            } catch (error) {
+                showMessage(error.message || 'No se pudo guardar el parte', 'error');
+            }
+        }
+
+        async function guardarDano(event) {
+            event.preventDefault();
+            const archivo = document.getElementById('danoFoto').files[0];
+            if (!archivo || !['image/jpeg', 'image/png'].includes(archivo.type)) return showMessage('Selecciona una imagen JPG o PNG', 'error');
+            const data = { fecha: new Date().toLocaleDateString('es-ES'), matricula: document.getElementById('danoMatricula').value, zonas: Array.from(document.querySelectorAll('input[name="zonaDano"]:checked')).map(input => input.value), descripcion: document.getElementById('danoDescripcion').value, foto: await leerArchivoComoBase64(archivo), usuario: currentUser.username, timestamp: new Date().toISOString() };
+            guardarRegistro('danos', data, 'danoForm', prepararDano);
+        }
+
+        // Actualizar opciones de comercializadora
+        // Cargar y mostrar comercializadoras
+        function cargarComercializadoras() {
+            const config = JSON.parse(localStorage.getItem('appConfig') || '{}');
+            const comercializadoras = config.comercializadoras || ['Repsol', 'Cepsa', 'BP', 'Shell'];
+            const lista = document.getElementById('listaComercializadoras');
+            
+            if (lista) {
+                lista.innerHTML = comercializadoras.map((c, idx) => `
+                    <div style="background: #f0f0f0; padding: 10px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center;">
+                        <span>${c}</span>
+                        <button type="button" class="btn btn-danger" onclick="eliminarComercializadora(${idx})" style="padding: 5px 10px; font-size: 0.8em; background: #e74c3c;">✕</button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Agregar nueva comercializadora
+        function agregarComercializadora() {
+            const input = document.getElementById('nuevaComercializadora');
+            const nombre = input.value.trim();
+            
+            if (!nombre) {
+                showMessage('Ingresa el nombre de la comercializadora', 'error');
+                return;
+            }
+            
+            const config = JSON.parse(localStorage.getItem('appConfig') || '{}');
+            const comercializadoras = config.comercializadoras || ['Repsol', 'Cepsa', 'BP', 'Shell'];
+            
+            if (comercializadoras.includes(nombre)) {
+                showMessage('Esta comercializadora ya existe', 'error');
+                return;
+            }
+            
+            comercializadoras.push(nombre);
+            config.comercializadoras = comercializadoras;
+            localStorage.setItem('appConfig', JSON.stringify(config));
+            
+            input.value = '';
+            cargarComercializadoras();
+            actualizarComercializadoras();
+            showMessage(`✅ Comercializadora "${nombre}" agregada`, 'success');
+        }
+
+        // Eliminar comercializadora
+        function eliminarComercializadora(idx) {
+            const config = JSON.parse(localStorage.getItem('appConfig') || '{}');
+            const comercializadoras = config.comercializadoras || ['Repsol', 'Cepsa', 'BP', 'Shell'];
+            const eliminada = comercializadoras[idx];
+            
+            comercializadoras.splice(idx, 1);
+            config.comercializadoras = comercializadoras;
+            localStorage.setItem('appConfig', JSON.stringify(config));
+            
+            cargarComercializadoras();
+            actualizarComercializadoras();
+            showMessage(`✅ Comercializadora "${eliminada}" eliminada`, 'success');
+        }
+
+        // Actualizar opciones de comercializadora en el formulario de repostajes
+        function actualizarComercializadoras() {
+            const config = JSON.parse(localStorage.getItem('appConfig') || '{}');
+            const comercializadoras = config.comercializadoras || ['Repsol', 'Cepsa', 'BP', 'Shell'];
+            const select = document.getElementById('comercializadora');
+            
+            if (select) {
+                const currentValue = select.value;
+                select.innerHTML = '<option value="">Seleccione una opción</option>' + 
+                    comercializadoras.map(c => `<option value="${c}">${c}</option>`).join('');
+                
+                if (comercializadoras.includes(currentValue)) {
+                    select.value = currentValue;
+                }
+            }
+        }
+
+        // Mostrar mensaje
+        function showMessage(text, type) {
+            const messageEl = document.getElementById('message');
+            messageEl.textContent = text;
+            messageEl.className = `message show ${type}`;
+            setTimeout(() => {
+                messageEl.classList.remove('show');
+            }, 3000);
+        }
+
+        // Verificar login al cargar
+        window.addEventListener('load', async () => {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js?v=2').catch(error => console.warn('PWA no disponible:', error));
+            }
+            if (window.location.hash === '#registro') {
+                mostrarRegistro();
+            }
+            await initDB();
+            
+            // Cargar usuarios guardados
+            const savedUsers = localStorage.getItem('users');
+            if (savedUsers) {
+                Object.assign(users, JSON.parse(savedUsers));
+            }
+            
+            // Cargar configuración guardada
+            const savedConfig = localStorage.getItem('appConfig');
+            if (savedConfig) {
+                const config = JSON.parse(savedConfig);
+                document.getElementById('nombreEmpresa').value = config.nombreEmpresa || '';
+                document.getElementById('cifNif').value = config.cifNif || '';
+                document.getElementById('telefono').value = config.telefono || '';
+                document.getElementById('email').value = config.email || '';
+                document.getElementById('precioCombustible').value = config.precioCombustible || '1.50';
+                document.getElementById('consumoPromedio').value = config.consumoPromedio || '25.5';
+                document.getElementById('notifRepostaje').checked = config.notifRepostaje !== false;
+                document.getElementById('notifMantenimiento').checked = config.notifMantenimiento !== false;
+                document.getElementById('notifIncidencia').checked = config.notifIncidencia !== false;
+            }
+            
+            const saved = localStorage.getItem('currentUser');
+            if (saved) {
+                currentUser = JSON.parse(saved);
+                document.getElementById('loginPage').style.display = 'none';
+                document.getElementById('appPage').classList.add('active');
+                mostrarMenuMovilInicial();
+                updateUIForUser();
+                loadRepostajes();
+                sincronizarExcelAutomaticamente();
+                updateDateTime();
+                setInterval(updateDateTime, 1000);
+                setMenuPermissions();
+                renderUsuarios();
+                actualizarNotificaciones();
+            }
+        });
+    </script>
+</body>
+</html>

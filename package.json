@@ -1,0 +1,22 @@
+{
+  "name": "gestion-operativa",
+  "version": "1.0.0",
+  "description": "Aplicación web para recopilación de datos y agilización de procesos operativos",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "data-collection",
+    "app",
+    "form",
+    "survey"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

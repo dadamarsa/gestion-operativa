@@ -1,0 +1,26 @@
+# Dependencias y archivos generados
+node_modules/
+npm-debug.log*
+*.log
+__pycache__/
+*.py[cod]
+
+# Datos locales y posibles datos personales
+*.db
+*.sqlite
+*.sqlite3
+datos/copias-seguridad/
+datos/documentos-pdf/
+datos/imagenes/
+datos/*.xlsx
+imagenes/
+
+# Configuración local y secretos
+.env
+.env.*
+!.env.example
+
+# Archivos del sistema y del editor
+.DS_Store
+Thumbs.db
+.vscode/
