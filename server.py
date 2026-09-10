@@ -14,7 +14,7 @@ import base64
 import re
 from pathlib import Path
 
-PORT = 8000
+PORT = int(os.environ.get('PORT', 8000))
 DIRECTORY = Path(__file__).parent
 DATA_DIRECTORY = DIRECTORY / 'datos'
 DATABASE = DATA_DIRECTORY / 'gestion_operativa.db'
@@ -379,9 +379,15 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
         """Log messages in a cleaner format"""
         print(f"[{self.log_date_time_string()}] {format % args}")
 
+class ThreadingHTTPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
+    # Atiende cada conexión en un hilo aparte para que un cliente lento (móvil, otra pestaña...)
+    # no bloquee al resto de peticiones, como pasaba con TCPServer de un solo hilo.
+    daemon_threads = True
+    allow_reuse_address = True
+
 def run_server():
     try:
-        with socketserver.TCPServer(("", PORT), MyHTTPRequestHandler) as httpd:
+        with ThreadingHTTPServer(("", PORT), MyHTTPRequestHandler) as httpd:
             print(f"🚀 Servidor ejecutándose en: http://localhost:{PORT}")
             print(f"📁 Sirviendo archivos desde: {DIRECTORY}")
             print(f"🌐 Abre tu navegador y accede a http://localhost:{PORT}")

@@ -2028,15 +2028,7 @@
         function setMenuPermissions() {
             const adminItems = document.querySelectorAll('.admin-only');
             adminItems.forEach(item => {
-                if (currentUser.role !== 'Administrativo') {
-                    item.classList.add('disabled');
-                    item.style.pointerEvents = 'none';
-                    item.style.opacity = '0.5';
-                } else {
-                    item.classList.remove('disabled');
-                    item.style.pointerEvents = '';
-                    item.style.opacity = '';
-                }
+                item.style.display = currentUser.role === 'Administrativo' ? '' : 'none';
             });
             // Eliminar/descargar: oculto por completo para quien no sea Administrativo, no solo deshabilitado
             document.querySelectorAll('.admin-hide').forEach(item => {
@@ -2167,6 +2159,7 @@
                 transaction.oncomplete = () => {
                     showMessage('✅ Repostaje guardado correctamente', 'success');
                     document.getElementById('repostajForm').reset();
+                    document.getElementById('fotoPreview').innerHTML = '';
                     loadRepostajes();
                     guardarRegistroServidor('repostajes', data);
                     sincronizarExcelAutomaticamente();
@@ -2850,7 +2843,9 @@
             const transaction = db.transaction([storeName], 'readwrite');
             transaction.objectStore(storeName).add(data);
             transaction.oncomplete = () => {
-                document.getElementById(formId).reset();
+                const form = document.getElementById(formId);
+                form.reset();
+                form.querySelectorAll('[id$="FotoPreview"]').forEach(preview => preview.innerHTML = '');
                 showMessage('Registro guardado correctamente', 'success');
                 loadFunction();
                 guardarRegistroServidor(storeName, data);
@@ -2911,7 +2906,12 @@
         }
 
         async function reservarNumeroParte() {
-            const response = await fetch('/api/partes/numero', { method: 'POST' });
+            let response;
+            try {
+                response = await fetch('/api/partes/numero', { method: 'POST' });
+            } catch (error) {
+                throw new Error('No se pudo conectar con el servidor. Comprueba que esté en marcha e inténtalo de nuevo.');
+            }
             const result = await response.json();
             if (!response.ok) throw new Error(result.error || 'No se pudo reservar el número del parte');
             return result.numero;

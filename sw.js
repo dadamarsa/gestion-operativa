@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gestion-operativa-v2';
+const CACHE_NAME = 'gestion-operativa-v3';
 const APP_SHELL = [
   '/',
   '/index.html',
