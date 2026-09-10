@@ -5,7 +5,7 @@ const path = require('path');
 const PORT = 8000;
 const HOSTNAME = '0.0.0.0';
 const DATA_DIRECTORY = path.join(__dirname, 'datos');
-const EXCEL_FILE = path.join(DATA_DIRECTORY, 'gestion operativo.xlsx');
+const EXCEL_FILE = path.join(DATA_DIRECTORY, 'data.xlsx');
 fs.mkdirSync(DATA_DIRECTORY, { recursive: true });
 fs.mkdirSync(path.join(DATA_DIRECTORY, 'imagenes'), { recursive: true });
 fs.mkdirSync(path.join(DATA_DIRECTORY, 'documentos-pdf'), { recursive: true });

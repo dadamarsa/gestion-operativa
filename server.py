@@ -27,6 +27,21 @@ PDF_DIRECTORY.mkdir(exist_ok=True)
 BACKUP_DIRECTORY.mkdir(exist_ok=True)
 
 
+def migrar_archivos_a_carpetas():
+    """Mueve imágenes y PDFs sueltos (versiones antiguas) a su carpeta por página."""
+    for archivo in IMAGES_DIRECTORY.iterdir():
+        if archivo.is_file() and not archivo.name.startswith('.') and '_' in archivo.stem:
+            tipo = archivo.stem.split('_', 1)[0]
+            carpeta = IMAGES_DIRECTORY / tipo
+            carpeta.mkdir(exist_ok=True)
+            archivo.rename(carpeta / archivo.name)
+    for archivo in PDF_DIRECTORY.iterdir():
+        if archivo.is_file() and not archivo.name.startswith('.'):
+            carpeta = PDF_DIRECTORY / 'partes'
+            carpeta.mkdir(exist_ok=True)
+            archivo.rename(carpeta / archivo.name)
+
+
 def init_database():
     with sqlite3.connect(DATABASE) as connection:
         connection.execute('''
@@ -42,6 +57,16 @@ def init_database():
         ''')
         connection.execute('''
             CREATE TABLE IF NOT EXISTS records (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                record_type TEXT NOT NULL,
+                data TEXT NOT NULL,
+                created_at TEXT NOT NULL
+            )
+        ''')
+        # Registro permanente: nunca se borra, ni cuando se elimina el registro operativo correspondiente.
+        # Es la fuente de datos del libro de Excel para permitir el análisis histórico.
+        connection.execute('''
+            CREATE TABLE IF NOT EXISTS historial_registros (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 record_type TEXT NOT NULL,
                 data TEXT NOT NULL,
@@ -140,11 +165,17 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                         'INSERT INTO records (record_type, data, created_at) VALUES (?, ?, datetime(\'now\'))',
                         (record_type, json.dumps(data, ensure_ascii=False))
                     )
+                    connection.execute(
+                        'INSERT INTO historial_registros (record_type, data, created_at) VALUES (?, ?, datetime(\'now\'))',
+                        (record_type, json.dumps(data, ensure_ascii=False))
+                    )
                     foto = data.get('foto', '')
                     if isinstance(foto, str) and foto.startswith('data:image/'):
                         cabecera, contenido = foto.split(',', 1)
                         extension = 'png' if 'png' in cabecera else 'jpg'
-                        ruta_foto = IMAGES_DIRECTORY / f'{record_type}_{cursor.lastrowid}.{extension}'
+                        carpeta_tipo = IMAGES_DIRECTORY / record_type
+                        carpeta_tipo.mkdir(exist_ok=True)
+                        ruta_foto = carpeta_tipo / f'{record_type}_{cursor.lastrowid}.{extension}'
                         ruta_foto.write_bytes(base64.b64decode(contenido))
                 json_response(self, 201, {'id': cursor.lastrowid})
             except (ValueError, json.JSONDecodeError):
@@ -185,7 +216,9 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                 if len(datos_pdf) > 10 * 1024 * 1024:
                     json_response(self, 413, {'error': 'El PDF es demasiado grande'})
                     return
-                ruta_pdf = PDF_DIRECTORY / nombre
+                carpeta_partes = PDF_DIRECTORY / 'partes'
+                carpeta_partes.mkdir(exist_ok=True)
+                ruta_pdf = carpeta_partes / nombre
                 ruta_pdf.write_bytes(datos_pdf)
                 json_response(self, 201, {'filename': nombre, 'path': str(ruta_pdf.relative_to(DIRECTORY))})
             except (ValueError, json.JSONDecodeError, OSError):
@@ -299,7 +332,7 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                 return
 
             contenido = self.rfile.read(content_length)
-            (DATA_DIRECTORY / 'gestion operativo.xlsx').write_bytes(contenido)
+            (DATA_DIRECTORY / 'data.xlsx').write_bytes(contenido)
             self.send_response(204)
             self.end_headers()
         except (ValueError, OSError):
@@ -321,6 +354,18 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             with sqlite3.connect(DATABASE) as connection:
                 records = connection.execute(
                     'SELECT id, record_type, data, created_at FROM records ORDER BY id'
+                ).fetchall()
+            json_response(self, 200, [
+                {'id': row[0], 'record_type': row[1], 'data': json.loads(row[2]), 'created_at': row[3]}
+                for row in records
+            ])
+            return
+
+        if self.path == '/api/historial':
+            # Historial permanente para el libro de Excel: no se ve afectado por borrados operativos.
+            with sqlite3.connect(DATABASE) as connection:
+                records = connection.execute(
+                    'SELECT id, record_type, data, created_at FROM historial_registros ORDER BY id'
                 ).fetchall()
             json_response(self, 200, [
                 {'id': row[0], 'record_type': row[1], 'data': json.loads(row[2]), 'created_at': row[3]}
@@ -350,4 +395,5 @@ def run_server():
 
 if __name__ == "__main__":
     init_database()
+    migrar_archivos_a_carpetas()
     run_server()

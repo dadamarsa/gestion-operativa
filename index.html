@@ -195,6 +195,17 @@
             display: flex;
         }
 
+        .app-container.home-mode .sidebar {
+            position: static;
+            width: 100%;
+            height: 100vh;
+        }
+
+        .app-container.home-mode .main-content,
+        .app-container.home-mode .sidebar-overlay {
+            display: none;
+        }
+
         .sidebar {
             width: 250px;
             background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
@@ -254,55 +265,94 @@
         }
 
         .sidebar-user {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.06);
+            padding: 16px;
+            border-radius: 10px;
             margin-top: auto;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-            padding-top: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
         }
 
         .user-info {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 12px;
+            margin-bottom: 14px;
         }
 
         .user-avatar {
             width: 40px;
             height: 40px;
-            background: #ffa500;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, #ffa500 0%, #ff8c00 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.15);
+        }
+
+        .user-details {
+            min-width: 0;
         }
 
         .user-details p {
             font-size: 0.9em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .user-role {
-            font-size: 0.8em;
-            opacity: 0.7;
+            display: inline-block;
+            margin-top: 4px;
+            font-size: 0.68em;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            color: #ffd699;
+            background: rgba(255, 165, 0, 0.15);
+            padding: 2px 8px;
+            border-radius: 20px;
+            opacity: 1;
         }
 
         .btn-logout {
             width: 100%;
-            padding: 10px;
-            background: #e74c3c;
-            color: white;
-            border: none;
-            border-radius: 5px;
+            padding: 9px;
+            background: transparent;
+            border: 1px solid rgba(231, 76, 60, 0.5);
+            color: #ff8a80;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
-            transition: background 0.3s;
+            font-size: 0.82em;
+            letter-spacing: 0.3px;
+            transition: background 0.2s, color 0.2s;
         }
 
         .btn-logout:hover {
-            background: #c0392b;
+            background: rgba(231, 76, 60, 0.15);
+            color: #fff;
+        }
+
+        .btn-sidebar-secondary {
+            width: 100%;
+            margin-top: 8px;
+            padding: 9px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.75);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8em;
+            font-weight: 500;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .btn-sidebar-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
         }
 
         .main-content {
@@ -1079,10 +1129,6 @@
             </div>
 
             <div class="menu-title">MENÚ PRINCIPAL</div>
-            
-            <div class="menu-item active" onclick="goToPage('inicio', event)">
-                <span>🏠</span> Inicio
-            </div>
 
             <div class="menu-item" onclick="goToPage('repostajes', event)">
                 <span>⛽</span> Repostajes
@@ -1101,7 +1147,11 @@
             </div>
 
             <div class="menu-item" onclick="goToPage('incidencias', event)">
-                <span>⚠️</span> Incidencias
+                <span>⚠️</span> Revisiones preventivas
+            </div>
+
+            <div class="menu-item" onclick="goToPage('compras', event)">
+                <span>🛒</span> Compras
             </div>
 
             <div class="menu-item admin-only" onclick="goToPage('informe', event)">
@@ -1109,7 +1159,7 @@
             </div>
 
             <div class="menu-item admin-only" onclick="goToPage('vehiculos', event)">
-                <span>🚙</span> Vehículos y máquinas
+                <span>🚙</span> Vehículos
             </div>
 
             <div class="menu-item admin-only" onclick="goToPage('usuarios', event)">
@@ -1117,7 +1167,7 @@
             </div>
 
             <div class="menu-item admin-only" onclick="goToPage('configuracion', event)">
-                <span>⚙️</span> Configuración
+                <span>⚙️</span> Comercializadoras
             </div>
 
             <div class="sidebar-user">
@@ -1125,11 +1175,11 @@
                     <div class="user-avatar" id="userAvatar">A</div>
                     <div class="user-details">
                         <p id="userName"><strong>Admin</strong></p>
-                        <p class="user-role" id="userRole">Administrativo</p>
+                        <span class="user-role" id="userRole">Administrativo</span>
                     </div>
                 </div>
-                <button class="btn-logout" onclick="logout()">CERRAR SESIÓN</button>
-                <button class="btn btn-secondary" style="width:100%; margin-top:8px; padding:8px 10px;" onclick="cambiarMiPassword()">Cambiar mi contraseña</button>
+                <button class="btn-logout" onclick="logout()">Cerrar sesión</button>
+                <button class="btn-sidebar-secondary" onclick="cambiarMiPassword()">Cambiar mi contraseña</button>
             </div>
         </aside>
 
@@ -1148,28 +1198,17 @@
             <!-- TOP BAR -->
             <div class="top-bar">
                 <div>
-                    <h2 id="pageTitle">Inicio</h2>
-                    <div class="breadcrumb" id="breadcrumb">Inicio</div>
+                    <h2 id="pageTitle">Selecciona una opción</h2>
+                    <div class="breadcrumb" id="breadcrumb">Usa el menú lateral para comenzar</div>
                 </div>
-                <div id="notificationIcon" style="font-size: 1.5em; cursor: pointer; position:relative;" onclick="abrirPendientes()">🔔<span id="notificationCount" style="display:none; position:absolute; top:-8px; right:-10px; background:#e74c3c; color:white; border-radius:50%; min-width:20px; height:20px; padding:2px 5px; font-size:0.55em; text-align:center;">0</span></div>
+                <div style="display:flex; align-items:center; gap:16px;">
+                    <button type="button" onclick="irAInicio()" aria-label="Ir a inicio" style="font-size: 1.5em; background:none; border:none; cursor:pointer; line-height:1;">🏠</button>
+                    <div id="notificationIcon" style="font-size: 1.5em; cursor: pointer; position:relative;" onclick="abrirPendientes()">🔔<span id="notificationCount" style="display:none; position:absolute; top:-8px; right:-10px; background:#e74c3c; color:white; border-radius:50%; min-width:20px; height:20px; padding:2px 5px; font-size:0.55em; text-align:center;">0</span></div>
+                </div>
             </div>
 
             <!-- MESSAGE ALERT -->
             <div class="message" id="message"></div>
-
-            <!-- PÁGINA INICIO -->
-            <div class="page-section active" id="page-inicio">
-                <div class="form-container">
-                    <h2>Bienvenido</h2>
-                    <img class="welcome-image" src="imagenes/equipos-flota.jpg" alt="Equipos y maquinaria de obra gestionados en una flota" loading="eager">
-                    <p style="color: #63758a; margin-bottom: 20px;">Selecciona una tarea para comenzar.</p>
-                    <div class="quick-actions">
-                        <button type="button" class="quick-action" onclick="goToPage('repostajes', event)"><span>⛽</span><strong>Registrar repostaje</strong><small>Combustible, litros y ticket</small></button>
-                        <button type="button" class="quick-action" onclick="goToPage('mantenimientos', event)"><span>🔧</span><strong>Registrar mantenimiento</strong><small>Tareas y horómetro</small></button>
-                        <button type="button" class="quick-action" onclick="goToPage('partes', event)"><span>📋</span><strong>Crear parte de trabajo</strong><small>Cliente, obra y conceptos</small></button>
-                    </div>
-                </div>
-            </div>
 
             <!-- PÁGINA REPOSTAJES -->
             <div class="page-section" id="page-repostajes">
@@ -1276,7 +1315,7 @@
                 <div style="margin-top: 30px;">
                     <h3 class="form-title">📊 Histórico de repostajes</h3>
                     
-                    <div style="margin-bottom: 20px; display: flex; gap: 10px;">
+                    <div style="margin-bottom: 20px; display: flex; gap: 10px;" class="admin-hide">
                         <button class="btn btn-primary" onclick="descargarImagenes()" style="flex: 1;">📁 Descargar Imágenes (ZIP)</button>
                         <button class="btn btn-secondary" onclick="limpiarRepostajes()" style="flex: 1;">🗑️ Limpiar todo</button>
                     </div>
@@ -1354,11 +1393,11 @@
                     <div class="form-container" style="margin-top: 30px;"><h3 class="form-title">Historial de partes de trabajo</h3><div class="table-container"><table class="data-table"><thead><tr><th>Fecha</th><th>Cliente</th><th>Obra</th><th>Matrícula</th><th>Conceptos</th></tr></thead><tbody id="tbodyPartes"><tr><td colspan="5" class="empty-message">No hay partes registrados.</td></tr></tbody></table></div></div>
             </div>
 
-            <!-- PÁGINA INCIDENCIAS -->
+            <!-- PÁGINA REVISIONES PREVENTIVAS -->
             <div class="page-section" id="page-incidencias">
                 <div class="form-container">
-                    <h3>Registro de incidencias</h3>
-                    <p>Esta sección queda reservada para incidencias operativas generales.</p>
+                    <h3>Revisiones preventivas</h3>
+                    <p>Esta sección queda reservada para revisiones preventivas operativas generales.</p>
                 </div>
             </div>
 
@@ -1376,6 +1415,52 @@
                     </form>
                 </div>
                 <div class="form-container" style="margin-top: 30px;"><h3 class="form-title">Historial de daños estéticos</h3><div class="table-container"><table class="data-table"><thead><tr><th>Fecha</th><th>Matrícula</th><th>Zonas</th><th>Descripción</th><th>Foto</th></tr></thead><tbody id="tbodyDanos"><tr><td colspan="5" class="empty-message">No hay daños registrados.</td></tr></tbody></table></div></div>
+            </div>
+
+            <!-- PÁGINA COMPRAS -->
+            <div class="page-section" id="page-compras">
+                <div class="form-container">
+                    <h3>🛒 Compras</h3>
+                    <p>Registro de compras de ferretería, accesorios de vehículos y otros gastos.</p>
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Fecha <span class="required">*</span> (automática)</label>
+                            <input type="text" id="compraFecha" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Hora <span class="required">*</span> (automática)</label>
+                            <input type="text" id="compraHora" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Usuario <span class="required">*</span> (automático)</label>
+                            <input type="text" id="compraUsuario" readonly>
+                        </div>
+                    </div>
+
+                    <form id="compraForm" onsubmit="guardarCompra(event)">
+                        <h3 class="form-title">Nueva compra</h3>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label>Categoría <span class="required">*</span></label>
+                                <select id="compraCategoria" required>
+                                    <option value="">Selecciona categoría</option>
+                                    <option value="Ferretería">Ferretería</option>
+                                    <option value="Accesorios vehículos">Accesorios vehículos</option>
+                                    <option value="Otros">Otros</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Matrícula / Máquina <span class="required">*</span></label>
+                                <select id="compraMatricula" required></select>
+                            </div>
+                        </div>
+                        <div class="form-group"><label>Descripción</label><textarea id="compraDescripcion" placeholder="Detalle de la compra (si se requiere)..."></textarea></div>
+                        <div class="form-group"><label>Foto del albarán <span class="required">*</span></label><div id="compraDropZone" class="drop-zone" onclick="document.getElementById('compraFoto').click()"><div style="font-size: 2em;">⬆️</div><p>Pulsa para añadir la foto</p><p class="form-hint">Formatos permitidos: JPG, PNG</p></div><input type="file" id="compraFoto" accept="image/jpeg,image/png" required style="display:none"><div id="compraFotoPreview"></div></div>
+                        <div class="form-actions"><button type="submit" class="btn btn-primary">Guardar compra</button></div>
+                    </form>
+                </div>
+                <div class="form-container" style="margin-top: 30px;"><h3 class="form-title">Historial de compras</h3><div class="table-container"><table class="data-table"><thead><tr><th>Fecha</th><th>Hora</th><th>Categoría</th><th>Matrícula</th><th>Usuario</th><th>Descripción</th><th>Albarán</th></tr></thead><tbody id="tbodyCompras"><tr><td colspan="7" class="empty-message">No hay compras registradas.</td></tr></tbody></table></div></div>
             </div>
 
             <!-- PÁGINA INFORME (Solo Admin) -->
@@ -1420,7 +1505,7 @@
             <!-- PÁGINA VEHÍCULOS -->
             <div class="page-section" id="page-vehiculos">
                 <div class="form-container">
-                    <h3>🚙 Vehículos y máquinas</h3>
+                    <h3>🚙 Vehículos</h3>
                     <p>Alta y baja del catálogo de vehículos y máquinas de la flota.</p>
                     <form id="vehiculoForm" onsubmit="agregarVehiculo(event)">
                         <h3 class="form-title">Añadir vehículo / máquina</h3>
@@ -1465,10 +1550,10 @@
                 </div>
             </div>
 
-            <!-- PÁGINA CONFIGURACIÓN (Solo Admin) -->
+            <!-- PÁGINA COMERCIALIZADORAS (Solo Admin) -->
             <div class="page-section" id="page-configuracion">
                 <div class="form-container">
-                    <h3>⚙️ Configuración General</h3>
+                    <h3>⚙️ Comercializadoras</h3>
                     
                     <form id="configForm" onsubmit="guardarConfiguracion(event)">
                         <h4 style="margin-top: 20px; margin-bottom: 15px; color: #0f3460;">Información de la empresa</h4>
@@ -1561,7 +1646,7 @@
         // Inicializar IndexedDB
         function initDB() {
             return new Promise((resolve, reject) => {
-                const request = indexedDB.open('FleetManagementDB', 3);
+                const request = indexedDB.open('FleetManagementDB', 4);
 
                 request.onerror = () => reject(request.error);
                 request.onsuccess = () => {
@@ -1575,7 +1660,7 @@
                         const store = database.createObjectStore('repostajes', { keyPath: 'id', autoIncrement: true });
                         store.createIndex('fecha', 'fecha', { unique: false });
                     }
-                    ['mantenimientos', 'partes', 'danos', 'vehiculos'].forEach(nombre => {
+                    ['mantenimientos', 'partes', 'danos', 'vehiculos', 'compras'].forEach(nombre => {
                         if (!database.objectStoreNames.contains(nombre)) {
                             const store = database.createObjectStore(nombre, { keyPath: 'id', autoIncrement: true });
                             store.createIndex('fecha', 'fecha', { unique: false });
@@ -1636,7 +1721,7 @@
                 });
                 const result = await response.json();
                 if (!response.ok) throw new Error(result.error || 'No se pudo iniciar sesión');
-                currentUser = { username: result.identifier, nombre: result.name, role: result.role, avatar: result.name.charAt(0).toUpperCase() };
+                currentUser = { username: result.identifier, nombre: result.name, puesto: result.position, role: result.role, avatar: result.name.charAt(0).toUpperCase() };
                 localStorage.setItem('currentUser', JSON.stringify(currentUser));
                 document.getElementById('loginPage').style.display = 'none';
                 document.getElementById('appPage').classList.add('active');
@@ -1649,6 +1734,7 @@
                 setInterval(updateDateTime, 1000);
                 setMenuPermissions();
                 renderUsuarios();
+                actualizarNotificaciones();
                 return;
             } catch (apiError) {
                 if (apiError.message === 'Cuenta pendiente de autorización') {
@@ -1661,7 +1747,7 @@
             const encontrado = buscarUsuario(username);
             const user = encontrado?.datos;
             if (user && user.password === password && user.activo !== false) {
-                currentUser = { username: encontrado.clave, nombre: user.nombre || encontrado.clave, role: user.role, avatar: user.avatar };
+                currentUser = { username: encontrado.clave, nombre: user.nombre || encontrado.clave, puesto: user.puesto, role: user.role, avatar: user.avatar };
                 localStorage.setItem('currentUser', JSON.stringify(currentUser));
                 document.getElementById('loginPage').style.display = 'none';
                 document.getElementById('appPage').classList.add('active');
@@ -1674,6 +1760,7 @@
                 setInterval(updateDateTime, 1000);
                 setMenuPermissions();
                 renderUsuarios();
+                actualizarNotificaciones();
             } else {
                 const errorDiv = document.getElementById('loginError');
                 errorDiv.textContent = user && user.activo === false ? 'Su cuenta está pendiente de autorización' : 'DNI/NIE o contraseña incorrectos';
@@ -1760,6 +1847,20 @@
             }
         }
 
+        // Pantalla de inicio: la barra lateral ocupa toda la pantalla
+        function irAInicio() {
+            document.querySelectorAll('.page-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.getElementById('pageTitle').textContent = 'Selecciona una opción';
+            document.getElementById('breadcrumb').textContent = 'Usa el menú lateral para comenzar';
+            document.getElementById('appPage').classList.add('home-mode');
+            cerrarMenuMovil();
+        }
+
         function cerrarMenuMovil() {
             document.getElementById('sidebar').classList.remove('open');
             document.getElementById('sidebarOverlay').classList.remove('open');
@@ -1799,37 +1900,36 @@
                 const fechaAlta = user.created_at ? new Date(user.created_at.replace(' ', 'T') + 'Z').toLocaleDateString('es-ES') : '-';
                 return `<tr><td>${user.identifier}</td><td>${user.name}</td><td>${user.position || '-'}</td><td>${rol}</td><td><span style="color:#63758a; font-weight:bold;">No visible</span></td><td><span style="color:${estadoColor}; font-weight:bold;">${estado}</span></td><td>${fechaAlta}</td><td>${accion} <button class="btn" style="background:#6c757d; color:white; padding:5px 10px;" onclick="eliminarUsuario('${user.identifier}')">Eliminar</button></td></tr>`;
             }).join('');
-            actualizarNotificaciones(lista);
         }
 
-        async function actualizarNotificaciones(listaUsuarios) {
+        // La campana solo avisa de daños estéticos nuevos (no vistos todavía en esta pantalla)
+        async function obtenerTotalDanos() {
+            return new Promise(resolve => {
+                if (!db) return resolve(0);
+                const request = db.transaction(['danos'], 'readonly').objectStore('danos').getAll();
+                request.onsuccess = () => resolve(request.result.length);
+                request.onerror = () => resolve(0);
+            });
+        }
+
+        async function actualizarNotificaciones() {
             const contador = document.getElementById('notificationCount');
-            if (currentUser?.role !== 'Administrativo') {
-                if (contador) {
-                    contador.textContent = '0';
-                    contador.style.display = 'none';
-                }
-                return;
-            }
-            let lista = listaUsuarios;
-            if (!lista) {
-                try {
-                    const response = await fetch('/api/users');
-                    if (response.ok) lista = await response.json();
-                } catch (error) {
-                    return;
-                }
-            }
-            const pendientes = lista.filter(usuario => !usuario.active).length;
-            if (contador) {
-                contador.textContent = pendientes;
-                contador.style.display = pendientes ? 'block' : 'none';
-            }
+            if (!contador) return;
+            const total = await obtenerTotalDanos();
+            const vistos = Number(localStorage.getItem('danosVistos') || '0');
+            const nuevos = Math.max(0, total - vistos);
+            contador.textContent = nuevos;
+            contador.style.display = nuevos ? 'block' : 'none';
+        }
+
+        async function marcarDanosVistos() {
+            const total = await obtenerTotalDanos();
+            localStorage.setItem('danosVistos', String(total));
+            actualizarNotificaciones();
         }
 
         function abrirPendientes() {
-            if (currentUser?.role !== 'Administrativo') return;
-            goToPage('usuarios');
+            goToPage('danos-esteticos');
         }
 
         async function cambiarRolUsuario(identificador, rol) {
@@ -1938,6 +2038,10 @@
                     item.style.opacity = '';
                 }
             });
+            // Eliminar/descargar: oculto por completo para quien no sea Administrativo, no solo deshabilitado
+            document.querySelectorAll('.admin-hide').forEach(item => {
+                item.style.display = currentUser.role === 'Administrativo' ? '' : 'none';
+            });
         }
 
         // Navegar a página
@@ -1964,6 +2068,7 @@
 
             pageEl.classList.add('active');
             document.getElementById('appPage').classList.remove('mobile-menu-mode');
+            document.getElementById('appPage').classList.remove('home-mode');
             cerrarMenuMovil();
             
             const menuItem = navigationEvent?.currentTarget?.closest('.menu-item') || navigationEvent?.target?.closest('.menu-item');
@@ -1990,6 +2095,9 @@
             if (page === 'danos-esteticos') {
                 prepararDano();
             }
+            if (page === 'compras') {
+                prepararCompras();
+            }
             if (page === 'informe') {
                 prepararInforme();
                 prepararEstadisticas();
@@ -2009,6 +2117,11 @@
             document.getElementById('fechaField').value = fecha;
             document.getElementById('horaField').value = hora;
             document.getElementById('diaField').value = dia.charAt(0).toUpperCase() + dia.slice(1);
+
+            const compraFecha = document.getElementById('compraFecha');
+            const compraHora = document.getElementById('compraHora');
+            if (compraFecha) compraFecha.value = fecha;
+            if (compraHora) compraHora.value = hora;
         }
 
         // Guardar repostaje
@@ -2172,6 +2285,28 @@
                 danoDropZone.addEventListener('dragleave', () => { danoDropZone.style.background = '#fafbfd'; });
                 danoDropZone.addEventListener('drop', event => { event.preventDefault(); danoDropZone.style.background = '#fafbfd'; mostrarFotoDano(event.dataTransfer.files[0]); });
             }
+
+            const compraFoto = document.getElementById('compraFoto');
+            const compraDropZone = document.getElementById('compraDropZone');
+            const mostrarFotoCompra = file => {
+                if (!file || !['image/jpeg', 'image/png'].includes(file.type)) return;
+                compraFoto.files = (() => {
+                    const transferencia = new DataTransfer();
+                    transferencia.items.add(file);
+                    return transferencia.files;
+                })();
+                const reader = new FileReader();
+                reader.onload = event => {
+                    document.getElementById('compraFotoPreview').innerHTML = `<img src="${event.target.result}" style="max-width: 100%; max-height: 200px; margin-top: 10px; border-radius: 5px;">`;
+                };
+                reader.readAsDataURL(file);
+            };
+            if (compraFoto && compraDropZone) {
+                compraFoto.addEventListener('change', event => mostrarFotoCompra(event.target.files[0]));
+                compraDropZone.addEventListener('dragover', event => { event.preventDefault(); compraDropZone.style.background = '#eef4fb'; });
+                compraDropZone.addEventListener('dragleave', () => { compraDropZone.style.background = '#fafbfd'; });
+                compraDropZone.addEventListener('drop', event => { event.preventDefault(); compraDropZone.style.background = '#fafbfd'; mostrarFotoCompra(event.dataTransfer.files[0]); });
+            }
         });
 
         // Exportar todos los datos a un libro de Excel con varias hojas
@@ -2189,14 +2324,29 @@
             XLSX.utils.book_append_sheet(libro, hoja, nombre);
         }
 
+        // Historial permanente del servidor: no se ve afectado por borrados de registros operativos,
+        // por lo que el libro de Excel solo pierde datos si se editan directamente en el propio archivo.
+        async function obtenerHistorialCompleto() {
+            const respuesta = await fetch('/api/historial');
+            if (!respuesta.ok) throw new Error(`HTTP ${respuesta.status}`);
+            const registros = await respuesta.json();
+            const agrupado = {};
+            registros.forEach(registro => {
+                if (!agrupado[registro.record_type]) agrupado[registro.record_type] = [];
+                agrupado[registro.record_type].push(registro.data);
+            });
+            return agrupado;
+        }
+
         async function crearLibroExcel() {
             try {
-                const [repostajes, mantenimientos, partes, danos] = await Promise.all([
-                    obtenerRegistrosParaExcel('repostajes'),
-                    obtenerRegistrosParaExcel('mantenimientos'),
-                    obtenerRegistrosParaExcel('partes'),
-                    obtenerRegistrosParaExcel('danos')
-                ]);
+                const historial = await obtenerHistorialCompleto();
+                const repostajes = historial.repostajes || [];
+                const mantenimientos = historial.mantenimientos || [];
+                const partes = historial.partes || [];
+                const danos = historial.danos || [];
+                const compras = historial.compras || [];
+                const vehiculos = historial.vehiculos || [];
 
                 const libro = XLSX.utils.book_new();
                 agregarHojaExcel(libro, 'Resumen', [{
@@ -2204,8 +2354,10 @@
                     'Repostajes': repostajes.length,
                     'Mantenimientos': mantenimientos.length,
                     'Partes de trabajo': partes.length,
-                    'Daños estéticos': danos.length
-                }], [24, 15, 18, 18, 16]);
+                    'Daños estéticos': danos.length,
+                    'Compras': compras.length,
+                    'Vehículos': vehiculos.length
+                }], [24, 15, 18, 18, 16, 12, 14]);
 
                 agregarHojaExcel(libro, 'Repostajes', repostajes.map(r => ({
                     'Fecha': r.fecha, 'Hora': r.hora, 'Día': r.dia, 'Código de obra': r.codigoObra || '', 'Matrícula': r.matricula,
@@ -2231,6 +2383,17 @@
                     'Descripción': r.descripcion || '', 'Tiene foto': r.foto ? 'Sí' : 'No',
                     'Usuario': r.usuario, 'Timestamp': r.timestamp
                 })), [12, 14, 34, 50, 14, 18, 24]);
+
+                agregarHojaExcel(libro, 'Compras', compras.map(r => ({
+                    'Fecha': r.fecha, 'Hora': r.hora, 'Categoría': r.categoria, 'Matrícula': r.matricula || '',
+                    'Descripción': r.descripcion || '', 'Tiene foto': r.foto ? 'Sí' : 'No',
+                    'Usuario': r.usuarioNombre || r.usuario, 'Timestamp': r.timestamp
+                })), [12, 10, 20, 14, 40, 12, 18, 24]);
+
+                agregarHojaExcel(libro, 'Vehículos', vehiculos.map(r => ({
+                    'Matrícula': r.matricula, 'Alias': r.alias || '', 'Tipo': r.tipo || '',
+                    'Usuario': r.usuario, 'Timestamp': r.timestamp
+                })), [14, 20, 20, 18, 24]);
 
                 return libro;
             } catch (error) {
@@ -2385,6 +2548,7 @@
 
         // Descargar imágenes en ZIP
         async function descargarImagenes() {
+            if (currentUser?.role !== 'Administrativo') return;
             const transaction = db.transaction(['repostajes'], 'readonly');
             const store = transaction.objectStore('repostajes');
             const request = store.getAll();
@@ -2423,6 +2587,7 @@
 
         // Limpiar todos los repostajes
         function limpiarRepostajes() {
+            if (currentUser?.role !== 'Administrativo') return;
             if (!confirm('⚠️ ¿Deseas ELIMINAR TODOS los repostajes? Esta acción no se puede deshacer.')) {
                 return;
             }
@@ -2464,7 +2629,7 @@
                         <td>${r.litros}</td>
                         <td>${r.comercializadora}</td>
                         <td>${r.importe}€</td>
-                        <td>${r.foto ? '<a href="#" onclick="verFoto(event)">Ver PDF</a>' : '-'}</td>
+                        <td>${r.foto ? `<a href="${r.foto}" target="_blank" rel="noopener">Ver foto</a>` : '-'}</td>
                     </tr>
                 `).join('');
             };
@@ -2600,7 +2765,7 @@
 
         function rellenarMatriculas() {
             const opciones = opcionesMatriculas();
-            ['mantenimientoMatricula', 'parteMatricula', 'danoMatricula'].forEach(id => {
+            ['mantenimientoMatricula', 'parteMatricula', 'danoMatricula', 'compraMatricula'].forEach(id => {
                 const select = document.getElementById(id);
                 if (select) select.innerHTML = '<option value="">Selecciona matrícula / máquina</option>' + opciones.map(option => `<option value="${option.value}">${option.text}</option>`).join('');
             });
@@ -2634,13 +2799,42 @@
             const fila = document.createElement('div');
             fila.className = 'form-grid';
             fila.style.marginBottom = '10px';
-            fila.innerHTML = `<select class="parte-concepto"><option value="">Selecciona concepto...</option>${conceptos.map(concepto => `<option value="${concepto}">${concepto}</option>`).join('')}</select><input class="parte-detalle" type="text" placeholder="Cantidad / Horas / Descripción (ej: 5h)">`;
+            fila.innerHTML = `<div class="form-group"><select class="parte-concepto" onchange="this.closest('.form-grid').querySelector('.parte-otro').style.display = this.value === 'Otros' ? 'block' : 'none';"><option value="">Selecciona concepto...</option>${conceptos.map(concepto => `<option value="${concepto}">${concepto}</option>`).join('')}</select></div><div class="form-group"><input class="parte-detalle" type="text" placeholder="Cantidad / Horas / Descripción (ej: 5h)"><input class="parte-otro" type="text" placeholder="Especifica el concepto" style="display:none; margin-top:8px;"></div>`;
             document.getElementById('listaConceptosParte').appendChild(fila);
         }
 
         function prepararDano() {
             rellenarMatriculas();
-            cargarHistorial('danos', 'tbodyDanos', registro => `<tr><td>${registro.fecha}</td><td>${registro.matricula}</td><td>${registro.zonas.join(', ') || '-'}</td><td>${registro.descripcion || '-'}</td><td>${registro.foto ? '<span style="color:green;">Sí</span>' : 'No'}</td></tr>`, 5);
+            cargarHistorial('danos', 'tbodyDanos', registro => `<tr><td>${registro.fecha}</td><td>${registro.matricula}</td><td>${registro.zonas.join(', ') || '-'}</td><td>${registro.descripcion || '-'}</td><td>${registro.foto ? `<a href="${registro.foto}" target="_blank" rel="noopener">Ver foto</a>` : 'No'}</td></tr>`, 5);
+            marcarDanosVistos();
+        }
+
+        function prepararCompras() {
+            rellenarMatriculas();
+            document.getElementById('compraUsuario').value = currentUser.nombre || currentUser.username;
+            cargarHistorial('compras', 'tbodyCompras', registro => `<tr><td>${registro.fecha}</td><td>${registro.hora || '-'}</td><td>${registro.categoria}</td><td>${registro.matricula || '-'}</td><td>${registro.usuarioNombre || registro.usuario}</td><td>${registro.descripcion || '-'}</td><td>${registro.foto ? `<a href="${registro.foto}" target="_blank" rel="noopener">Ver foto</a>` : 'No'}</td></tr>`, 7);
+        }
+
+        function guardarCompra(event) {
+            event.preventDefault();
+            const categoria = document.getElementById('compraCategoria').value;
+            if (!categoria) return showMessage('Selecciona una categoría', 'error');
+            const archivo = document.getElementById('compraFoto').files[0];
+            if (!archivo) return showMessage('Añade la foto del albarán', 'error');
+            leerArchivoComoBase64(archivo).then(foto => {
+                const data = {
+                    fecha: document.getElementById('compraFecha').value,
+                    hora: document.getElementById('compraHora').value,
+                    categoria,
+                    matricula: document.getElementById('compraMatricula').value,
+                    descripcion: document.getElementById('compraDescripcion').value,
+                    foto,
+                    usuario: currentUser.username,
+                    usuarioNombre: currentUser.nombre || currentUser.username,
+                    timestamp: new Date().toISOString()
+                };
+                guardarRegistro('compras', data, 'compraForm', prepararCompras);
+            });
         }
 
         function leerArchivoComoBase64(file) {
@@ -2682,7 +2876,7 @@
                 const response = await fetch('/api/records');
                 if (!response.ok) return false;
                 const registros = await response.json();
-                const stores = ['repostajes', 'mantenimientos', 'partes', 'danos', 'vehiculos'];
+                const stores = ['repostajes', 'mantenimientos', 'partes', 'danos', 'vehiculos', 'compras'];
                 const transaction = db.transaction(stores, 'readwrite');
                 stores.forEach(store => transaction.objectStore(store).clear());
                 registros.forEach(registro => {
@@ -2725,7 +2919,8 @@
 
         function crearPdfParte(data) {
             const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF({ unit: 'mm', format: 'a4' });
+            // Medio folio apaisado: la mitad de un A4 (210 x 148.5 mm)
+            const pdf = new jsPDF({ unit: 'mm', format: [210, 148.5], orientation: 'landscape' });
             const margen = 18;
             const ancho = 210 - (margen * 2);
             const numero = String(data.numero).padStart(4, '0');
@@ -2735,23 +2930,23 @@
             pdf.setTextColor(35, 45, 48);
             pdf.setLineWidth(0.35);
             pdf.setFont('helvetica', 'bold');
-            pdf.setFontSize(25);
+            pdf.setFontSize(20);
             pdf.setTextColor(20, 105, 108);
-            pdf.text('valdi', margen, 27);
-            pdf.setFontSize(8);
-            pdf.text('obras y servicios s.l.', margen + 1, 34);
+            pdf.text('valdi', margen, 17);
+            pdf.setFontSize(7);
+            pdf.text('obras y servicios s.l.', margen + 1, 22);
             pdf.setTextColor(35, 45, 48);
-            pdf.setFontSize(9);
-            pdf.text('C/ Conde de Orgaz, 1 local 2 ext. byc', 76, 17);
-            pdf.text('45210 Yuncos. Toledo', 76, 22);
-            pdf.text('Tel.: 925 536 144  •  Fax: 925 536 145', 76, 27);
-            pdf.text('Móvil: 630 508 858', 76, 32);
-            pdf.text('administracion@obras yserviciosvaldi.com', 76, 37);
-            pdf.setFontSize(13);
-            pdf.text('Nº', 158, 22);
+            pdf.setFontSize(8);
+            pdf.text('C/ Conde de Orgaz, 1 local 2 ext. byc', 76, 10);
+            pdf.text('45210 Yuncos. Toledo', 76, 14);
+            pdf.text('Tel.: 925 536 144  •  Fax: 925 536 145', 76, 18);
+            pdf.text('Móvil: 630 508 858', 76, 22);
+            pdf.text('administracion@obras yserviciosvaldi.com', 76, 26);
+            pdf.setFontSize(11);
+            pdf.text('Nº', 158, 14);
             pdf.setTextColor(180, 35, 35);
-            pdf.setFontSize(22);
-            pdf.text(numero, 175, 23);
+            pdf.setFontSize(18);
+            pdf.text(numero, 175, 15);
             pdf.setTextColor(35, 45, 48);
 
             const campo = (etiqueta, valor, x, y, longitud) => {
@@ -2764,38 +2959,38 @@
                 pdf.line(inicio, y + 1.5, x + longitud, y + 1.5);
             };
 
-            campo('Cliente:', data.cliente, margen, 55, 102);
-            campo('Matrícula:', data.matricula, 122, 55, 192);
-            campo('CÓDIGO:', data.codigo, margen, 68, 102);
-            campo('Obra:', data.obra, 107, 68, 192);
+            campo('Cliente:', data.cliente, margen, 38, 102);
+            campo('Matrícula:', data.matricula, 122, 38, 192);
+            campo('CÓDIGO:', data.codigo, margen, 48, 102);
+            campo('Obra:', data.obra, 107, 48, 192);
 
-            pdf.roundedRect(margen, 77, ancho, 57, 5, 5);
+            pdf.roundedRect(margen, 55, ancho, 45, 5, 5);
             pdf.setFont('helvetica', 'bold');
             pdf.setFontSize(13);
-            pdf.text('Vale por:', margen + 4, 87);
+            pdf.text('Vale por:', margen + 4, 64);
             pdf.setFont('helvetica', 'normal');
-            pdf.setFontSize(11);
-            pdf.line(margen + 34, 88, margen + ancho - 1, 88);
+            pdf.setFontSize(10);
+            pdf.line(margen + 34, 65, margen + ancho - 1, 65);
             conceptos.slice(0, 5).forEach((concepto, index) => {
-                const y = 87 + (index * 10);
-                if (index > 0) pdf.line(margen + 1, y - 4, margen + ancho - 1, y - 4);
+                const y = 64 + (index * 8);
+                if (index > 0) pdf.line(margen + 1, y - 3, margen + ancho - 1, y - 3);
                 pdf.text(concepto, margen + 36, y);
             });
             pdf.setFont('helvetica', 'bold');
             pdf.setFontSize(10);
-            pdf.text('Conforme:', 92, 141);
-            pdf.line(105, 142, 192, 142);
+            pdf.text('Conforme:', 92, 110);
+            pdf.line(105, 111, 192, 111);
 
-            campo('Nombre:', data.nombre || data.usuario, margen, 170, 75);
+            campo('Nombre:', data.nombre || data.usuario, margen, 132, 75);
             pdf.setFont('helvetica', 'bold');
-            pdf.text('Fecha:', 91, 170);
+            pdf.text('Fecha:', 91, 132);
             const partesFecha = String(data.fecha || '').split('-');
             const fecha = partesFecha.length === 3 ? `${partesFecha[2]}    de    ${partesFecha[1]}    de    ${partesFecha[0]}` : data.fecha;
             pdf.setFont('helvetica', 'normal');
-            pdf.text(fecha, 110, 170);
-            pdf.line(110, 172, 192, 172);
-            pdf.setFontSize(8);
-            pdf.text('C.I.F.: B-45661784', margen, 116, { angle: 90 });
+            pdf.text(fecha, 110, 132);
+            pdf.line(110, 134, 192, 134);
+            pdf.setFontSize(7);
+            pdf.text('C.I.F.: B-45661784', margen, 90, { angle: 90 });
             return pdf.output('datauristring');
         }
 
@@ -2817,7 +3012,11 @@
 
         async function guardarParte(event) {
             event.preventDefault();
-            const conceptos = Array.from(document.querySelectorAll('#listaConceptosParte .form-grid')).map(fila => ({ nombre: fila.querySelector('.parte-concepto').value, detalle: fila.querySelector('.parte-detalle').value })).filter(concepto => concepto.nombre || concepto.detalle);
+            const conceptos = Array.from(document.querySelectorAll('#listaConceptosParte .form-grid')).map(fila => {
+                const nombreSeleccionado = fila.querySelector('.parte-concepto').value;
+                const otro = fila.querySelector('.parte-otro').value.trim();
+                return { nombre: nombreSeleccionado === 'Otros' ? (otro || 'Otros') : nombreSeleccionado, detalle: fila.querySelector('.parte-detalle').value };
+            }).filter(concepto => concepto.nombre || concepto.detalle);
             if (!conceptos.length) return showMessage('Añade al menos un concepto', 'error');
             try {
                 const numero = await reservarNumeroParte();
@@ -2895,6 +3094,7 @@
 
         // Eliminar comercializadora
         function eliminarComercializadora(idx) {
+            if (currentUser?.role !== 'Administrativo') return;
             const config = JSON.parse(localStorage.getItem('appConfig') || '{}');
             const comercializadoras = config.comercializadoras || ['Repsol', 'Cepsa', 'BP', 'Shell'];
             const eliminada = comercializadoras[idx];
