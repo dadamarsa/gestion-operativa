@@ -24,3 +24,6 @@ imagenes/
 .DS_Store
 Thumbs.db
 .vscode/
+
+# Sesiones de Azure App Onboard (pueden contener secretos)
+.copilot-azure/

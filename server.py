@@ -89,6 +89,11 @@ def init_database():
             (identifier, name, position, password, role, active, created_at)
             VALUES (?, ?, ?, ?, ?, ?, datetime('now'))
         ''', ('conductor', 'Conductor', 'Conductor', 'cond123', 'Conductor', 1))
+        connection.execute('''
+            INSERT OR IGNORE INTO users
+            (identifier, name, position, password, role, active, created_at)
+            VALUES (?, ?, ?, ?, ?, ?, datetime('now'))
+        ''', ('mecanico', 'Mecánico', 'Mecánico', 'mec123', 'Mecánico', 1))
 
 
 def json_response(handler, status, payload):
@@ -143,7 +148,7 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                 with sqlite3.connect(DATABASE) as connection:
                     connection.execute(
                         'INSERT INTO users (identifier, name, position, password, role, active, created_at) VALUES (?, ?, ?, ?, ?, ?, datetime(\'now\'))',
-                        (identifier, name, position, password, 'Conductor', 0)
+                        (identifier, name, position, password, 'Mecánico' if position.lower().replace('á', 'a') == 'mecanico' else 'Conductor', 0)
                     )
                 json_response(self, 201, {'message': 'Solicitud registrada'})
             except sqlite3.IntegrityError:
@@ -251,7 +256,7 @@ class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
                 body = read_json_body(self)
                 identifier = body.get('identifier', '').strip().lower()
                 role = body.get('role', '').strip()
-                if role not in ('Administrativo', 'Conductor') or identifier == 'admin':
+                if role not in ('Administrativo', 'Conductor', 'Mecánico') or identifier == 'admin':
                     json_response(self, 400, {'error': 'Rol no permitido para este usuario'})
                     return
                 with sqlite3.connect(DATABASE) as connection:
