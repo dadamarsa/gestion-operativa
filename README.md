@@ -1,113 +1,117 @@
-# 📊 Gestión Operativa
+# StartTrucks
 
-Una aplicación web para recopilar datos y agilizar procesos operativos con múltiples usuarios.
+Aplicación web para la gestión operativa de vehículos, maquinaria y procesos de flota.
 
-## ✨ Características
+## Estado actual
 
-- ✅ **Interfaz intuitiva** - Formulario fácil de usar
-- ✅ **Almacenamiento local** - Datos guardados en IndexedDB (navegador)
-- ✅ **Múltiples usuarios** - Acceso simultáneo sin conflictos
-- ✅ **Velocidad** - Respuesta instantánea
-- ✅ **Exportar datos** - Descarga en formato CSV
-- ✅ **Estadísticas** - Total de registros y registros de hoy
-- ✅ **Responsive** - Funciona en dispositivos móviles
+- Login y registro de usuarios.
+- Roles internos para permisos: `Administrativo`, `Mecánico` y otros puestos operativos.
+- Identidad configurable por empresa. Por defecto se muestra `StartTrucks`.
+- Logo y nombre de empresa configurables desde Administración.
+- Diseño responsive para ordenador, tablet y móvil.
+- Menú para repostajes, mantenimientos, partes, daños, compras, vehículos, usuarios e informes.
+- Campana de notificaciones eliminada.
+- Botón de inicio funcional para volver al menú principal.
 
-## 🚀 Cómo usar
+## Revisiones preventivas
 
-### Opción 1: Abrir directamente en el navegador
-```bash
-# En Windows, simplemente abre el archivo:
-# Haz doble clic en: index.html
+La sección está disponible únicamente para usuarios con rol `Administrativo` o `Mecánico`.
+
+| Columna | Campo |
+| --- | --- |
+| A | Matrícula |
+| B | Vehículo o alias |
+| C | Clasificación: Camión, Bañera, Remolque, Coche o Máquina |
+| D | Fecha de la última revisión |
+| E | Mantenimiento: Cambio de aceite y filtros, Aceites u Otros |
+| F | Email |
+| G | Días para el vencimiento |
+| H | Fecha de vencimiento |
+| I | Estado |
+| J | Estado del email |
+| K | Estado operativo: Operativo o Inactivo |
+| L | Observaciones |
+
+Los campos G, H, I y J son automáticos. En una ficha existente solo se puede modificar la fecha de la última revisión.
+
+Cada cambio de fecha genera un histórico con matrícula, vehículo, fecha anterior, fecha nueva, usuario y fecha/hora del cambio. Las tarjetas de próximos vencimientos y vencidos filtran directamente el listado.
+
+## Fórmulas de referencia
+
+### Columna G
+
+```excel
+=SI(D5="";"";H5-HOY())
 ```
 
-### Opción 2: Usar un servidor Python (recomendado para múltiples usuarios remotos)
-```bash
-# Abre PowerShell o terminal
-# Navega a la carpeta del proyecto
-cd "c:\Users\dadam\OneDrive\Escritorio\David\APP"
+### Columna H
 
-# Ejecuta el servidor
+```excel
+=SI(D5="";"";SI(C5="";"";D5+BUSCARV(MINUSC(C5);{"coche"\180;"Camion"\150;"Bañera"\70;"Remolque"\365;"Maquina"\60};2;FALSO)))
+```
+
+### Columna I
+
+```excel
+=SI(H9="";"";SI(H9-HOY()<0;"Vencido";SI(H9-HOY()<=7;"Próximo a vencer";"OK")))
+```
+
+## Históricos y permisos
+
+- Los usuarios normales solo visualizan sus propios registros.
+- El administrador puede consultar todos los registros.
+- La descarga de informes está limitada al administrador.
+- El módulo preventivo filtra también su histórico por usuario.
+- El rol se usa para permisos, pero la interfaz muestra el nombre y el puesto.
+- Revisiones preventivas: acceso para `Administrativo` y `Mecánico`.
+- ITV y Seguros: acceso reservado a `Administrativo`.
+
+## Correos de vencimiento
+
+La columna J queda preparada para mostrar `Enviado` después de enviar un aviso. El envío con `GmailApp` se realizará mediante un Google Apps Script independiente con `doPost`, usando el email de cada registro y la copia definida en el script. La misma lógica podrá aplicarse a mantenimientos, ITV y seguros sin mezclar clientes.
+
+## Identidad y PDFs
+
+- Paleta: grafito `#1A1A1A`, azul medianoche `#212239`, amarillo tráfico `#FFB800` y blanco `#FFFFFF`.
+- Logo de StartTrucks como marca predeterminada.
+- Logo de empresa configurable desde Administración.
+- Los nuevos PDFs pueden incorporar logo, nombre, teléfono y email de la empresa configurada.
+- Los PDFs ya generados no se modifican.
+
+## Arquitectura y almacenamiento
+
+- Frontend: `index.html` con HTML, CSS y JavaScript.
+- Backend local: `server.py`.
+- Base de datos local: SQLite en `datos/gestion_operativa.db`.
+- Datos operativos locales: IndexedDB del navegador.
+- Archivos y fotos: carpetas dentro de `datos/`.
+- Excel preventivo: separado del Excel general y preparado para alojarse en la nube.
+- No se utilizará Google Drive como almacenamiento de la aplicación.
+
+## Ejecución local
+
+```powershell
+cd "C:\Users\dadam\OneDrive\Escritorio\APP"
 python server.py
 ```
 
-Luego accede a: **http://localhost:8000**
+Abrir `http://localhost:8000`.
 
-### Opción 3: Usar un servidor simple de Python (alternativa)
-```bash
-# Dirección simple
-python -m http.server 8000
+Durante el desarrollo se puede usar un túnel temporal para probar desde el móvil. No es un enlace permanente de producción.
+
+## Publicación prevista
+
+La aplicación se publicará en Azure cuando el módulo preventivo, permisos, históricos, correos y almacenamiento estén preparados y probados.
+
+```text
+Azure App Service
+└── Azure Storage
+	└── Archivos separados por cliente
 ```
 
-## 📋 Formulario
+## Pendiente
 
-El formulario incluye los siguientes campos:
-- **Nombre** - Nombre completo del usuario
-- **Email** - Correo electrónico
-- **Categoría** - Tipo de dato (Retroalimentación, Encuesta, Queja, Sugerencia, Otro)
-- **Mensaje** - Descripción detallada
-
-## 📊 Vista de Datos
-
-- **Total de registros** - Cuenta todos los datos guardados
-- **Registros de hoy** - Datos ingresados en la fecha actual
-- **Tabla de datos** - Visualización de todos los registros
-- **Botón Actualizar** - Recarga los datos (automático cada 2 segundos)
-- **Descargar CSV** - Exporta todos los datos en formato CSV
-- **Limpiar todo** - Elimina todos los datos (⚠️ irreversible)
-
-## 💾 Almacenamiento
-
-Los datos se guardan en **IndexedDB**, que es:
-- ✅ Local (no se envía a ningún servidor)
-- ✅ Persistente (se mantienen incluso al cerrar el navegador)
-- ✅ Rápido
-- ✅ Seguro
-
-## 🔄 Cómo acceder desde otros dispositivos
-
-Si el servidor está ejecutándose en tu computadora:
-1. Encuentra tu IP local: `ipconfig` en PowerShell
-2. Otros usuarios pueden acceder a: `http://[TU_IP]:8000`
-
-Ejemplo: `http://192.168.1.100:8000`
-
-## 📥 Datos de múltiples usuarios
-
-Cuando múltiples usuarios envían datos simultáneamente:
-- Cada usuario ve los datos en tiempo real (actualización cada 2 segundos)
-- Los datos se sincronizan automáticamente
-- No hay pérdida de información
-
-## ⚙️ Archivo de configuración para servidor Node.js
-
-Si en el futuro deseas usar Node.js en lugar de Python, ejecuta:
-```bash
-npm install
-npm start
-```
-
-## 🛠️ Futuras mejoras
-
-- [ ] Backend en Node.js o Python con base de datos SQL
-- [ ] Autenticación de usuarios
-- [ ] Búsqueda y filtrado de datos
-- [ ] Gráficos y análisis
-- [ ] Notificaciones en tiempo real
-
-## ❓ Preguntas frecuentes
-
-**P: ¿Dónde se guardan los datos?**
-A: En IndexedDB del navegador. Cada navegador/dispositivo tiene su propia base de datos.
-
-**P: ¿Se pierden los datos si cierro el navegador?**
-A: No, IndexedDB es persistente. Los datos se mantienen.
-
-**P: ¿Puedo acceder desde mi teléfono?**
-A: Sí, si el servidor está activo y accedes a la IP local de tu computadora.
-
-**P: ¿Cómo exporto los datos?**
-A: Haz clic en "💾 Descargar CSV" en la sección de datos.
-
----
-
-**Creado con ❤️ para recopilar datos de forma rápida y eficiente**
+- Conectar el `doPost` de Google Apps Script para los avisos.
+- Terminar las pantallas de ITV y Seguros.
+- Sustituir el almacenamiento local por almacenamiento cloud al publicar en Azure.
+- Completar pruebas con varios usuarios y clientes.

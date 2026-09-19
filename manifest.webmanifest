@@ -1,6 +1,6 @@
 {
-  "name": "Gestión Operativa",
-  "short_name": "Gestión Operativa",
+  "name": "StartTrucks",
+  "short_name": "StartTrucks",
   "description": "Recopilación y gestión de procesos operativos",
   "start_url": "/",
   "display": "standalone",
@@ -9,9 +9,9 @@
   "lang": "es",
   "icons": [
     {
-      "src": "icon.svg",
+      "src": "imagenes/logo-starttrucks-transparent.png",
       "sizes": "any",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ]

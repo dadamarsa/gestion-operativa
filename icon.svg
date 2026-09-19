@@ -1,6 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="96" fill="#0f3460"/>
-  <path d="M128 144h256v64H128zM128 240h256v64H128zM128 336h160v64H128z" fill="#fff"/>
-  <circle cx="384" cy="368" r="56" fill="#ffa500"/>
-  <path d="m356 368 20 20 38-44" fill="none" stroke="#0f3460" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 760" role="img" aria-labelledby="title desc">
+<title id="title">StartTrucks</title><desc id="desc">Logo de StartTrucks con maquinaria y tecnologia</desc>
+<defs><linearGradient id="body" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#46545a"/><stop offset=".48" stop-color="#11191e"/><stop offset="1" stop-color="#303c42"/></linearGradient><linearGradient id="tip" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f4f5f1"/><stop offset="1" stop-color="#aeb4b3"/></linearGradient><clipPath id="clip"><path d="M320 34C177 34 77 131 77 272c0 139 113 239 243 377 130-138 243-238 243-377C563 131 463 34 320 34Z"/></clipPath><filter id="shadow"><feDropShadow dx="0" dy="14" stdDeviation="13" flood-color="#172229" flood-opacity=".32"/></filter></defs>
+<path d="M320 34C177 34 77 131 77 272c0 139 113 239 243 377 130-138 243-238 243-377C563 131 463 34 320 34Z" fill="url(#body)" filter="url(#shadow)"/>
+<g clip-path="url(#clip)" fill="none" stroke="#7da0a5" stroke-width="3" opacity=".62"><path d="M0 135h145l50 48h120M0 173h96l55 55h164M640 131H492l-66 64H330M640 179H535l-63 62H350M0 500h130l72-69h91M640 492H509l-66-63H351M0 548h177l57-57h55M640 540H493l-53-51H347M202 0v129l40 40v56M247 0v108l35 35v83M438 0v123l-42 41v56M391 0v107l-35 37v79M189 760V610l48-49v-72M236 760V635l43-43v-89M451 760V621l-48-48v-79M404 760V642l-41-41v-84"/></g>
+<g clip-path="url(#clip)" fill="#b7e2e1"><circle cx="194" cy="183" r="6"/><circle cx="151" cy="228" r="6"/><circle cx="472" cy="241" r="6"/><circle cx="202" cy="431" r="6"/><circle cx="440" cy="429" r="6"/></g>
+<path d="M77 390c45 66 107 133 243 259 136-126 198-193 243-259l-34 111-209 207-209-207Z" fill="url(#tip)"/><rect x="102" y="254" width="436" height="105" rx="12" fill="#0b1115" opacity=".72"/>
+<text x="320" y="324" text-anchor="middle" font-family="Arial Black,Arial,Helvetica,sans-serif" font-size="58" font-weight="900" font-style="italic" letter-spacing="-2" stroke="#0b1115" stroke-width="3" paint-order="stroke" fill="#f8f8f5"><tspan>Start</tspan><tspan fill="#f3c91b">Tr</tspan><tspan fill="#f8f8f5">ucks</tspan></text><path d="M315 253h25l-15 38h27l-54 58 18-43h-27Z" fill="#f3c91b"/>
 </svg>

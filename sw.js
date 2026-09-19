@@ -1,9 +1,11 @@
-const CACHE_NAME = 'gestion-operativa-v3';
+const CACHE_NAME = 'gestion-operativa-v38';
 const APP_SHELL = [
   '/',
   '/index.html',
   '/manifest.webmanifest',
-  '/icon.svg'
+  '/imagenes/logo-starttrucks-transparent.png',
+  '/imagenes/starttrucks-wordmark.png',
+  '/imagenes/equipos-flota.jpg'
 ];
 
 self.addEventListener('install', event => {

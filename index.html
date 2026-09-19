@@ -6,11 +6,11 @@
     <meta name="theme-color" content="#0f3460">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Gestión Operativa">
+    <meta name="apple-mobile-web-app-title" content="StartTrucks">
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="icon" href="icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="icon.svg">
-    <title>Apptrucks</title>
+    <link rel="icon" href="imagenes/logo-starttrucks-transparent.png" type="image/png">
+    <link rel="apple-touch-icon" href="imagenes/logo-starttrucks-transparent.png">
+    <title>StartTrucks</title>
     <style>
         * {
             margin: 0;
@@ -19,7 +19,7 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
             background: #f5f7fa;
             overflow-x: hidden;
         }
@@ -105,6 +105,13 @@
             border-radius: 5px;
             margin-bottom: 20px;
             display: none;
+        }
+        .login-logo {
+            display: block;
+            width: 142px;
+            height: 168px;
+            object-fit: contain;
+            margin: -8px auto 8px;
         }
 
         .auth-link {
@@ -221,6 +228,38 @@
             opacity: 0.8;
         }
 
+        .app-brand-logo {
+            display: block;
+            width: 92px;
+            height: 92px;
+            object-fit: contain;
+            margin: 0 auto 10px;
+        }
+
+        .mobile-brand-logo {
+            width: 38px;
+            height: 38px;
+            object-fit: contain;
+            flex: 0 0 auto;
+        }
+
+        .app-brand-wordmark {
+            display: block;
+            width: min(180px, 100%);
+            height: auto;
+            max-height: 52px;
+            object-fit: contain;
+            margin: 0 auto 8px;
+        }
+
+        .mobile-brand-wordmark {
+            width: 126px;
+            height: auto;
+            max-height: 34px;
+            object-fit: contain;
+            flex: 0 0 auto;
+        }
+
         .menu-title {
             font-size: 0.85em;
             opacity: 0.6;
@@ -246,7 +285,7 @@
         }
 
         .menu-item.active {
-            background: #ffa500;
+            background: #ffb800;
             color: white;
         }
 
@@ -274,7 +313,7 @@
             width: 40px;
             height: 40px;
             flex-shrink: 0;
-            background: linear-gradient(135deg, #ffa500 0%, #ff8c00 100%);
+            background: linear-gradient(135deg, #ffb800 0%, #d99800 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -392,7 +431,7 @@
         .form-title {
             color: #0f3460;
             margin-bottom: 20px;
-            border-bottom: 2px solid #ffa500;
+            border-bottom: 2px solid #ffb800;
             padding-bottom: 10px;
         }
 
@@ -617,30 +656,63 @@
             color: #383d41;
         }
 
-        /* Identidad visual de Gestión Operativa */
+        /* Identidad visual corporativa */
         :root {
-            --go-navy: #102a43;
-            --go-deep: #0b1f33;
-            --go-blue: #1f5f8b;
-            --go-orange: #e59b27;
-            --go-canvas: #f1f5f8;
+            --go-navy: #212239;
+            --go-deep: #1a1a1a;
+            --go-blue: #3b3d61;
+            --go-orange: #ffb800;
+            --go-canvas: #e1e4e6;
             --go-line: #d9e2ec;
-            --go-shadow: 0 10px 28px rgba(16, 42, 67, 0.08);
+            --go-shadow: 0 10px 28px rgba(26, 26, 26, 0.12);
+            --brand-white: #ffffff;
         }
 
         body {
-            font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
             background: var(--go-canvas);
         }
 
         .login-container {
-            background: radial-gradient(circle at 15% 10%, #315f86 0, transparent 34%), linear-gradient(135deg, var(--go-navy) 0%, var(--go-deep) 100%);
+            position: relative;
+            overflow: hidden;
+            background-image: linear-gradient(135deg, rgba(26, 26, 26, 0.86), rgba(33, 34, 57, 0.78)), url('imagenes/equipos-flota.jpg');
+            background-position: center;
+            background-size: cover;
+        }
+
+        .login-container::before {
+            content: "";
+            position: absolute;
+            inset: -20%;
+            opacity: 0.18;
+            background: repeating-linear-gradient(125deg, transparent 0 42px, rgba(190, 171, 130, 0.12) 43px, transparent 44px 112px);
+            transform: rotate(-8deg);
+            pointer-events: none;
+        }
+
+        .login-container::after {
+            content: "";
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            right: -120px;
+            bottom: -120px;
+            border: 1px solid rgba(244, 215, 136, 0.35);
+            border-radius: 50%;
+            box-shadow: 0 0 0 22px rgba(244, 215, 136, 0.05), 0 0 0 46px rgba(244, 215, 136, 0.04);
+            pointer-events: none;
         }
 
         .login-box {
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            border-radius: 16px;
-            box-shadow: 0 22px 60px rgba(4, 18, 32, 0.28);
+            position: relative;
+            z-index: 1;
+            max-width: 430px;
+            padding: 30px 34px 28px;
+            background: linear-gradient(160deg, rgba(33, 34, 57, 0.98), rgba(26, 26, 26, 0.98));
+            border: 1px solid rgba(255, 184, 0, 0.42);
+            border-radius: 22px;
+            box-shadow: 0 28px 80px rgba(2, 10, 20, 0.42), 0 0 0 8px rgba(255, 255, 255, 0.05);
         }
 
         .login-box h1,
@@ -649,11 +721,63 @@
             color: var(--go-navy);
         }
 
+        .login-box h1 {
+            margin-bottom: 8px;
+            font-size: 2.25em;
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            color: var(--brand-white);
+            font-family: 'Montserrat', 'Arial Black', 'Trebuchet MS', sans-serif;
+            text-transform: none;
+        }
+
+        .sidebar-logo h3,
+        #loginBrandName,
+        #registerBrandName {
+            font-family: 'Montserrat', 'Arial Black', 'Trebuchet MS', sans-serif;
+            font-weight: 900;
+            letter-spacing: -0.035em;
+        }
+
+        .login-box p {
+            color: #b8c5d2;
+            margin-bottom: 24px;
+        }
+
+        .login-logo {
+            width: 154px;
+            height: 176px;
+            margin: -12px auto 2px;
+            filter: drop-shadow(0 10px 12px rgba(16, 42, 67, 0.18));
+        }
+
+        .brand-wordmark {
+            display: block;
+            width: min(310px, 90%);
+            height: auto;
+            max-height: 58px;
+            object-fit: contain;
+            margin: 0 auto 10px;
+            background: transparent;
+            filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.45));
+        }
+
+        .form-group label {
+            color: #e0e8ef;
+            font-size: 0.78em;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
         .form-group input,
         .form-group select,
         .form-group textarea {
-            border: 1px solid var(--go-line);
-            border-radius: 8px;
+            min-height: 46px;
+            border: 1px solid #40556a;
+            border-radius: 10px;
+            background: rgba(6, 18, 31, 0.78);
+            color: #f4f7f9;
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
         }
 
         .form-group input:focus,
@@ -661,16 +785,303 @@
         .form-group textarea:focus {
             border-color: var(--go-blue);
             box-shadow: 0 0 0 3px rgba(31, 95, 139, 0.12);
+            background: rgba(11, 31, 51, 0.98);
         }
 
-        .btn-login,
-        .btn-primary {
-            background: var(--go-navy);
-            border-radius: 8px;
+        .btn-login {
+            min-height: 48px;
+            margin-top: 4px;
+            background: linear-gradient(135deg, #ffb800 0%, #d99800 100%);
+            color: #1a1a1a;
+            border-radius: 10px;
+            box-shadow: 0 8px 18px rgba(112, 96, 62, 0.2);
+            font-weight: 800;
+            letter-spacing: 0.01em;
+        }
+
+        .btn-login:hover {
+            background: linear-gradient(135deg, #ffc83d 0%, #e4a600 100%);
+            box-shadow: 0 11px 22px rgba(255, 184, 0, 0.24);
+        }
+
+        .auth-link {
+            color: #f4d788;
+            font-size: 0.92em;
+            font-weight: 700;
+        }
+
+        .password-toggle {
+            color: #f4d788;
         }
 
         .sidebar {
             background: linear-gradient(180deg, var(--go-navy) 0%, var(--go-deep) 100%);
+        }
+
+        .main-content {
+            background: #e1e4e6;
+        }
+
+        .menu-item {
+            border: 1px solid transparent;
+            color: #e8eef3;
+        }
+
+        .menu-item:hover {
+            background: rgba(181, 139, 74, 0.12);
+            border-color: rgba(181, 139, 74, 0.28);
+        }
+
+        .menu-item.active {
+            background: linear-gradient(135deg, #ffb800 0%, #d99800 100%);
+            color: #1a1a1a;
+            font-weight: 800;
+            box-shadow: 0 6px 14px rgba(133, 99, 44, 0.2);
+        }
+
+        .sidebar-logo {
+            background: rgba(7, 20, 34, 0.72);
+            border-color: rgba(181, 139, 74, 0.35);
+            overflow: hidden;
+        }
+
+        .top-bar,
+        .form-container,
+        .table-container {
+            background: #ffffff;
+            border: 1px solid #d9e2ec;
+        }
+
+        .top-bar {
+            min-height: 66px;
+            box-shadow: 0 8px 24px rgba(16, 42, 67, 0.08);
+        }
+
+        .form-container {
+            padding: 26px;
+            box-shadow: 0 10px 28px rgba(16, 42, 67, 0.07);
+        }
+
+        .form-container h4,
+        .form-title,
+        .top-bar h2 {
+            color: var(--go-navy);
+        }
+
+        .form-title {
+            border-bottom-width: 3px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea,
+        .vehicle-search-input {
+            border-color: #cbd5df;
+            background: #fbfcfd;
+            color: #1b2c3d;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus,
+        .vehicle-search-input:focus {
+            border-color: var(--go-orange);
+            box-shadow: 0 0 0 3px rgba(229, 155, 39, 0.15);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--go-navy) 0%, var(--go-deep) 100%);
+            border: 1px solid rgba(217, 169, 58, 0.35);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #183c5a 0%, #102a43 100%);
+        }
+
+        .data-table thead {
+            background: #162f47;
+            border-bottom-color: var(--go-orange);
+        }
+
+        .data-table th {
+            color: #f4f7f9;
+        }
+
+        .data-table tbody tr:hover {
+            background: #f8f5ed;
+        }
+
+        .drop-zone {
+            border-color: rgba(181, 139, 74, 0.55);
+            background: #f8f5ed;
+        }
+
+        .preventive-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 18px;
+            margin-bottom: 20px;
+        }
+
+        .preventive-header h3 {
+            margin-bottom: 6px;
+            color: var(--go-navy);
+        }
+
+        .preventive-header p {
+            margin: 0;
+            color: #526170;
+        }
+
+        .preventive-kpis {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .preventive-kpi {
+            padding: 16px;
+            border: 1px solid var(--go-line);
+            border-left: 4px solid var(--go-orange);
+            border-radius: 10px;
+            background: #f8fafb;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        .preventive-kpi:hover,
+        .preventive-kpi:focus-visible {
+            transform: translateY(-2px);
+            border-color: var(--go-orange);
+            box-shadow: 0 8px 18px rgba(26, 26, 26, 0.1);
+            outline: none;
+        }
+
+        .preventive-kpi small {
+            display: block;
+            color: #687787;
+            font-size: 0.75em;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .preventive-kpi strong {
+            display: block;
+            margin-top: 5px;
+            color: var(--go-navy);
+            font-size: 1.45em;
+        }
+
+        .preventive-layout {
+            display: grid;
+            grid-template-columns: minmax(280px, 0.82fr) minmax(420px, 1.5fr);
+            gap: 18px;
+            align-items: start;
+            min-width: 0;
+        }
+
+        .preventive-panel {
+            padding: 20px;
+            border: 1px solid var(--go-line);
+            border-radius: 10px;
+            background: #ffffff;
+            min-width: 0;
+        }
+
+        #page-incidencias .table-container {
+            max-width: 100%;
+            overflow-x: auto;
+        }
+
+        .preventive-panel h4 {
+            margin: 0 0 16px;
+            color: var(--go-navy);
+        }
+
+        .preventive-filter {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--go-line);
+        }
+
+        .preventive-status {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 9px;
+            border-radius: 999px;
+            background: rgba(255, 184, 0, 0.16);
+            color: #805d00;
+            font-size: 0.78em;
+            font-weight: 800;
+        }
+
+        @media (max-width: 900px) {
+            .preventive-layout { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 600px) {
+            .preventive-header { flex-direction: column; }
+            .preventive-kpis,
+            .preventive-filter { grid-template-columns: 1fr; }
+        }
+
+        /* Contraste de las páginas internas: el login conserva su tema oscuro. */
+        .main-content .form-group label {
+            color: #26364a;
+        }
+
+        .main-content .form-container p,
+        .main-content .form-container small,
+        .main-content .form-hint {
+            color: #526170;
+        }
+
+        .main-content .form-group input,
+        .main-content .form-group select,
+        .main-content .form-group textarea,
+        .main-content .vehicle-search-input {
+            border-color: #cbd5df;
+            background: #fbfcfd;
+            color: #1b2c3d;
+        }
+
+        .main-content .form-group input:focus,
+        .main-content .form-group select:focus,
+        .main-content .form-group textarea:focus,
+        .main-content .vehicle-search-input:focus {
+            border-color: var(--go-orange);
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(255, 184, 0, 0.16);
+        }
+
+        .main-content .check-list label {
+            color: #26364a;
+        }
+
+        .login-box .form-group input,
+        .login-box .form-group select,
+        .login-box .form-group textarea {
+            border-color: #40556a;
+            background: rgba(6, 18, 31, 0.9);
+            color: #f4f7f9;
+        }
+
+        .login-box .form-group input::placeholder {
+            color: #aab7c3;
+        }
+
+        .login-box .form-group input:focus,
+        .login-box .form-group select:focus,
+        .login-box .form-group textarea:focus {
+            border-color: #ffb800;
+            background: #102a43;
+            box-shadow: 0 0 0 3px rgba(181, 139, 74, 0.18);
         }
 
         .sidebar-logo,
@@ -797,20 +1208,31 @@
         @media (max-width: 768px) {
             .login-container {
                 min-height: 100dvh;
-                padding: 16px;
-                align-items: flex-start;
-                padding-top: 8vh;
+                padding: 18px 12px;
+                align-items: center;
+                overflow-y: auto;
             }
 
             .login-box {
                 width: 100%;
                 max-width: 100%;
-                padding: 24px 18px;
-                border-radius: 8px;
+                padding: 18px 14px 20px;
+                border-radius: 14px;
+            }
+
+            .login-logo {
+                width: 92px;
+                height: 108px;
+                margin: -4px auto 0;
             }
 
             .login-box h1 {
-                font-size: 1.7em;
+                font-size: 1.55em;
+                margin-bottom: 5px;
+            }
+
+            .login-box p {
+                margin-bottom: 16px;
             }
 
             .sidebar {
@@ -944,6 +1366,89 @@
                 overflow: hidden;
             }
 
+            #page-incidencias .form-container,
+            #page-incidencias .preventive-panel {
+                overflow: visible;
+            }
+
+            #page-incidencias .preventive-panel {
+                padding: 14px;
+            }
+
+            #page-incidencias .preventive-header .form-actions {
+                width: 100%;
+            }
+
+            #page-incidencias .preventive-header h3 {
+                font-size: 1.35em;
+                line-height: 1.2;
+            }
+
+            #page-incidencias .preventive-header p {
+                font-size: 0.95em;
+                line-height: 1.4;
+            }
+
+            #page-incidencias .preventive-kpis {
+                gap: 10px;
+                margin-bottom: 14px;
+            }
+
+            #page-incidencias .preventive-kpi {
+                min-height: 78px;
+                padding: 13px 14px;
+            }
+
+            #page-incidencias .preventive-kpi small {
+                font-size: 0.78em;
+            }
+
+            #page-incidencias .preventive-kpi strong {
+                font-size: 1.55em;
+            }
+
+            #page-incidencias .preventive-kpi span {
+                font-size: 0.88em;
+            }
+
+            #page-incidencias .preventive-panel h4 {
+                font-size: 1.15em;
+                margin-bottom: 14px;
+            }
+
+            #page-incidencias .form-group label {
+                font-size: 0.9em;
+                line-height: 1.25;
+            }
+
+            #page-incidencias .form-group input,
+            #page-incidencias .form-group select,
+            #page-incidencias .form-group textarea {
+                min-height: 46px;
+                font-size: 1em;
+            }
+
+            #page-incidencias .preventive-filter {
+                gap: 4px;
+            }
+
+            #page-incidencias .table-container {
+                margin-left: -4px;
+                margin-right: -4px;
+                width: calc(100% + 8px);
+            }
+
+            #page-incidencias .data-table {
+                min-width: 860px;
+                font-size: 0.92em;
+            }
+
+            #page-incidencias .data-table th,
+            #page-incidencias .data-table td {
+                padding: 10px 11px;
+                white-space: nowrap;
+            }
+
             .form-container > h3,
             .form-container > h2 {
                 font-size: 1.25em;
@@ -1037,7 +1542,8 @@
     <div class="login-container" id="loginPage">
         <div class="login-box">
             <div id="loginView" class="auth-view active">
-                <h1>Apptrucks</h1>
+                <img class="login-logo" src="imagenes/logo-starttrucks-transparent.png" alt="Logo de StartTrucks">
+                <img id="loginBrandName" class="brand-wordmark" src="imagenes/starttrucks-wordmark.png" alt="StartTrucks">
                 <p>Inicie sesión para acceder a la aplicación</p>
                 <div class="login-error" id="loginError"></div>
                 <form id="loginForm" onsubmit="handleLogin(event)">
@@ -1056,7 +1562,8 @@
             </div>
 
             <div id="registerView" class="auth-view">
-                <h1>Apptrucks</h1>
+                <img class="login-logo" src="imagenes/logo-starttrucks-transparent.png" alt="Logo de StartTrucks">
+                <img id="registerBrandName" class="brand-wordmark" src="imagenes/starttrucks-wordmark.png" alt="StartTrucks">
                 <p>Cree su cuenta de trabajador</p>
                 <div class="auth-message" id="registerMessage"></div>
                 <form id="registerForm" onsubmit="registrarTrabajador(event)">
@@ -1100,7 +1607,8 @@
         <!-- SIDEBAR -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-logo">
-                <h3>VALDI S.L</h3>
+                <img id="sidebarBrandLogo" class="app-brand-wordmark" src="imagenes/starttrucks-wordmark.png" alt="StartTrucks">
+                <h3 id="sidebarBrandName" style="display:none;">StartTrucks</h3>
                 <p>Control operativo y procesos</p>
             </div>
         
@@ -1167,7 +1675,8 @@
             <header class="mobile-header">
                 <button type="button" class="mobile-menu-button" onclick="alternarMenuMovil()" aria-label="Abrir menú">☰</button>
                 <div class="mobile-user">
-                    <strong id="mobileUserName">Gestión Operativa</strong>
+                    <img id="mobileBrandLogo" class="mobile-brand-wordmark" src="imagenes/starttrucks-wordmark.png" alt="StartTrucks">
+                    <strong id="mobileUserName">StartTrucks</strong>
                     <small id="mobileUserRole">Seleccione una opción para comenzar</small>
                 </div>
                 <button type="button" class="mobile-logout-button" onclick="logout()" aria-label="Cerrar sesión">↪</button>
@@ -1179,7 +1688,6 @@
                 </div>
                 <div style="display:flex; align-items:center; gap:16px;">
                     <button type="button" onclick="irAInicio()" aria-label="Ir a inicio" style="font-size: 1.5em; background:none; border:none; cursor:pointer; line-height:1;">🏠</button>
-                    <div id="notificationIcon" style="font-size: 1.5em; cursor: pointer; position:relative;" onclick="abrirPendientes()">🔔<span id="notificationCount" style="display:none; position:absolute; top:-8px; right:-10px; background:#e74c3c; color:white; border-radius:50%; min-width:20px; height:20px; padding:2px 5px; font-size:0.55em; text-align:center;">0</span></div>
                 </div>
             </div>
 
@@ -1372,8 +1880,57 @@
             <!-- PÁGINA REVISIONES PREVENTIVAS -->
             <div class="page-section" id="page-incidencias">
                 <div class="form-container">
-                    <h3>Revisiones preventivas</h3>
-                    <p>Esta sección queda reservada para revisiones preventivas operativas generales.</p>
+                    <div class="preventive-header">
+                        <div>
+                            <h3>Revisiones preventivas</h3>
+                            <p>Control de vencimientos de vehículos y maquinaria.</p>
+                        </div>
+                        <div class="form-actions" style="margin-top:0;"><button type="button" class="btn btn-secondary admin-hide" onclick="descargarExcelPreventivos()">Descargar Excel</button><button type="button" class="btn btn-primary" onclick="nuevaRevisionPreventiva()">+ Nueva revisión</button></div>
+                    </div>
+
+                    <div class="preventive-kpis">
+                        <div class="preventive-kpi" role="button" tabindex="0" onclick="filtrarRevisionesPreventivas('Próximo a vencer')" onkeydown="if (event.key === 'Enter' || event.key === ' ') filtrarRevisionesPreventivas('Próximo a vencer')"><small>Vehículos a menos de 7 días</small><strong id="revisionKpiProximas">0</strong><span>Pulsar para ver la lista</span></div>
+                        <div class="preventive-kpi" role="button" tabindex="0" onclick="filtrarRevisionesPreventivas('Vencido')" onkeydown="if (event.key === 'Enter' || event.key === ' ') filtrarRevisionesPreventivas('Vencido')"><small>Vehículos vencidos</small><strong id="revisionKpiVencidas">0</strong><span>Pulsar para ver la lista</span></div>
+                    </div>
+
+                    <div class="preventive-layout">
+                        <section class="preventive-panel">
+                            <h4 id="revisionFormTitle">Nueva ficha preventiva</h4>
+                            <div class="form-group">
+                                <label for="revisionMatricula">A. Matrícula <span class="required">*</span></label>
+                                <input id="revisionMatricula" type="text" placeholder="Ej: 1234-ABC">
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group"><label for="revisionAlias">B. Vehículo / alias <span class="required">*</span></label><input id="revisionAlias" type="text" placeholder="Ej: Camión obra 1"></div>
+                                <div class="form-group"><label for="revisionClasificacion">C. Clasificación <span class="required">*</span></label><select id="revisionClasificacion"><option value="">Selecciona</option><option>Camión</option><option>Bañera</option><option>Remolque</option><option>Coche</option><option>Máquina</option></select></div>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group"><label for="revisionFechaUltima">D. Última revisión <span class="required">*</span></label><input type="date" id="revisionFechaUltima"></div>
+                                <div class="form-group"><label for="revisionMantenimiento">E. Mantenimiento <span class="required">*</span></label><select id="revisionMantenimiento"><option value="">Selecciona</option><option>Cambio de aceite y filtros</option><option>Aceites</option><option>Otros</option></select></div>
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-group"><label for="revisionEmail">F. Email</label><input type="email" id="revisionEmail" placeholder="correo@empresa.com"></div>
+                                <div class="form-group"><label for="revisionEstadoOperativo">K. Estado operativo</label><select id="revisionEstadoOperativo"><option>Operativo</option><option>Inactivo</option></select></div>
+                            </div>
+                            <div class="form-group"><label for="revisionObservaciones">L. Observaciones</label><textarea id="revisionObservaciones" rows="3" placeholder="Observaciones..."></textarea></div>
+                            <div class="form-actions"><button type="button" class="btn btn-primary" onclick="guardarRevisionPreventiva()">Guardar ficha</button><button type="button" class="btn btn-secondary" onclick="nuevaRevisionPreventiva()">Cancelar</button></div>
+                        </section>
+
+                        <section class="preventive-panel">
+                            <h4>Listado de vehículos</h4>
+                            <div class="preventive-filter">
+                                <div class="form-group"><label for="revisionFiltroTexto">Buscar</label><input type="search" id="revisionFiltroTexto" placeholder="Matrícula o alias" oninput="renderRevisionesPreventivas()"></div>
+                                <div class="form-group"><label for="revisionFiltroEstado">Estado</label><select id="revisionFiltroEstado" onchange="renderRevisionesPreventivas()"><option>Todos</option><option>OK</option><option>Próximo a vencer</option><option>Vencido</option></select></div>
+                                <div class="form-group"><label for="revisionFiltroOperativo">Operatividad</label><select id="revisionFiltroOperativo" onchange="renderRevisionesPreventivas()"><option>Todos</option><option>Operativo</option><option>Inactivo</option></select></div>
+                            </div>
+                            <div class="table-container"><table class="data-table"><thead><tr><th>Matrícula</th><th>Vehículo</th><th>Clasificación</th><th>Última revisión</th><th>Días</th><th>Vencimiento</th><th>Estado</th><th>Operativo</th><th>Acción</th></tr></thead><tbody id="tbodyRevisionesPreventivas"><tr><td colspan="9" class="empty-message">No hay fichas preventivas.</td></tr></tbody></table></div>
+                        </section>
+                    </div>
+
+                    <div class="preventive-panel" style="margin-top:18px;">
+                        <h4>Histórico de cambios de fecha</h4>
+                        <div class="table-container"><table class="data-table"><thead><tr><th>Vehículo</th><th>Fecha anterior</th><th>Fecha nueva</th><th>Modificado por</th><th>Fecha del cambio</th></tr></thead><tbody id="tbodyHistorialRevisiones"><tr><td colspan="5" class="empty-message">No hay cambios registrados.</td></tr></tbody></table></div>
+                    </div>
                 </div>
             </div>
 
@@ -1546,7 +2103,20 @@
                         <div class="form-grid">
                             <div class="form-group">
                                 <label>Nombre de empresa <span class="required">*</span></label>
-                                <input type="text" id="nombreEmpresa" required placeholder="Ej: TRANSPORTE ABC S.L." value="Gestión Operativa">
+                                <input type="text" id="nombreEmpresa" required placeholder="Ej: TRANSPORTE ABC S.L." value="StartTrucks">
+                            </div>
+                            <div class="form-group">
+                                <label for="logoEmpresa">Logo de la empresa</label>
+                                <input type="file" id="logoEmpresa" accept="image/png,image/jpeg">
+                                <small style="color:#63758a;">Se usará en la aplicación y en los nuevos PDFs. Si no seleccionas uno, se usará el logo de StartTrucks.</small>
+                            </div>
+                            <div class="form-group">
+                                <label for="autorizarValdi">Marca autorizada</label>
+                                <label style="display:flex; align-items:center; gap:8px; font-weight:400;">
+                                    <input type="checkbox" id="autorizarValdi">
+                                    Autorizar el uso del nombre de empresa
+                                </label>
+                                <small style="color:#63758a;">Si no está autorizado, se mostrará StartTrucks. Si se autoriza, se usará el nombre escrito arriba.</small>
                             </div>
                             <div class="form-group">
                                 <label>CIF/NIF <span class="required">*</span></label>
@@ -1630,6 +2200,42 @@
         let informeDatos = { repostajes: [], mantenimientos: [], partes: [], danos: [] };
         let usuariosRefreshTimer = null;
 
+        const DEFAULT_BRAND = 'StartTrucks';
+        const DEFAULT_LOGO = 'imagenes/starttrucks-wordmark.png';
+
+        function getVisibleBrand(config = null) {
+            const savedConfig = config || JSON.parse(localStorage.getItem('appConfig') || '{}');
+            return savedConfig.autorizarValdi && savedConfig.nombreEmpresa?.trim()
+                ? savedConfig.nombreEmpresa.trim()
+                : DEFAULT_BRAND;
+        }
+
+        function aplicarMarca(config = null) {
+            const savedConfig = config || JSON.parse(localStorage.getItem('appConfig') || '{}');
+            const brand = getVisibleBrand(savedConfig);
+            const appLogo = savedConfig.logoEmpresa && savedConfig.logoEmpresa !== 'imagenes/logo-starttrucks-transparent.png'
+                ? savedConfig.logoEmpresa
+                : DEFAULT_LOGO;
+            document.title = brand;
+            document.querySelector('meta[name="apple-mobile-web-app-title"]')?.setAttribute('content', brand);
+            ['loginBrandName', 'registerBrandName', 'sidebarBrandName', 'mobileUserName'].forEach(id => {
+                const element = document.getElementById(id);
+                if (!element) return;
+                if (element.tagName === 'IMG') {
+                    element.alt = brand;
+                } else {
+                    element.textContent = brand;
+                }
+            });
+            ['sidebarBrandLogo', 'mobileBrandLogo'].forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.src = appLogo;
+                    element.alt = `Logo de ${brand}`;
+                }
+            });
+        }
+
         async function sincronizarUsuariosDesdeServidor() {
             try {
                 const response = await fetch('/api/users');
@@ -1679,7 +2285,7 @@
         // Inicializar IndexedDB
         function initDB() {
             return new Promise((resolve, reject) => {
-                const request = indexedDB.open('FleetManagementDB', 4);
+                const request = indexedDB.open('FleetManagementDB', 6);
 
                 request.onerror = () => reject(request.error);
                 request.onsuccess = () => {
@@ -1693,7 +2299,7 @@
                         const store = database.createObjectStore('repostajes', { keyPath: 'id', autoIncrement: true });
                         store.createIndex('fecha', 'fecha', { unique: false });
                     }
-                    ['mantenimientos', 'partes', 'danos', 'vehiculos', 'compras'].forEach(nombre => {
+                    ['mantenimientos', 'partes', 'danos', 'vehiculos', 'compras', 'mantenimientos_preventivos', 'historial_revision'].forEach(nombre => {
                         if (!database.objectStoreNames.contains(nombre)) {
                             const store = database.createObjectStore(nombre, { keyPath: 'id', autoIncrement: true });
                             store.createIndex('fecha', 'fecha', { unique: false });
@@ -1778,7 +2384,6 @@
                 await sincronizarUsuariosDesdeServidor();
                 renderUsuarios();
                 iniciarActualizacionAutomaticaUsuarios();
-                actualizarNotificaciones();
                 limpiarErrorLogin();
                 return;
             } catch (apiError) {
@@ -1807,7 +2412,6 @@
                 await sincronizarUsuariosDesdeServidor();
                 renderUsuarios();
                 iniciarActualizacionAutomaticaUsuarios();
-                actualizarNotificaciones();
                 limpiarErrorLogin();
             } else {
                 const errorDiv = document.getElementById('loginError');
@@ -1862,11 +2466,6 @@
             if (confirm('¿Deseas cerrar sesión?')) {
                 currentUser = null;
                 localStorage.removeItem('currentUser');
-                const notificationCount = document.getElementById('notificationCount');
-                if (notificationCount) {
-                    notificationCount.textContent = '0';
-                    notificationCount.style.display = 'none';
-                }
                 document.getElementById('appPage').classList.remove('active');
                 document.getElementById('loginPage').style.display = 'flex';
                 document.getElementById('loginForm').reset();
@@ -1877,11 +2476,13 @@
 
         // Actualizar UI según usuario
         function updateUIForUser() {
-            document.getElementById('userName').innerHTML = `<strong>${currentUser.username}</strong>`;
-            document.getElementById('userRole').textContent = currentUser.role;
+            const nombre = currentUser.nombre || currentUser.username;
+            const puesto = currentUser.puesto || currentUser.position || 'Puesto no definido';
+            document.getElementById('userName').innerHTML = `<strong>${nombre}</strong>`;
+            document.getElementById('userRole').textContent = puesto;
             document.getElementById('userAvatar').textContent = currentUser.avatar;
-            document.getElementById('mobileUserName').textContent = currentUser.nombre || currentUser.username;
-            document.getElementById('mobileUserRole').textContent = `Puesto: ${currentUser.role}`;
+            document.getElementById('mobileUserName').textContent = nombre;
+            document.getElementById('mobileUserRole').textContent = `Puesto: ${puesto}`;
         }
 
         function alternarMenuMovil() {
@@ -1896,7 +2497,7 @@
             }
         }
 
-        // Pantalla de inicio: la barra lateral ocupa toda la pantalla
+        // Volver a la pantalla principal
         function irAInicio() {
             document.querySelectorAll('.page-section').forEach(section => {
                 section.classList.remove('active');
@@ -1905,7 +2506,13 @@
                 item.classList.remove('active');
             });
             document.getElementById('pageTitle').textContent = 'Selecciona una opción';
-            document.getElementById('appPage').classList.add('home-mode');
+            const appPage = document.getElementById('appPage');
+            appPage.classList.remove('home-mode');
+            if (window.matchMedia('(max-width: 768px)').matches) {
+                appPage.classList.add('mobile-menu-mode');
+            } else {
+                appPage.classList.remove('mobile-menu-mode');
+            }
             cerrarMenuMovil();
         }
 
@@ -1948,36 +2555,6 @@
                 const fechaAlta = user.created_at ? new Date(user.created_at.replace(' ', 'T') + 'Z').toLocaleDateString('es-ES') : '-';
                 return `<tr><td>${user.identifier}</td><td>${user.name}</td><td>${user.position || '-'}</td><td>${rol}</td><td><span style="color:#63758a; font-weight:bold;">No visible</span></td><td><span style="color:${estadoColor}; font-weight:bold;">${estado}</span></td><td>${fechaAlta}</td><td>${accion} <button class="btn" style="background:#6c757d; color:white; padding:5px 10px;" onclick="eliminarUsuario('${user.identifier}')">Eliminar</button></td></tr>`;
             }).join('');
-        }
-
-        // La campana solo avisa de daños estéticos nuevos (no vistos todavía en esta pantalla)
-        async function obtenerTotalDanos() {
-            return new Promise(resolve => {
-                if (!db) return resolve(0);
-                const request = db.transaction(['danos'], 'readonly').objectStore('danos').getAll();
-                request.onsuccess = () => resolve(request.result.length);
-                request.onerror = () => resolve(0);
-            });
-        }
-
-        async function actualizarNotificaciones() {
-            const contador = document.getElementById('notificationCount');
-            if (!contador) return;
-            const total = await obtenerTotalDanos();
-            const vistos = Number(localStorage.getItem('danosVistos') || '0');
-            const nuevos = Math.max(0, total - vistos);
-            contador.textContent = nuevos;
-            contador.style.display = nuevos ? 'block' : 'none';
-        }
-
-        async function marcarDanosVistos() {
-            const total = await obtenerTotalDanos();
-            localStorage.setItem('danosVistos', String(total));
-            actualizarNotificaciones();
-        }
-
-        function abrirPendientes() {
-            goToPage('danos-esteticos');
         }
 
         async function cambiarRolUsuario(identificador, rol) {
@@ -2023,7 +2600,6 @@
             await sincronizarUsuariosDesdeServidor();
             localStorage.setItem('users', JSON.stringify(users));
             await renderUsuarios();
-            actualizarNotificaciones();
             showMessage(active ? 'Usuario autorizado correctamente' : 'Usuario desactivado', 'success');
         }
 
@@ -2137,6 +2713,9 @@
             if (page === 'mantenimientos') {
                 prepararMantenimiento();
             }
+            if (page === 'incidencias') {
+                prepararRevisionesPreventivas();
+            }
             if (page === 'partes') {
                 prepararParte();
             }
@@ -2230,13 +2809,26 @@
         }
 
         // Guardar configuración
-        function guardarConfiguracion(event) {
+        async function guardarConfiguracion(event) {
             event.preventDefault();
             
             const configExistente = JSON.parse(localStorage.getItem('appConfig') || '{}');
-            
+
+            const logoFile = document.getElementById('logoEmpresa').files[0];
+            let logoEmpresa = configExistente.logoEmpresa || '';
+            if (logoFile) {
+                logoEmpresa = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = reject;
+                    reader.readAsDataURL(logoFile);
+                });
+            }
+
             const config = {
                 nombreEmpresa: document.getElementById('nombreEmpresa').value,
+                autorizarValdi: document.getElementById('autorizarValdi').checked,
+                logoEmpresa,
                 cifNif: document.getElementById('cifNif').value,
                 telefono: document.getElementById('telefono').value,
                 email: document.getElementById('email').value,
@@ -2250,6 +2842,7 @@
             };
             
             localStorage.setItem('appConfig', JSON.stringify(config));
+            aplicarMarca(config);
             showMessage('✅ Configuración guardada correctamente', 'success');
         }
 
@@ -2388,6 +2981,10 @@
         }
 
         async function crearLibroExcel() {
+            if (currentUser?.role !== 'Administrativo') {
+                showMessage('Solo un administrador puede descargar los informes', 'error');
+                return;
+            }
             try {
                 const historial = await obtenerHistorialCompleto();
                 const repostajes = historial.repostajes || [];
@@ -2677,7 +3274,7 @@
             const request = store.getAll();
 
             request.onsuccess = () => {
-                const repostajes = request.result;
+                const repostajes = request.result.filter(registroVisibleParaUsuario);
                 const tbody = document.getElementById('tbodyRepostajes');
                 
                 if (repostajes.length === 0) {
@@ -2950,13 +3547,221 @@
         function prepararDano() {
             rellenarMatriculas();
             cargarHistorial('danos', 'tbodyDanos', registro => `<tr><td>${registro.fecha}</td><td>${registro.matricula}</td><td>${registro.zonas.join(', ') || '-'}</td><td>${registro.descripcion || '-'}</td><td>${registro.foto ? `<a href="${registro.foto}" target="_blank" rel="noopener">Ver foto</a>` : 'No'}</td></tr>`, 5);
-            marcarDanosVistos();
         }
 
         function prepararCompras() {
             rellenarMatriculas();
             document.getElementById('compraUsuario').value = currentUser.nombre || currentUser.username;
             cargarHistorial('compras', 'tbodyCompras', registro => `<tr><td>${registro.fecha}</td><td>${registro.hora || '-'}</td><td>${registro.categoria}</td><td>${registro.matricula || '-'}</td><td>${registro.importe ? `${registro.importe} €` : '-'}</td><td>${registro.usuarioNombre || registro.usuario}</td><td>${registro.descripcion || '-'}</td><td>${registro.foto ? `<a href="${registro.foto}" target="_blank" rel="noopener">Ver foto</a>` : 'No'}</td></tr>`, 8);
+        }
+
+        let revisionPreventivaEditando = null;
+        const diasRevisionPorClasificacion = {
+            'coche': 180,
+            'camion': 150,
+            'banera': 70,
+            'remolque': 365,
+            'maquina': 60
+        };
+
+        function normalizarClasificacionRevision(valor) {
+            return String(valor || '').toLocaleLowerCase('es-ES').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        }
+
+        function calcularRevisionPreventiva(fechaUltima, clasificacion) {
+            const dias = diasRevisionPorClasificacion[normalizarClasificacionRevision(clasificacion)];
+            if (!fechaUltima || !dias) return { dias: '', fechaVencimiento: '', estado: '' };
+            const fecha = new Date(`${fechaUltima}T00:00:00`);
+            const vencimiento = new Date(fecha);
+            vencimiento.setDate(vencimiento.getDate() + dias);
+            const hoy = new Date();
+            hoy.setHours(0, 0, 0, 0);
+            const diasRestantes = Math.round((vencimiento - hoy) / 86400000);
+            return {
+                dias: diasRestantes,
+                fechaVencimiento: `${vencimiento.getFullYear()}-${String(vencimiento.getMonth() + 1).padStart(2, '0')}-${String(vencimiento.getDate()).padStart(2, '0')}`,
+                estado: diasRestantes < 0 ? 'Vencido' : diasRestantes <= 7 ? 'Próximo a vencer' : 'OK'
+            };
+        }
+
+        function actualizarCalculoRevisionPreventiva() {
+            const calculo = calcularRevisionPreventiva(document.getElementById('revisionFechaUltima').value, document.getElementById('revisionClasificacion').value);
+            return calculo;
+        }
+
+        function nuevaRevisionPreventiva() {
+            revisionPreventivaEditando = null;
+            document.getElementById('revisionFormTitle').textContent = 'Nueva ficha preventiva';
+            ['revisionMatricula', 'revisionAlias', 'revisionClasificacion', 'revisionFechaUltima', 'revisionMantenimiento', 'revisionEmail', 'revisionEstadoOperativo', 'revisionObservaciones'].forEach(id => {
+                const element = document.getElementById(id);
+                element.disabled = false;
+                if (element.tagName === 'SELECT') element.selectedIndex = 0;
+                else element.value = '';
+            });
+            document.getElementById('revisionEstadoOperativo').value = 'Operativo';
+        }
+
+        function editarFechaRevisionPreventiva(clave) {
+            obtenerRevisionesPreventivas().then(registros => {
+                const registro = registros.find(item => item.revisionKey === clave);
+                if (!registro) return;
+                revisionPreventivaEditando = clave;
+                document.getElementById('revisionFormTitle').textContent = 'Actualizar última revisión';
+                document.getElementById('revisionMatricula').value = registro.matricula;
+                document.getElementById('revisionAlias').value = registro.alias;
+                document.getElementById('revisionClasificacion').value = registro.clasificacion;
+                document.getElementById('revisionFechaUltima').value = registro.fechaUltimaRevision;
+                document.getElementById('revisionMantenimiento').value = registro.mantenimiento;
+                document.getElementById('revisionEmail').value = registro.email || '';
+                document.getElementById('revisionEstadoOperativo').value = registro.estadoOperativo || 'Operativo';
+                document.getElementById('revisionObservaciones').value = registro.observaciones || '';
+                ['revisionMatricula', 'revisionAlias', 'revisionClasificacion', 'revisionMantenimiento', 'revisionEmail', 'revisionEstadoOperativo', 'revisionObservaciones'].forEach(id => {
+                    document.getElementById(id).disabled = true;
+                });
+                actualizarCalculoRevisionPreventiva();
+                document.getElementById('revisionFechaUltima').focus();
+            });
+        }
+
+        function obtenerRevisionesPreventivas() {
+            if (!db) return [];
+            return new Promise(resolve => {
+                const request = db.transaction(['mantenimientos_preventivos'], 'readonly').objectStore('mantenimientos_preventivos').getAll();
+                request.onsuccess = () => {
+                    const visibles = request.result.filter(registroVisibleParaUsuario);
+                    const ultimos = new Map();
+                    visibles.forEach(registro => {
+                        const anterior = ultimos.get(registro.revisionKey);
+                        if (!anterior || String(registro.actualizadoEn || '') > String(anterior.actualizadoEn || '')) ultimos.set(registro.revisionKey, registro);
+                    });
+                    resolve([...ultimos.values()]);
+                };
+                request.onerror = () => resolve([]);
+            });
+        }
+
+        async function guardarRevisionPreventiva() {
+            if (!db || !db.objectStoreNames.contains('mantenimientos_preventivos')) {
+                showMessage('La base local aún no está preparada. Recarga la aplicación.', 'error');
+                return;
+            }
+            const matricula = document.getElementById('revisionMatricula').value.trim();
+            const alias = document.getElementById('revisionAlias').value.trim();
+            const clasificacion = document.getElementById('revisionClasificacion').value;
+            const fechaUltimaRevision = document.getElementById('revisionFechaUltima').value;
+            const mantenimiento = document.getElementById('revisionMantenimiento').value;
+            if (!matricula || !alias || !clasificacion || !fechaUltimaRevision || !mantenimiento) {
+                showMessage('Completa matrícula, vehículo, clasificación, fecha y mantenimiento', 'error');
+                return;
+            }
+            const calculo = calcularRevisionPreventiva(fechaUltimaRevision, clasificacion);
+            const existente = revisionPreventivaEditando ? (await obtenerRevisionesPreventivas()).find(item => item.revisionKey === revisionPreventivaEditando) : null;
+            const ahora = new Date().toISOString();
+            const revisionKey = revisionPreventivaEditando || `${matricula.toLowerCase()}::${currentUser.username.toLowerCase()}`;
+            const registro = {
+                revisionKey,
+                matricula,
+                alias,
+                clasificacion,
+                fechaUltimaRevision,
+                mantenimiento,
+                email: document.getElementById('revisionEmail').value.trim(),
+                diasVencimiento: calculo.dias,
+                fechaVencimiento: calculo.fechaVencimiento,
+                estado: calculo.estado,
+                estadoMail: existente?.estadoMail || '',
+                estadoOperativo: document.getElementById('revisionEstadoOperativo').value,
+                observaciones: document.getElementById('revisionObservaciones').value.trim(),
+                usuario: currentUser.username,
+                usuarioNombre: currentUser.nombre || currentUser.username,
+                actualizadoEn: ahora
+            };
+            const transaction = db.transaction(['mantenimientos_preventivos', 'historial_revision'], 'readwrite');
+            transaction.objectStore('mantenimientos_preventivos').add(registro);
+            if (existente && existente.fechaUltimaRevision !== fechaUltimaRevision) {
+                transaction.objectStore('historial_revision').add({
+                    ...registro,
+                    fechaAnterior: existente.fechaUltimaRevision,
+                    fechaNueva: fechaUltimaRevision,
+                    modificadoPor: currentUser.username,
+                    modificadoPorNombre: currentUser.nombre || currentUser.username,
+                    modificadoEn: ahora
+                });
+            }
+            transaction.onerror = () => {
+                showMessage('No se pudo guardar la ficha preventiva', 'error');
+            };
+            transaction.oncomplete = async () => {
+                await guardarRegistroServidor('mantenimientos_preventivos', registro);
+                if (existente && existente.fechaUltimaRevision !== fechaUltimaRevision) {
+                    await guardarRegistroServidor('historial_revision', { ...registro, fechaAnterior: existente.fechaUltimaRevision, fechaNueva: fechaUltimaRevision, modificadoPor: currentUser.username, modificadoPorNombre: currentUser.nombre || currentUser.username, modificadoEn: ahora });
+                }
+                showMessage('Revisión preventiva guardada correctamente', 'success');
+                nuevaRevisionPreventiva();
+                renderRevisionesPreventivas();
+            };
+        }
+
+        async function renderRevisionesPreventivas() {
+            const registros = await obtenerRevisionesPreventivas();
+            const texto = (document.getElementById('revisionFiltroTexto')?.value || '').trim().toLowerCase();
+            const estado = document.getElementById('revisionFiltroEstado')?.value || 'Todos';
+            const operativo = document.getElementById('revisionFiltroOperativo')?.value || 'Todos';
+            const filtrados = registros.filter(registro => (!texto || `${registro.matricula} ${registro.alias}`.toLowerCase().includes(texto)) && (estado === 'Todos' || registro.estado === estado) && (operativo === 'Todos' || registro.estadoOperativo === operativo));
+            document.getElementById('revisionKpiProximas').textContent = registros.filter(item => item.estado === 'Próximo a vencer').length;
+            document.getElementById('revisionKpiVencidas').textContent = registros.filter(item => item.estado === 'Vencido').length;
+            const tbody = document.getElementById('tbodyRevisionesPreventivas');
+            tbody.innerHTML = filtrados.length ? filtrados.map(registro => `<tr><td>${registro.matricula}</td><td>${registro.alias}</td><td>${registro.clasificacion}</td><td>${registro.fechaUltimaRevision}</td><td>${registro.diasVencimiento}</td><td>${registro.fechaVencimiento}</td><td><span class="preventive-status">${registro.estado}</span></td><td>${registro.estadoOperativo}</td><td><button type="button" class="btn btn-secondary" onclick="editarFechaRevisionPreventiva('${registro.revisionKey.replace(/'/g, "\\'")}')">Cambiar fecha</button></td></tr>`).join('') : '<tr><td colspan="9" class="empty-message">No hay fichas preventivas.</td></tr>';
+            await renderHistorialRevisiones();
+        }
+
+        function filtrarRevisionesPreventivas(estado) {
+            document.getElementById('revisionFiltroEstado').value = estado;
+            renderRevisionesPreventivas();
+            document.getElementById('tbodyRevisionesPreventivas')?.closest('.table-container')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        async function renderHistorialRevisiones() {
+            const request = db.transaction(['historial_revision'], 'readonly').objectStore('historial_revision').getAll();
+            request.onsuccess = () => {
+                const registros = request.result.filter(registroVisibleParaUsuario).sort((a, b) => String(b.modificadoEn || '').localeCompare(String(a.modificadoEn || '')));
+                const tbody = document.getElementById('tbodyHistorialRevisiones');
+                tbody.innerHTML = registros.length ? registros.map(registro => `<tr><td>${registro.matricula} - ${registro.alias}</td><td>${registro.fechaAnterior}</td><td>${registro.fechaNueva}</td><td>${registro.modificadoPorNombre || registro.modificadoPor}</td><td>${new Date(registro.modificadoEn).toLocaleString('es-ES')}</td></tr>`).join('') : '<tr><td colspan="5" class="empty-message">No hay cambios registrados.</td></tr>';
+            };
+        }
+
+        async function descargarExcelPreventivos() {
+            if (currentUser?.role !== 'Administrativo') {
+                showMessage('Solo un administrador puede descargar este Excel', 'error');
+                return;
+            }
+            const registros = await obtenerRevisionesPreventivas();
+            const historial = await new Promise(resolve => {
+                const request = db.transaction(['historial_revision'], 'readonly').objectStore('historial_revision').getAll();
+                request.onsuccess = () => resolve(request.result.filter(registroVisibleParaUsuario));
+                request.onerror = () => resolve([]);
+            });
+            const libro = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(libro, XLSX.utils.json_to_sheet(registros.map(registro => ({
+                'Matrícula': registro.matricula, 'Vehículo / alias': registro.alias, 'Clasificación': registro.clasificacion,
+                'Última revisión': registro.fechaUltimaRevision, 'Mantenimiento': registro.mantenimiento, 'Email': registro.email,
+                'Días para vencimiento': registro.diasVencimiento, 'Fecha de vencimiento': registro.fechaVencimiento,
+                'Estado': registro.estado, 'Estado del mail': registro.estadoMail, 'Estado operativo': registro.estadoOperativo,
+                'Observaciones': registro.observaciones, 'Usuario': registro.usuario
+            }))), 'Mantenimientos');
+            XLSX.utils.book_append_sheet(libro, XLSX.utils.json_to_sheet(historial.map(registro => ({
+                'Matrícula': registro.matricula, 'Vehículo / alias': registro.alias, 'Fecha anterior': registro.fechaAnterior,
+                'Fecha nueva': registro.fechaNueva, 'Modificado por': registro.modificadoPorNombre || registro.modificadoPor,
+                'Fecha del cambio': registro.modificadoEn
+            }))), 'Histórico');
+            XLSX.writeFile(libro, 'mantenimientos-preventivos.xlsx');
+        }
+
+        function prepararRevisionesPreventivas() {
+            document.getElementById('revisionFechaUltima').oninput = actualizarCalculoRevisionPreventiva;
+            document.getElementById('revisionClasificacion').onchange = actualizarCalculoRevisionPreventiva;
+            nuevaRevisionPreventiva();
+            renderRevisionesPreventivas();
         }
 
         function guardarCompra(event) {
@@ -3025,11 +3830,11 @@
                 const response = await fetch('/api/records');
                 if (!response.ok) return false;
                 const registros = await response.json();
-                const stores = ['repostajes', 'mantenimientos', 'partes', 'danos', 'vehiculos', 'compras'];
+                const stores = ['repostajes', 'mantenimientos', 'partes', 'danos', 'vehiculos', 'compras', 'mantenimientos_preventivos', 'historial_revision'];
                 const transaction = db.transaction(stores, 'readwrite');
                 stores.forEach(store => transaction.objectStore(store).clear());
                 registros.forEach(registro => {
-                    if (stores.includes(registro.record_type)) {
+                    if (stores.includes(registro.record_type) && registroVisibleParaUsuario(registro.data)) {
                         transaction.objectStore(registro.record_type).add(registro.data);
                     }
                 });
@@ -3043,10 +3848,20 @@
             }
         }
 
+        function registroVisibleParaUsuario(registro) {
+            if (!currentUser) return false;
+            if (currentUser.role === 'Administrativo') return true;
+            const identidadActual = String(currentUser.username || '').trim().toLowerCase();
+            const nombreActual = String(currentUser.nombre || '').trim().toLowerCase();
+            const usuarioRegistro = String(registro?.usuario || '').trim().toLowerCase();
+            const nombreRegistro = String(registro?.usuarioNombre || registro?.nombre || '').trim().toLowerCase();
+            return Boolean(identidadActual) && (usuarioRegistro === identidadActual || nombreRegistro === identidadActual || nombreRegistro === nombreActual);
+        }
+
         function cargarHistorial(storeName, tbodyId, render, colspan) {
             const request = db.transaction([storeName], 'readonly').objectStore(storeName).getAll();
             request.onsuccess = () => {
-                const registros = request.result.filter(registro => currentUser?.role === 'Administrativo' || registro.usuario === currentUser?.username);
+                const registros = request.result.filter(registroVisibleParaUsuario);
                 document.getElementById(tbodyId).innerHTML = registros.length ? registros.map(render).join('') : `<tr><td colspan="${colspan}" class="empty-message">No hay registros.</td></tr>`;
             };
         }
@@ -3091,6 +3906,20 @@
             const ancho = 210 - (margen * 2);
             const numero = String(data.numero).padStart(4, '0');
             const conceptos = data.conceptos.map(concepto => `${concepto.nombre || ''} ${concepto.detalle || ''}`.trim()).filter(Boolean);
+            const marca = getVisibleBrand();
+            const configuracionEmpresa = JSON.parse(localStorage.getItem('appConfig') || '{}');
+            const empresaAutorizada = Boolean(configuracionEmpresa.autorizarValdi && configuracionEmpresa.nombreEmpresa?.trim());
+            const tieneLogoEmpresa = configuracionEmpresa.logoEmpresa?.startsWith('data:image/');
+            const marcaX = tieneLogoEmpresa ? 57 : margen;
+
+            if (tieneLogoEmpresa) {
+                try {
+                    const formatoLogo = configuracionEmpresa.logoEmpresa.includes('image/png') ? 'PNG' : 'JPEG';
+                    pdf.addImage(configuracionEmpresa.logoEmpresa, formatoLogo, margen, 5, 34, 14, undefined, 'FAST');
+                } catch (error) {
+                    console.warn('No se pudo añadir el logo de la empresa al PDF:', error);
+                }
+            }
 
             pdf.setDrawColor(55, 65, 70);
             pdf.setTextColor(35, 45, 48);
@@ -3098,16 +3927,17 @@
             pdf.setFont('helvetica', 'bold');
             pdf.setFontSize(20);
             pdf.setTextColor(20, 105, 108);
-            pdf.text('valdi', margen, 17);
+            pdf.text(marca, marcaX, 17);
             pdf.setFontSize(7);
-            pdf.text('obras y servicios s.l.', margen + 1, 22);
+            if (empresaAutorizada) {
+                pdf.text(configuracionEmpresa.nombreEmpresa.trim(), marcaX + 1, 22);
+            }
             pdf.setTextColor(35, 45, 48);
             pdf.setFontSize(8);
-            pdf.text('C/ Conde de Orgaz, 1 local 2 ext. byc', 76, 10);
-            pdf.text('45210 Yuncos. Toledo', 76, 14);
-            pdf.text('Tel.: 925 536 144  •  Fax: 925 536 145', 76, 18);
-            pdf.text('Móvil: 630 508 858', 76, 22);
-            pdf.text('administracion@obras yserviciosvaldi.com', 76, 26);
+            if (empresaAutorizada) {
+                if (configuracionEmpresa.telefono) pdf.text(`Tel.: ${configuracionEmpresa.telefono}`, 76, 18);
+                if (configuracionEmpresa.email) pdf.text(configuracionEmpresa.email, 76, 26);
+            }
             pdf.setFontSize(11);
             pdf.text('Nº', 158, 14);
             pdf.setTextColor(180, 35, 35);
@@ -3317,7 +4147,7 @@
         // Verificar login al cargar
         window.addEventListener('load', async () => {
             if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('sw.js?v=2').catch(error => console.warn('PWA no disponible:', error));
+                navigator.serviceWorker.register('sw.js?v=38').catch(error => console.warn('PWA no disponible:', error));
             }
             if (window.location.hash === '#registro') {
                 mostrarRegistro();
@@ -3335,6 +4165,7 @@
             if (savedConfig) {
                 const config = JSON.parse(savedConfig);
                 document.getElementById('nombreEmpresa').value = config.nombreEmpresa || '';
+                document.getElementById('autorizarValdi').checked = config.autorizarValdi === true;
                 document.getElementById('cifNif').value = config.cifNif || '';
                 document.getElementById('telefono').value = config.telefono || '';
                 document.getElementById('email').value = config.email || '';
@@ -3344,6 +4175,7 @@
                 document.getElementById('notifMantenimiento').checked = config.notifMantenimiento !== false;
                 document.getElementById('notifIncidencia').checked = config.notifIncidencia !== false;
             }
+            aplicarMarca();
             
             const saved = localStorage.getItem('currentUser');
             if (saved) {
@@ -3360,7 +4192,6 @@
                 await sincronizarUsuariosDesdeServidor();
                 renderUsuarios();
                 iniciarActualizacionAutomaticaUsuarios();
-                actualizarNotificaciones();
             }
         });
     </script>
