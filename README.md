@@ -1,6 +1,6 @@
 # StartTrucks
 
-Aplicación web para la agilizar los procesos y la gestión operativa de vehículos y maquinaria de obra.
+Aplicación web para la agilizar los procesos y la gestión operativa de vehículos, maquinaria y personal de obra.
 
 ## Estado actual
 
@@ -10,7 +10,7 @@ Aplicación web para la agilizar los procesos y la gestión operativa de vehícu
 - Logo y nombre de empresa configurables desde Administración.
 - Diseño responsive para ordenador, tablet y móvil.
 - Menú para repostajes, mantenimientos, partes, daños, compras, vehículos, usuarios e informes.
-- Campana de notificaciones eliminada.
+
 - Botón de inicio funcional para volver al menú principal.
 
 ## Revisiones preventivas
