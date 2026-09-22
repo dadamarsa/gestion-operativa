@@ -1,6 +1,6 @@
 # StartTrucks
 
-Aplicación web para la gestión operativa de vehículos, maquinaria y procesos de flota.
+Aplicación web para la agilizar los procesos y la gestión operativa de vehículos y maquinaria de obra.
 
 ## Estado actual
 
